@@ -1,0 +1,66 @@
+require File.join(File.dirname(__FILE__), 'music_elements/note')
+require File.join(File.dirname(__FILE__), 'music_elements/chord')
+
+grammar StrettoSyntax
+
+  rule notes
+    space? head:music_element? more_elements:(space music_element)* {
+      def to_stretto
+        unless head.text_value.empty?
+          [head.to_stretto] + more_elements.elements.map{|element| element.music_element.to_stretto }
+        else
+          []
+        end
+      end
+    }
+  end
+
+  rule music_element
+    chord / note
+  end
+
+  rule chord
+    note_string named_chord {
+      def to_stretto
+        Stretto::MusicElements::Chord.new(text_value)
+      end
+    }
+  end
+
+  rule note
+    (note_string / "[" number:numeric "]") {
+      def to_stretto
+        Stretto::MusicElements::Note.new(text_value)
+      end
+    }
+  end
+
+  rule note_string
+    [A-G] accidental?
+  end
+
+  rule accidental
+    "##" / "#" / "bb" / "b" / "n"
+  end
+
+  rule named_chord
+    # Make sure they're in reverse order, so 'maj6' is parsed before 'maj', for instance
+    "dom7>5>9" / "dom7>5<9" / "dom7<5>9" / "dom7<5<9" / "minmaj7" / "maj7>5" / "maj7<5" /
+    "dom7>5" / "dom7<5" / "maj13" / "min13" / "dom13" / "dom11" / "min11" / "add9" / "dim7" /
+    "min9" / "maj9" / "dom9" / "min6" / "maj6" / "sus2" / "sus4" / "min7" / "maj7" /
+    "dom7" / "dim" / "aug" / "min" / "maj"
+  end
+
+  rule numeric
+    "0" / sign? [1-9] [0-9]*
+  end
+
+  rule sign
+    [+-]
+  end
+
+  rule space
+    [\s]+
+  end
+
+end

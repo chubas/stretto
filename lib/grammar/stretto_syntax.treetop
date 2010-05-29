@@ -16,11 +16,11 @@ grammar StrettoSyntax
   end
 
   rule music_element
-    chord / note
+    chord / note / rest
   end
 
   rule chord
-    note_string named_chord {
+    note_string named_chord chord_inversions? duration? {
       def to_stretto
         Stretto::MusicElements::Chord.new(text_value)
       end
@@ -28,15 +28,19 @@ grammar StrettoSyntax
   end
 
   rule note
-    (note_string / "[" number:numeric "]") {
+    (note_string / "[" number:numeric "]") duration? {
       def to_stretto
         Stretto::MusicElements::Note.new(text_value)
       end
     }
   end
 
+  rule rest
+    'R' accidental? octave? duration?
+  end
+
   rule note_string
-    [A-G] accidental?
+    [A-G] accidental? octave?
   end
 
   rule accidental
@@ -51,8 +55,28 @@ grammar StrettoSyntax
     "dom7" / "dim" / "aug" / "min" / "maj"
   end
 
+  rule chord_inversions
+    '^' ('^'+ / note_string)?
+  end
+
+  rule octave
+    numeric
+  end
+
+  rule duration
+    ([whqistxo]+ '.'* tuplet?) / '/' decimal
+  end
+
+  rule tuplet
+    '*' (numeric ':' numeric)?
+  end
+
   rule numeric
     "0" / sign? [1-9] [0-9]*
+  end
+
+  rule decimal
+    numeric ('.' [0-9]+)?
   end
 
   rule sign

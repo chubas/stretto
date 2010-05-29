@@ -14,8 +14,18 @@ module Stretto
     end
 
     def to_stretto
-      @parser.parse(@music_string).to_stretto
+      parsed_string.to_stretto
     end
+
+    def valid?
+      not parsed_string.nil?
+    end
+
+    private
+
+      def parsed_string
+        @parser.parse(@music_string)
+      end
 
   end
 end

@@ -16,6 +16,14 @@ grammar StrettoSyntax
   end
 
   rule music_element
+    harmony_and_melody / single_music_element
+  end
+
+  rule harmony_and_melody
+    single_music_element [_+] single_music_element ([_+] single_music_element)*
+  end
+
+  rule single_music_element
     chord / note / rest
   end
 

@@ -20,7 +20,7 @@ grammar StrettoSyntax
   end
 
   rule chord
-    note_string named_chord chord_inversions? duration? {
+    note_string named_chord chord_inversions? duration? attack_and_decay? {
       def to_stretto
         Stretto::MusicElements::Chord.new(text_value)
       end
@@ -28,7 +28,7 @@ grammar StrettoSyntax
   end
 
   rule note
-    (note_string / "[" number:numeric "]") duration? {
+    (note_string / "[" number:numeric "]") duration? attack_and_decay? {
       def to_stretto
         Stretto::MusicElements::Note.new(text_value)
       end
@@ -73,6 +73,10 @@ grammar StrettoSyntax
 
   rule tie
     '-'
+  end
+
+  rule attack_and_decay
+    ('a' numeric)? ('d' numeric)?
   end
 
   rule numeric

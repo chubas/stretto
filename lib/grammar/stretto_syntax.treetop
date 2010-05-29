@@ -16,11 +16,7 @@ grammar StrettoSyntax
   end
 
   rule music_element
-    measure_bar / harmony_and_melody / single_music_element
-  end
-
-  rule measure_bar
-    '|'
+    harmony_and_melody / single_music_element / measure_bar / key_signature / instrument
   end
 
   rule harmony_and_melody
@@ -51,8 +47,12 @@ grammar StrettoSyntax
     'R' duration?
   end
 
+  rule note_key
+    [A-G] accidental?
+  end
+
   rule note_string
-    [A-G] accidental? octave?
+    note_key octave?
   end
 
   rule accidental
@@ -91,6 +91,18 @@ grammar StrettoSyntax
     ('a' numeric)? ('d' numeric)?
   end
 
+  rule key_signature
+    'K' note_key ('maj' / 'min')
+  end
+
+  rule measure_bar
+    '|'
+  end
+
+  rule instrument
+    'I' (numeric / variable)
+  end
+
   rule numeric
     "0" / sign? [1-9] [0-9]*
   end
@@ -101,6 +113,10 @@ grammar StrettoSyntax
 
   rule sign
     [+-]
+  end
+
+  rule variable
+    '[' [A-Za-z_]+ ']'
   end
 
   rule space

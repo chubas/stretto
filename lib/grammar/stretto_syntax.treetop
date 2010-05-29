@@ -36,7 +36,7 @@ grammar StrettoSyntax
   end
 
   rule rest
-    'R' accidental? octave? duration?
+    'R' duration?
   end
 
   rule note_string
@@ -64,11 +64,15 @@ grammar StrettoSyntax
   end
 
   rule duration
-    ([whqistxo]+ '.'* tuplet?) / '/' decimal
+    tie? (([whqistxo]+ '.'* tuplet?) / '/' decimal) tie?
   end
 
   rule tuplet
     '*' (numeric ':' numeric)?
+  end
+
+  rule tie
+    '-'
   end
 
   rule numeric

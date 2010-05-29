@@ -16,7 +16,7 @@ grammar StrettoSyntax
   end
 
   rule music_element
-    harmony_and_melody / single_music_element / measure_bar / key_signature / instrument
+    harmony_and_melody / single_music_element / measure_bar / key_signature / instrument / voice / layer
   end
 
   rule harmony_and_melody
@@ -101,6 +101,14 @@ grammar StrettoSyntax
 
   rule instrument
     'I' (numeric / variable)
+  end
+
+  rule voice
+    'V' numeric
+  end
+
+  rule layer
+    'L' numeric
   end
 
   rule numeric

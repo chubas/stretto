@@ -16,7 +16,11 @@ grammar StrettoSyntax
   end
 
   rule music_element
-    harmony_and_melody / single_music_element
+    measure_bar / harmony_and_melody / single_music_element
+  end
+
+  rule measure_bar
+    '|'
   end
 
   rule harmony_and_melody

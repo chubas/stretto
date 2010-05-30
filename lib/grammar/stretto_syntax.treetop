@@ -17,7 +17,8 @@ grammar StrettoSyntax
 
   rule music_element
     harmony_and_melody / single_music_element /
-    measure_bar / key_signature / instrument / voice / layer / tempo / pitch_wheel
+    measure_bar / key_signature / instrument / voice / layer / tempo /
+    pitch_wheel / channel_pressure / polyphonic_pressure
   end
 
   rule harmony_and_melody
@@ -118,6 +119,14 @@ grammar StrettoSyntax
 
   rule pitch_wheel
     '&' numeric
+  end
+
+  rule channel_pressure
+    '+' numeric
+  end
+
+  rule polyphonic_pressure
+    '*' numeric ',' numeric
   end
 
   rule numeric

@@ -18,7 +18,7 @@ grammar StrettoSyntax
   rule music_element
     harmony_and_melody / single_music_element /
     measure_bar / key_signature / instrument / voice / layer / tempo /
-    pitch_wheel / channel_pressure / polyphonic_pressure /
+    pitch_wheel / channel_pressure / polyphonic_pressure / timing_info /
     controller_change / variable_definition
   end
 
@@ -39,7 +39,7 @@ grammar StrettoSyntax
   end
 
   rule note
-    (note_string / "[" (numeric / variable_name) "]") duration? attack_and_decay? {
+    (note_string / "[" (integer / variable_name) "]") duration? attack_and_decay? {
       def to_stretto
         Stretto::MusicElements::Note.new(text_value)
       end
@@ -75,7 +75,7 @@ grammar StrettoSyntax
   end
 
   rule octave
-    numeric
+    integer
   end
 
   rule duration
@@ -83,7 +83,7 @@ grammar StrettoSyntax
   end
 
   rule tuplet
-    '*' (numeric ':' numeric)?
+    '*' (integer ':' integer)?
   end
 
   rule tie
@@ -91,7 +91,7 @@ grammar StrettoSyntax
   end
 
   rule attack_and_decay
-    ('a' variable_or_numeric)? ('d' variable_or_numeric)?
+    ('a' variable_or_integer)? ('d' variable_or_integer)?
   end
 
   rule key_signature
@@ -103,60 +103,60 @@ grammar StrettoSyntax
   end
 
   rule instrument
-    'I' variable_or_numeric
+    'I' variable_or_integer
   end
 
   rule voice
-    'V' variable_or_numeric
+    'V' variable_or_integer
   end
 
   rule layer
-    'L' variable_or_numeric
+    'L' variable_or_integer
   end
 
   rule tempo
-    'T' variable_or_numeric
+    'T' variable_or_integer
   end
 
   rule pitch_wheel
-    '&' variable_or_numeric
+    '&' variable_or_integer
   end
 
   rule channel_pressure
-    '+' variable_or_numeric
+    '+' variable_or_integer
   end
 
   rule polyphonic_pressure
-    '*' variable_or_numeric ',' variable_or_numeric
+    '*' variable_or_integer ',' variable_or_integer
   end
 
   rule controller_change
-    'X' variable_or_numeric '=' variable_or_numeric
+    'X' variable_or_integer '=' variable_or_integer
+  end
+
+  rule timing_info
+    '@' variable_or_integer
   end
 
   rule variable_definition
-    # It can be set to a numeric also, but decimal handles that case
-    '$' variable_name '=' (decimal / variable)
+    # It can be set to a integer also, but decimal handles that case
+    '$' variable_name '=' variable_or_decimal
   end
 
-  rule variable_or_numeric
-    variable / numeric
+  rule variable_or_integer
+    variable / integer
   end
 
   rule variable_or_decimal
     variable / decimal
   end
 
-  rule numeric
-    "0" / sign? [1-9] [0-9]*
+  rule integer
+    "0" / [1-9] [0-9]*
   end
 
   rule decimal
-    numeric ('.' [0-9]+)?
-  end
-
-  rule sign
-    [+-]
+    integer ('.' [0-9]+)?
   end
 
   rule variable

@@ -28,7 +28,6 @@ describe "parsing notes" do
 
     #NOTE: Not sure if this should be validated from the beggining
     it "should allow notes beyond allowed range in the lexical analysis phase" do
-      Stretto::Parser.new("[-1]" ).should be_valid
       Stretto::Parser.new("[128]").should be_valid
     end
 

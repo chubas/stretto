@@ -22,7 +22,6 @@ describe "parsing octaves" do
 
     #NOTE: Not sure if this should be validated from the beggining
     it "should allow any value fot a chord in the lexical analysis phase" do
-      Stretto::Parser.new("Cb-1").should be_valid
       Stretto::Parser.new("Cb11").should be_valid
     end
 

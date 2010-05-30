@@ -2,12 +2,6 @@ require File.join(File.dirname(__FILE__), '../spec_helper')
 
 describe "parsing notes" do
 
-  context "an empty composition" do
-    it "should parse an empty composition" do
-      Stretto::Parser.new("").should be_valid
-    end
-  end
-
   context "reading natural notes" do
 
     it "should parse a note" do

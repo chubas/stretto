@@ -4,7 +4,7 @@ require File.join(File.dirname(__FILE__), 'music_elements/chord')
 grammar StrettoSyntax
 
   rule notes
-    space? head:music_element? more_elements:(space music_element)* {
+    space? head:music_element? more_elements:(space music_element)* space? {
       def to_stretto
         unless head.text_value.empty?
           [head.to_stretto] + more_elements.elements.map{|element| element.music_element.to_stretto }

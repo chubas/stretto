@@ -7,9 +7,6 @@ describe "parsing voices" do
   end
 
   # For tests on substituting notes with variables, as mentioned on the 'MIDI percussion track' of the
-  # JFugue guide, refer to the 'variables_spec' test.
-  context "substituting variables in V9" do
-    it "should add a test for substituting variables"
-  end
+  # JFugue guide, refer to the 'notes_spec' test.
 
 end

@@ -18,7 +18,8 @@ grammar StrettoSyntax
   rule music_element
     harmony_and_melody / single_music_element /
     measure_bar / key_signature / instrument / voice / layer / tempo /
-    pitch_wheel / channel_pressure / polyphonic_pressure
+    pitch_wheel / channel_pressure / polyphonic_pressure /
+    controller_change / variable_definition
   end
 
   rule harmony_and_melody
@@ -38,7 +39,7 @@ grammar StrettoSyntax
   end
 
   rule note
-    (note_string / "[" number:numeric "]") duration? attack_and_decay? {
+    (note_string / "[" (numeric / variable_name) "]") duration? attack_and_decay? {
       def to_stretto
         Stretto::MusicElements::Note.new(text_value)
       end
@@ -78,7 +79,7 @@ grammar StrettoSyntax
   end
 
   rule duration
-    tie? (([whqistxo]+ '.'* tuplet?) / '/' decimal) tie?
+    tie? (([whqistxo]+ '.'* tuplet?) / '/' variable_or_decimal) tie?
   end
 
   rule tuplet
@@ -90,7 +91,7 @@ grammar StrettoSyntax
   end
 
   rule attack_and_decay
-    ('a' numeric)? ('d' numeric)?
+    ('a' variable_or_numeric)? ('d' variable_or_numeric)?
   end
 
   rule key_signature
@@ -102,31 +103,47 @@ grammar StrettoSyntax
   end
 
   rule instrument
-    'I' (numeric / variable)
+    'I' variable_or_numeric
   end
 
   rule voice
-    'V' numeric
+    'V' variable_or_numeric
   end
 
   rule layer
-    'L' numeric
+    'L' variable_or_numeric
   end
 
   rule tempo
-    'T' (numeric / variable)
+    'T' variable_or_numeric
   end
 
   rule pitch_wheel
-    '&' numeric
+    '&' variable_or_numeric
   end
 
   rule channel_pressure
-    '+' numeric
+    '+' variable_or_numeric
   end
 
   rule polyphonic_pressure
-    '*' numeric ',' numeric
+    '*' variable_or_numeric ',' variable_or_numeric
+  end
+
+  rule controller_change
+    'X' (numeric / variable) '=' (numeric / variable)
+  end
+
+  rule variable_definition
+    '$' variable_name '=' (decimal / variable)
+  end
+
+  rule variable_or_numeric
+    variable / numeric
+  end
+
+  rule variable_or_decimal
+    variable / decimal
   end
 
   rule numeric
@@ -142,7 +159,11 @@ grammar StrettoSyntax
   end
 
   rule variable
-    '[' [A-Za-z_]+ ']'
+    '[' variable_name ']'
+  end
+
+  rule variable_name
+    [A-Za-z_]+
   end
 
   rule space

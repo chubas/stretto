@@ -16,7 +16,8 @@ grammar StrettoSyntax
   end
 
   rule music_element
-    harmony_and_melody / single_music_element / measure_bar / key_signature / instrument / voice / layer
+    harmony_and_melody / single_music_element /
+    measure_bar / key_signature / instrument / voice / layer / tempo / pitch_wheel
   end
 
   rule harmony_and_melody
@@ -109,6 +110,14 @@ grammar StrettoSyntax
 
   rule layer
     'L' numeric
+  end
+
+  rule tempo
+    'T' (numeric / variable)
+  end
+
+  rule pitch_wheel
+    '&' numeric
   end
 
   rule numeric

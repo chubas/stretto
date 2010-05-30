@@ -4,7 +4,7 @@ describe "parsing voices" do
 
   it "should parse tempo with numeric notation" do
     Stretto::Parser.new("T120").should be_valid
-    end
+  end
 
   it "should parse tempo with variable notation" do
     Stretto::Parser.new("T[ALLEGRO]").should be_valid

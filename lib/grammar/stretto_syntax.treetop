@@ -131,10 +131,11 @@ grammar StrettoSyntax
   end
 
   rule controller_change
-    'X' (numeric / variable) '=' (numeric / variable)
+    'X' variable_or_numeric '=' variable_or_numeric
   end
 
   rule variable_definition
+    # It can be set to a numeric also, but decimal handles that case
     '$' variable_name '=' (decimal / variable)
   end
 

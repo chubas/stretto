@@ -53,6 +53,10 @@ describe "parsing durations" do
       Stretto::Parser.new("Ci*5:4").should be_valid
       Stretto::Parser.new("Cmaj7i*5:4").should be_valid
     end
+
+    it "should allow tuplets on dotted duration notes" do
+      Stretto::Parser.new("Cw.*3:4").should be_valid
+    end
   end
 
   context "concatenating duration values" do
@@ -62,8 +66,9 @@ describe "parsing durations" do
       Stretto::Parser.new("Cwq..").should be_valid
     end
 
-    # TODO: Specs?
-    # Are things like 'Cw.*' or 'Ci.*3:2' or 'Ci*3:2.' or (ugly) 'C*2:3*3:4' allowed?
-    it "should not allow mixed concatenated values"
+    it "should not allow mixed concatenated values" do
+      Stretto::Parser.new("Cw*3:4.").should_not be_valid
+      Stretto::Parser.new("Cw*3:4*3:4").should_not be_valid
+    end
   end
 end

@@ -14,9 +14,12 @@ describe "parsing key signatures" do
     Stretto::Parser.new("Kmaj").should_not be_valid
   end
 
-  it "should accept only key and accidental with time signatures" do
-    Stretto::Parser.new("KC3min").should_not be_valid
-    Stretto::Parser.new("KCwmaj").should_not be_valid
+    it "should not accept duration with time signatures" do
+      Stretto::Parser.new("KCwmaj").should_not be_valid
+    end
+
+    it "should not accept octaves with time signatures" do
+      Stretto::Parser.new("KC3").should_not be_valid
   end
 
 end

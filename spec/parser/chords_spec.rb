@@ -48,6 +48,10 @@ describe "parsing chords" do
         Stretto::Parser.new("Cmaj^C").should be_valid
       end
 
+      it "should accept a note with accidental and octave as the base for the chord inversion" do
+        Stretto::Parser.new("Cmaj^Cb6").should be_valid
+      end
+
       it "should accept chord inversions even if the note is not present in the chord in lexical analysis phase" do
         Stretto::Parser.new("Cmaj^Db").should be_valid
       end

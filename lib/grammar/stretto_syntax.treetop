@@ -1,5 +1,4 @@
-require File.join(File.dirname(__FILE__), 'music_elements/note')
-require File.join(File.dirname(__FILE__), 'music_elements/chord')
+require File.join(File.dirname(__FILE__), 'tokens/note')
 
 grammar StrettoSyntax
 
@@ -39,11 +38,7 @@ grammar StrettoSyntax
   end
 
   rule note
-    (note_string / "[" (integer / variable_name) "]") duration? attack_and_decay? {
-      def to_stretto
-        Stretto::MusicElements::Note.new(text_value)
-      end
-    }
+    note_string:(note_string / integer_note_string) duration:duration? attack_and_decay? <Stretto::Tokens::NoteToken>
   end
 
   rule rest
@@ -51,11 +46,31 @@ grammar StrettoSyntax
   end
 
   rule note_key
-    [A-G] accidental?
+    key:[A-G] accidental:accidental?
   end
 
   rule note_string
-    note_key octave?
+    note_key:note_key octave:octave? {
+      def key
+        note_key.key
+      end
+
+      def accidental
+        note_key.accidental
+      end
+    }
+  end
+
+  rule integer_note_string
+    "[" key:(integer / variable_name) "]" {
+      def key
+        key
+      end
+
+      def accidental
+        nil
+      end
+    }
   end
 
   rule accidental

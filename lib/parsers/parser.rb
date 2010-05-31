@@ -1,5 +1,5 @@
 #require 'grammar/stretto_syntax'
-require 'parsers/exceptions'
+require File.join(File.dirname(__FILE__), '/exceptions')
 
 Treetop.load File.join(File.dirname(__FILE__), "../grammar/stretto_syntax")
 

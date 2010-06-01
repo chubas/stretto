@@ -58,16 +58,24 @@ grammar StrettoSyntax
       def accidental
         note_key.accidental
       end
+
+      def value
+        nil
+      end
     }
   end
 
   rule integer_note_string
-    "[" key:(integer / variable_name) "]" {
-      def key
-        key
+    "[" value:(integer / variable_name) "]" {
+      def accidental
+        nil
       end
 
-      def accidental
+      def octave
+        nil
+      end
+
+      def key
         nil
       end
     }

@@ -1,6 +1,16 @@
 module Stretto
   module MusicElements
 
+    # A note is the most basic element in Stretto.
+    # It is composed of several elements:
+    # - key:        Represents the note name (from C to A)
+    # - accidental: The modifier of the note (#, ##, b, bb or n)
+    # - value:      The actual numeric value of the note, according to MIDI specification (0 to 127)
+    # - octave:     Octave in which the note is located. (0 to 10)
+    # - duration:   Represents the duration of the whole note, not taking into account ties. Can be one
+    #               a letter (w, h, q, i, s, t, x, o), a numeric value or a n-tuplet
+    # For each attribute presented, the note will hold an original_attribute method, that is the string
+    # from which the value was obtained. The accesor for each one of the attributes returns its calculated value
     class Note
 
       VALUES = { 'C' => 0,
@@ -26,14 +36,16 @@ module Stretto
                     'x' => 1.0 / 64,
                     'o' => 1.0 / 128 }
 
-      attr_reader :original_string, :original_key, :original_accidental, :original_duration, :original_octave
+      attr_reader :original_string,
+                  :original_key, :original_accidental, :original_duration, :original_octave, :original_value
 
       def initialize(original_string, options = {})
-        @original_string    = original_string
-        @original_key       = options[:original_key]
-        @original_duration  = options[:original_duration]
-        @accidental         = options[:original_accidental]
-        @original_octave    = options[:original_octave]
+        @original_string     = original_string
+        @original_key        = options[:original_key]
+        @original_value      = options[:original_value]
+        @original_duration   = options[:original_duration]
+        @original_accidental = options[:original_accidental]
+        @original_octave     = options[:original_octave]
       end
 
       def value
@@ -44,6 +56,10 @@ module Stretto
         calculate_duration
       end
 
+      def key
+        original_key
+      end
+
       def octave
         calculate_octave
       end
@@ -51,9 +67,13 @@ module Stretto
       private
 
       def calculate_value_from_key_and_octave
-        value = VALUES[@original_key]
-        value += (calculate_octave * 12)
-        value += calculate_accidental
+        if @original_value
+          value = @original_value.to_i
+        else
+          value = VALUES[@original_key]
+          value += (calculate_octave * 12)
+          value += calculate_accidental
+        end
         value
       end
 

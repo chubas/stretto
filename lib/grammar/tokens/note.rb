@@ -10,20 +10,25 @@ module Stretto
             :original_duration    => duration.text_value,
             :original_key         => key,
             :original_accidental  => accidental,
-            :original_octave      => octave
+            :original_octave      => octave,
+            :original_value       => value
           )
       end
 
       def octave
-        note_string.octave.text_value
+        note_string.octave.text_value if note_string.octave
       end
 
       def accidental
-        note_string.accidental.text_value
+        note_string.accidental.text_value if note_string.accidental
       end
 
       def key
-        note_string.key.text_value
+        note_string.key.text_value if note_string.key
+      end
+
+      def value
+        note_string.value.text_value if note_string.value
       end
 
     end

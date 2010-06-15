@@ -36,59 +36,61 @@ module Stretto
                     'x' => 1.0 / 64,
                     'o' => 1.0 / 128 }
 
+      DEFAULT_OCTAVE = 5
+
       attr_reader :original_string,
-                  :original_key, :original_accidental, :original_duration, :original_octave, :original_value
+                  :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
+                  :key, :accidental, :duration, :octave, :value
 
       def initialize(original_string, options = {})
+        options.delete_if{|k, v| v.blank?}
         @original_string     = original_string
         @original_key        = options[:original_key]
         @original_value      = options[:original_value]
         @original_duration   = options[:original_duration]
         @original_accidental = options[:original_accidental]
         @original_octave     = options[:original_octave]
-      end
-
-      def value
-        calculate_value_from_key_and_octave
-      end
-
-      def duration
-        calculate_duration
-      end
-
-      def key
-        original_key
-      end
-
-      def octave
-        calculate_octave
+        build_note_elements
       end
 
       private
 
-      def calculate_value_from_key_and_octave
+      KEYS_FOR_VALUES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
+      def build_note_elements
         if @original_value
-          value = @original_value.to_i
+          self.value   = @original_value.to_i
+          @key         = KEYS_FOR_VALUES[@value % 12]
+          @octave      = calculate_octave_from_value(@value)
+          @accidental  = calculate_accidental_from_value(@value)
         else
-          value = VALUES[@original_key]
-          value += (calculate_octave * 12)
-          value += calculate_accidental
+          @key         = @original_key
+          @octave      = (@original_octave && @original_octave.to_i) || 5
+          @accidental  = @original_accidental || nil
+          self.value   = calculate_value_from_key_octave_and_accidental(@key, @octave, @accidental)
         end
+      end
+
+      def calculate_value_from_key_octave_and_accidental(key, octave, accidental)
+        value = 12 * octave
+        value += VALUES[key]
+        value += ACCIDENTALS[accidental] || 0
         value
       end
 
-      def calculate_accidental
-        ACCIDENTALS[@accidental] || 0
+      def calculate_octave_from_value(value)
+        value / 12
       end
 
-      def calculate_octave
-        (@original_octave || 5).to_i
+      ACCIDENTALS_FOR_VALUE = [nil, '#', nil, '#', nil, nil, '#', nil, '#', nil, '#', nil]
+      def calculate_accidental_from_value(value)
+        ACCIDENTALS_FOR_VALUE[value % 12]
       end
 
-      def calculate_duration
-        DURATIONS[@original_duration]
+      def value=(value)
+        @value = value
+        raise Exceptions::InvalidValueException if value > 127
       end
-      
+
     end
     
   end

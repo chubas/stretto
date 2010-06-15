@@ -32,9 +32,21 @@ describe "building notes" do
       note = Stretto::Parser.new("[60]w").to_stretto.first
       note.original_string.should be == '[60]w'
       note.original_key.should    be_nil
-      note.key.should             be_nil
+      note.key.should             be == 'C'
       note.original_value.should  be == '60'
       note.value.should           be == 60
+    end
+
+    it "should should not allow values above 127" do
+      Stretto::Parser.new("[127]").should be_valid
+      lambda{ Stretto::Parser.new("[128]").to_stretto }.should raise_error(Stretto::Exceptions::InvalidValueException)
+    end
+
+    it "should not allow notes past the value 127 with note syntax" do
+      Stretto::Parser.new("G10").should be_valid
+      lambda{ Stretto::Parser.new("G#10").to_stretto }.should raise_error(Stretto::Exceptions::InvalidValueException)
+      lambda{ Stretto::Parser.new("Ab10").to_stretto }.should raise_error(Stretto::Exceptions::InvalidValueException)
+      Stretto::Parser.new("Abb10").should be_valid
     end
   end
 

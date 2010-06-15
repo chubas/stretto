@@ -36,7 +36,7 @@ module Stretto
         'dom7>5>9'  => [0, 4, 8, 10, 15]
       }
 
-      attr_accessor :notes, :base_note, :inversions
+      attr_accessor :notes, :base_note, :inversions, :pivot_note
 
       def initialize(original_string, options = {})
         @original_string      = original_string
@@ -68,7 +68,19 @@ module Stretto
           else
             @inversions = 0
           end
-          raise Exceptions::ChordInversionsException if @inversions >= @notes.size 
+          raise Exceptions::ChordInversionsException if @inversions >= @notes.size
+
+          if @pivot_note
+            actual_pivot = @notes.index{|note| note.value == @pivot_note.value}
+            raise Exceptions::ChordInversionsException unless actual_pivot
+            actual_pivot.times do
+              @notes << @notes.shift + 12
+            end
+          else
+            @inversions.times do
+              @notes << @notes.shift + 12
+            end
+          end
         end
 
     end

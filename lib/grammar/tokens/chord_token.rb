@@ -20,7 +20,13 @@ module Stretto
       def inversions
         if chord_inversions and chord_inversions.text_value.present?
           { :inversions => chord_inversions.inversions,
-            :pivot_note => chord_inversions.pivot_note }
+            :pivot_note => chord_inversions.pivot_note && Stretto::MusicElements::Note.new(
+                chord_inversions.pivot_note.text_value,
+                :original_key         => (chord_inversions.pivot_note.key.text_value        if chord_inversions.pivot_note.key),
+                :original_value       => (chord_inversions.pivot_note.value.text_value      if chord_inversions.pivot_note.value),
+                :original_accidental  => (chord_inversions.pivot_note.accidental.text_value if chord_inversions.pivot_note.accidental) 
+            )
+          }
         end
       end
 

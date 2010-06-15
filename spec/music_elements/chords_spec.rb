@@ -85,18 +85,51 @@ describe "building chords" do
       chord.inversions.should == 2
     end
 
+    it "should specify the pivot note when doing a chord inversion by note" do
+      chord = Stretto::Parser.new("Cmaj^E").to_stretto.first
+      chord.pivot_note.should_not be_nil
+      chord.pivot_note.value.should == 64
+    end
+
     it "should not allow more inversions that one less than notes there are" do
       lambda{ Stretto::Parser.new("Cmaj^^").to_stretto }.should_not raise_error
       lambda{ Stretto::Parser.new("Cmaj^^^").to_stretto }.should raise_error(Stretto::Exceptions::ChordInversionsException)
     end
 
-    it "should adjust the notes according to the chord invertion"
+    it "should adjust the notes according to the chord invertion when using inversion count" do
+      chord = Stretto::Parser.new("Cmaj").to_stretto.first
+      chord.notes.map(&:value).should == [60, 64, 67]
 
-    it "should specify the pivot note when doing a chord inversion by note"
+      chord = Stretto::Parser.new("Cmaj^").to_stretto.first
+      chord.notes.map(&:value).should == [64, 67, 72]
 
-    it "should not allow to do a chord inversion if the note is not present"
+      chord = Stretto::Parser.new("Cmaj^^").to_stretto.first
+      chord.notes.map(&:value).should == [67, 72, 76]
+    end
 
-    it "should not allow chord inversions when the value of the inverted note goes beyond allowed value"
+    it "should adjust the notes according to the chord invertion when using pivot note" do
+      chord = Stretto::Parser.new("Cmaj^E").to_stretto.first
+      chord.pivot_note.value.should == 64
+      chord.notes.map(&:value).should == [64, 67, 72]
+
+      chord = Stretto::Parser.new("Cmaj^Fb").to_stretto.first
+      chord.pivot_note.value.should == 64
+      chord.notes.map(&:value).should == [64, 67, 72]
+
+      chord = Stretto::Parser.new("Cmaj^D##").to_stretto.first
+      chord.pivot_note.value.should == 64
+      chord.notes.map(&:value).should == [64, 67, 72]
+    end
+
+    it "should not allow to do a chord inversion if the note is not present" do
+      lambda{ Stretto::Parser.new("Cmaj^F").to_stretto }.should raise_error Stretto::Exceptions::ChordInversionsException
+    end
+
+    it "should not allow chord inversions when the value of the inverted note goes beyond allowed value" do
+      lambda { Stretto::Parser.new("C10maj").to_stretto }.should_not raise_error # C E G, last value is 127
+      lambda { Stretto::Parser.new("C10maj^").to_stretto }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
+    end
+
   end
 
   context "when specifying duration" do

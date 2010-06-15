@@ -53,6 +53,10 @@ module Stretto
         build_note_elements
       end
 
+      def +(interval)
+        Note.new(nil, :original_value => @value + interval, :original_duration => @duration)
+      end
+
       private
 
       KEYS_FOR_VALUES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']

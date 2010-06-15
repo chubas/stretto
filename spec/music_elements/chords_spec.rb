@@ -49,6 +49,58 @@ describe "building chords" do
       Stretto::Parser.new("Cdom7>5<9").to_stretto.first.notes.should have(5).notes
       Stretto::Parser.new("Cdom7>5>9").to_stretto.first.notes.should have(5).notes
     end
+
+    it "should build correctly the interval of notes" do
+      maj_chord = Stretto::Parser.new("C#5maj").to_stretto.first
+      maj_chord.notes.map(&:value).should be == [61, 65, 68]
+
+      dom_chord = Stretto::Parser.new("C#5dom7>5>9").to_stretto.first
+      dom_chord.notes.map(&:value).should be == [61, 65, 69, 71, 76]
+    end
+
+    it "should not allow a chord that goes beyond the allowed max values for notes" do
+      lambda { Stretto::Parser.new("C10maj").to_stretto }.should_not raise_error # C E G, last value is 127
+      lambda { Stretto::Parser.new("F10maj").to_stretto }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
+    end
+
+    it "should correctly parse the base note" do
+      note  = Stretto::Parser.new("C#5").to_stretto.first
+      chord = Stretto::Parser.new("C#5min").to_stretto.first
+
+      note.should == chord.base_note
+    end
+
+  end
+
+  context "when building chord inversions" do
+    
+    it "should return the number of invertions" do
+      chord = Stretto::Parser.new("Cmaj").to_stretto.first
+      chord.inversions.should == 0
+
+      chord = Stretto::Parser.new("Cmaj^").to_stretto.first
+      chord.inversions.should == 1
+
+      chord = Stretto::Parser.new("Cmaj^^").to_stretto.first
+      chord.inversions.should == 2
+    end
+
+    it "should not allow more inversions that one less than notes there are" do
+      lambda{ Stretto::Parser.new("Cmaj^^").to_stretto }.should_not raise_error
+      lambda{ Stretto::Parser.new("Cmaj^^^").to_stretto }.should raise_error(Stretto::Exceptions::ChordInversionsException)
+    end
+
+    it "should adjust the notes according to the chord invertion"
+
+    it "should specify the pivot note when doing a chord inversion by note"
+
+    it "should not allow to do a chord inversion if the note is not present"
+
+    it "should not allow chord inversions when the value of the inverted note goes beyond allowed value"
+  end
+
+  context "when specifying duration" do
+    it "should set the same duration for all notes of the chord"
   end
 
 end

@@ -12,8 +12,16 @@ module Stretto
             :original_accidental  => accidental,
             :original_key         => key
           },
-          :named_chord => named_chord.text_value
+          :named_chord            => named_chord.text_value,
+          :original_inversions    => inversions
         )
+      end
+
+      def inversions
+        if chord_inversions and chord_inversions.text_value.present?
+          { :inversions => chord_inversions.inversions,
+            :pivot_note => chord_inversions.pivot_note }
+        end
       end
 
       # TODO: This is shared with note. Extract note_string

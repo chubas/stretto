@@ -36,11 +36,12 @@ module Stretto
         'dom7>5>9'  => [0, 4, 8, 10, 15]
       }
 
-      attr_accessor :notes
+      attr_accessor :notes, :base_note, :inversions
 
       def initialize(original_string, options = {})
-        @original_string = original_string
+        @original_string      = original_string
         build_notes(options)
+        build_inversions(options)
       end
 
       private
@@ -57,7 +58,17 @@ module Stretto
           named_chord = options[:named_chord]
           intervals   = CHORD_INTERVALS[named_chord]
           @notes = intervals.map{|interval| @base_note + interval}
+        end
 
+        def build_inversions(options)
+          @original_inversions  = options[:original_inversions]
+          if @original_inversions
+            @inversions = @original_inversions[:inversions]
+            @pivot_note = @original_inversions[:pivot_note]
+          else
+            @inversions = 0
+          end
+          raise Exceptions::ChordInversionsException if @inversions >= @notes.size 
         end
 
     end

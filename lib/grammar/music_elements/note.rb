@@ -57,6 +57,10 @@ module Stretto
         Note.new(nil, :original_value => @value + interval, :original_duration => @duration)
       end
 
+      def ==(other)
+        other.value == value
+      end
+
       private
 
       KEYS_FOR_VALUES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
@@ -91,8 +95,8 @@ module Stretto
       end
 
       def value=(value)
+        raise Exceptions::NoteOutOfBoundsException if value > 127
         @value = value
-        raise Exceptions::InvalidValueException if value > 127
       end
 
     end

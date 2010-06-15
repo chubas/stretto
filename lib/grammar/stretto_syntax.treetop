@@ -32,7 +32,7 @@ grammar StrettoSyntax
   end
 
   rule chord
-    note_string:note_string named_chord:named_chord chord_inversions? duration? attack_and_decay? <Stretto::Tokens::ChordToken>
+    note_string named_chord chord_inversions:chord_inversions? duration? attack_and_decay? <Stretto::Tokens::ChordToken>
   end
 
   rule note
@@ -92,7 +92,25 @@ grammar StrettoSyntax
   end
 
   rule chord_inversions
-    '^' ('^'+ / note_string)?
+    '^' note_string {
+      def inversions
+        0
+      end
+
+      def pivot_note
+        note_string
+      end
+    }
+    /
+    '^'+ {
+      def inversions
+        text_value.size
+      end
+
+      def pivot_note
+        nil
+      end
+    }
   end
 
   rule octave

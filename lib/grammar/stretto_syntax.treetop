@@ -1,3 +1,4 @@
+require File.join(File.dirname(__FILE__), 'tokens/note_string_token')
 require File.join(File.dirname(__FILE__), 'tokens/note_token')
 require File.join(File.dirname(__FILE__), 'tokens/rest_token')
 require File.join(File.dirname(__FILE__), 'tokens/chord_token')
@@ -36,7 +37,7 @@ grammar StrettoSyntax
   end
 
   rule note
-    note_string:(note_string / integer_note_string) duration:duration? attack_and_decay? <Stretto::Tokens::NoteToken>
+    note_string duration:duration? attack_and_decay? <Stretto::Tokens::NoteToken>
   end
 
   rule rest
@@ -48,23 +49,25 @@ grammar StrettoSyntax
   end
 
   rule note_string
-    note_key:note_key octave:octave? {
+    note_key _octave:octave? {
       def key
-        note_key.key
+        note_key.key.text_value
       end
 
       def accidental
-        note_key.accidental
+        note_key.accidental.text_value if note_key.accidental and note_key.accidental.text_value.present?
       end
 
       def value
         nil
       end
-    }
-  end
 
-  rule integer_note_string
-    "[" value:(integer / variable_name) "]" {
+      def octave
+        _octave.text_value if _octave and _octave.text_value.present?
+      end
+    }
+    /
+    "[" _value:(integer / variable_name) "]" {
       def accidental
         nil
       end
@@ -75,6 +78,10 @@ grammar StrettoSyntax
 
       def key
         nil
+      end
+
+      def value
+        _value.text_value
       end
     }
   end

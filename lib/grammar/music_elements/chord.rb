@@ -36,7 +36,9 @@ module Stretto
         'dom7>5>9'  => [0, 4, 8, 10, 15]
       }
 
-      attr_accessor :notes, :base_note, :inversions, :pivot_note
+      DEFAULT_OCTAVE = 3
+
+      attr_accessor :notes, :inversions, :pivot_note
 
       def initialize(original_string, options = {})
         @original_string      = original_string
@@ -44,27 +46,43 @@ module Stretto
         build_inversions(options)
       end
 
+      def base_note
+        @notes.first
+      end
+
+      def octave
+        base_note.octave
+      end
+
       private
 
         def build_notes(options)
-          base_note = options[:base_note]
-          @base_note = Note.new(
-              base_note[:original_string],
-              :original_octave      => base_note[:original_octave],
-              :original_accidental  => base_note[:original_accidental],
-              :original_key         => base_note[:original_key]
+          base_note_options = options[:base_note]
+          initial_base_note = Note.new(
+              base_note_options[:original_string],
+              :original_octave      => base_note_options[:original_octave] || DEFAULT_OCTAVE,
+              :original_accidental  => base_note_options[:original_accidental],
+              :original_key         => base_note_options[:original_key],
+              :original_value       => base_note_options[:original_value]
           )
 
           named_chord = options[:named_chord]
           intervals   = CHORD_INTERVALS[named_chord]
-          @notes = intervals.map{|interval| @base_note + interval}
+          @notes = intervals.map{|interval| initial_base_note + interval}
         end
 
         def build_inversions(options)
           @original_inversions  = options[:original_inversions]
           if @original_inversions
             @inversions = @original_inversions[:inversions]
-            @pivot_note = @original_inversions[:pivot_note]
+            pivot_note  = @original_inversions[:pivot_note]
+            @pivot_note = Stretto::MusicElements::Note.new(
+                pivot_note.text_value,
+                :original_key         => pivot_note.key,
+                :original_value       => pivot_note.value,
+                :original_accidental  => pivot_note.accidental,
+                :original_octave      => pivot_note.octave || DEFAULT_OCTAVE
+            ) if pivot_note
           else
             @inversions = 0
           end
@@ -72,7 +90,7 @@ module Stretto
 
           if @pivot_note
             actual_pivot = @notes.index{|note| note.value == @pivot_note.value}
-            raise Exceptions::ChordInversionsException unless actual_pivot
+            raise Exceptions::ChordInversionsException.new("Note #{@pivot_note.original_string}(#{@pivot_note.value}) does not belong to chord #{@original_string}") unless actual_pivot
             actual_pivot.times do
               @notes << @notes.shift + 12
             end

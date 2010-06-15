@@ -16,19 +16,19 @@ module Stretto
       end
 
       def octave
-        note_string.octave.text_value if note_string.octave
+        note_string.octave
       end
 
       def accidental
-        note_string.accidental.text_value if note_string.accidental
+        note_string.accidental
       end
 
       def key
-        note_string.key.text_value if note_string.key
+        note_string.key
       end
 
       def value
-        note_string.value.text_value if note_string.value
+        note_string.value
       end
 
     end

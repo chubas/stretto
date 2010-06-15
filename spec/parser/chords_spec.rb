@@ -17,6 +17,13 @@ describe "parsing chords" do
     end
   end
 
+  context "parsing chords by value" do
+    it "should parse chords having numeric value for the base note" do
+      Stretto::Parser.new("[60]maj").should be_valid
+      Stretto::Parser.new("[0]dom7<5^^").should be_valid
+    end
+  end
+
   context "specifying chord inversions" do
 
     context "chord inversions by position" do

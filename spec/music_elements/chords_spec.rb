@@ -88,7 +88,7 @@ describe "building chords" do
     it "should specify the pivot note when doing a chord inversion by note" do
       chord = Stretto::Parser.new("Cmaj^E").to_stretto.first
       chord.pivot_note.should_not be_nil
-      chord.pivot_note.value.should == 64
+      chord.pivot_note.value.should == 40
     end
 
     it "should not allow more inversions that one less than notes there are" do
@@ -98,27 +98,27 @@ describe "building chords" do
 
     it "should adjust the notes according to the chord invertion when using inversion count" do
       chord = Stretto::Parser.new("Cmaj").to_stretto.first
-      chord.notes.map(&:value).should == [60, 64, 67]
+      chord.notes.map(&:value).should == [36, 40, 43]
 
       chord = Stretto::Parser.new("Cmaj^").to_stretto.first
-      chord.notes.map(&:value).should == [64, 67, 72]
+      chord.notes.map(&:value).should == [40, 43, 48]
 
       chord = Stretto::Parser.new("Cmaj^^").to_stretto.first
-      chord.notes.map(&:value).should == [67, 72, 76]
+      chord.notes.map(&:value).should == [43, 48, 52]
     end
 
     it "should adjust the notes according to the chord invertion when using pivot note" do
       chord = Stretto::Parser.new("Cmaj^E").to_stretto.first
-      chord.pivot_note.value.should == 64
-      chord.notes.map(&:value).should == [64, 67, 72]
+      chord.pivot_note.value.should   == 40
+      chord.notes.map(&:value).should == [40, 43, 48]
 
       chord = Stretto::Parser.new("Cmaj^Fb").to_stretto.first
-      chord.pivot_note.value.should == 64
-      chord.notes.map(&:value).should == [64, 67, 72]
+      chord.pivot_note.value.should   == 40
+      chord.notes.map(&:value).should == [40, 43, 48]
 
       chord = Stretto::Parser.new("Cmaj^D##").to_stretto.first
-      chord.pivot_note.value.should == 64
-      chord.notes.map(&:value).should == [64, 67, 72]
+      chord.pivot_note.value.should   == 40
+      chord.notes.map(&:value).should == [40, 43, 48]
     end
 
     it "should not allow to do a chord inversion if the note is not present" do

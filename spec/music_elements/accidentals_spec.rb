@@ -81,7 +81,6 @@ describe "attaching accidentals to notes and chords" do
   end
 
   context "applying accidental to the base note of a chord" do
-
     it "should push notes according to the accidental modifier" do
       Stretto::Parser.new("Cbbmaj").to_stretto.first.notes.map(&:value).should be == [34, 38, 41]
       Stretto::Parser.new("Cbmaj").to_stretto.first.notes.map(&:value).should  be == [35, 39, 42]
@@ -90,6 +89,12 @@ describe "attaching accidentals to notes and chords" do
       Stretto::Parser.new("C##maj").to_stretto.first.notes.map(&:value).should be == [38, 42, 45]
     end
 
+    it "should retain the accidental in chord invertions" do
+      chord = Stretto::Parser.new("Cbbmaj^").to_stretto.first
+      chord.notes.map(&:value).should be == [38, 41, 46]
+      chord.base_note.original_accidental.should be == 'bb'
+      chord.base_note.accidental.should be == 'bb' 
+    end
   end
 
 end

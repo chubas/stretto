@@ -122,12 +122,29 @@ describe "building chords" do
     end
 
     it "should not allow to do a chord inversion if the note is not present" do
-      lambda{ Stretto::Parser.new("Cmaj^F").to_stretto }.should raise_error Stretto::Exceptions::ChordInversionsException
+      lambda{ Stretto::Parser.new("Cmaj^F").to_stretto }.should raise_error(Stretto::Exceptions::ChordInversionsException)
     end
 
     it "should not allow chord inversions when the value of the inverted note goes beyond allowed value" do
       lambda { Stretto::Parser.new("C10maj").to_stretto }.should_not raise_error # C E G, last value is 127
       lambda { Stretto::Parser.new("C10maj^").to_stretto }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
+    end
+
+    it "should retain the name of the chord if available" do
+      chord = Stretto::Parser.new("Cmaj").to_stretto.first
+      chord.named_chord.should be == 'maj'
+
+      chord = Stretto::Parser.new("Cmaj^^").to_stretto.first
+      chord.named_chord.should be == 'maj'
+
+      chord = Stretto::Parser.new("Cmaj7<5").to_stretto.first
+      chord.named_chord.should be == 'maj7<5'
+    end
+
+    it "should retain the base note even in an inverted chord" do
+      chord = Stretto::Parser.new("Cmaj^^").to_stretto.first
+      chord.base_note.key.should be == 'C'
+      chord.base_note.value.should be == 36
     end
 
   end

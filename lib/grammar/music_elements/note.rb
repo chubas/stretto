@@ -72,7 +72,7 @@ module Stretto
         else
           @key         = @original_key
           @octave      = (@original_octave && @original_octave.to_i) || 5
-          @accidental  = @original_accidental || nil
+          @accidental  = @original_accidental
           self.value   = calculate_value_from_key_octave_and_accidental(@key, @octave, @accidental)
         end
         @duration = DURATIONS[@original_duration || 'q']

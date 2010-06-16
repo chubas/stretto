@@ -76,13 +76,13 @@ describe "building chords" do
     
     it "should return the number of invertions" do
       chord = Stretto::Parser.new("Cmaj").to_stretto.first
-      chord.inversions.should == 0
+      chord.inversions.should be == 0
 
       chord = Stretto::Parser.new("Cmaj^").to_stretto.first
-      chord.inversions.should == 1
+      chord.inversions.should be == 1
 
       chord = Stretto::Parser.new("Cmaj^^").to_stretto.first
-      chord.inversions.should == 2
+      chord.inversions.should be == 2
     end
 
     it "should specify the pivot note when doing a chord inversion by note" do
@@ -98,27 +98,27 @@ describe "building chords" do
 
     it "should adjust the notes according to the chord invertion when using inversion count" do
       chord = Stretto::Parser.new("Cmaj").to_stretto.first
-      chord.notes.map(&:value).should == [36, 40, 43]
+      chord.notes.map(&:value).should be == [36, 40, 43]
 
       chord = Stretto::Parser.new("Cmaj^").to_stretto.first
-      chord.notes.map(&:value).should == [40, 43, 48]
+      chord.notes.map(&:value).should be == [40, 43, 48]
 
       chord = Stretto::Parser.new("Cmaj^^").to_stretto.first
-      chord.notes.map(&:value).should == [43, 48, 52]
+      chord.notes.map(&:value).should be == [43, 48, 52]
     end
 
     it "should adjust the notes according to the chord invertion when using pivot note" do
       chord = Stretto::Parser.new("Cmaj^E").to_stretto.first
-      chord.pivot_note.value.should   == 40
-      chord.notes.map(&:value).should == [40, 43, 48]
+      chord.pivot_note.value.should   be == 40
+      chord.notes.map(&:value).should be == [40, 43, 48]
 
       chord = Stretto::Parser.new("Cmaj^Fb").to_stretto.first
-      chord.pivot_note.value.should   == 40
-      chord.notes.map(&:value).should == [40, 43, 48]
+      chord.pivot_note.value.should   be == 40
+      chord.notes.map(&:value).should be == [40, 43, 48]
 
       chord = Stretto::Parser.new("Cmaj^D##").to_stretto.first
-      chord.pivot_note.value.should   == 40
-      chord.notes.map(&:value).should == [40, 43, 48]
+      chord.pivot_note.value.should   be == 40
+      chord.notes.map(&:value).should be == [40, 43, 48]
     end
 
     it "should not allow to do a chord inversion if the note is not present" do
@@ -133,7 +133,14 @@ describe "building chords" do
   end
 
   context "when specifying duration" do
-    it "should set the same duration for all notes of the chord"
+    it "should set the same duration for all notes of the chord" do
+      chord = Stretto::Parser.new("Cmajw").to_stretto.first
+      chord.original_duration.should be == 'w'
+      chord.duration.should be == 1.0
+
+      chord.notes.map(&:original_duration).should be == ['w', 'w', 'w']
+      chord.notes.map(&:duration).should be == [1.0, 1.0, 1.0]
+    end
   end
 
 end

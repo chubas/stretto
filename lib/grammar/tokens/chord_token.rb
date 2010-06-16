@@ -13,6 +13,7 @@ module Stretto
             :original_key         => key,
             :original_value       => value
           },
+          :original_duration      => duration,
           :named_chord            => named_chord.text_value,
           :original_inversions    => inversions
         )
@@ -40,6 +41,10 @@ module Stretto
 
       def value
         note_string.value
+      end
+
+      def duration
+        _duration.text_value if _duration.text_value.present?
       end
 
     end

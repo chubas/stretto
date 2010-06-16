@@ -43,7 +43,6 @@ module Stretto
                   :key, :accidental, :duration, :octave, :value
 
       def initialize(original_string, options = {})
-        options.delete_if{|k, v| v.blank?}
         @original_string     = original_string
         @original_key        = options[:original_key]
         @original_value      = options[:original_value]
@@ -54,7 +53,7 @@ module Stretto
       end
 
       def +(interval)
-        Note.new(nil, :original_value => @value + interval, :original_duration => @duration)
+        Note.new(nil, :original_value => @value + interval, :original_duration => @original_duration)
       end
 
       def ==(other)
@@ -76,6 +75,7 @@ module Stretto
           @accidental  = @original_accidental || nil
           self.value   = calculate_value_from_key_octave_and_accidental(@key, @octave, @accidental)
         end
+        @duration = DURATIONS[@original_duration || 'q']
       end
 
       def calculate_value_from_key_octave_and_accidental(key, octave, accidental)

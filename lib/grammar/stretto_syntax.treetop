@@ -33,7 +33,7 @@ grammar StrettoSyntax
   end
 
   rule chord
-    note_string named_chord chord_inversions:chord_inversions? duration? attack_and_decay? <Stretto::Tokens::ChordToken>
+    note_string named_chord chord_inversions:chord_inversions? _duration:duration? attack_and_decay? <Stretto::Tokens::ChordToken>
   end
 
   rule note

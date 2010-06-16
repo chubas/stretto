@@ -39,11 +39,18 @@ module Stretto
       DEFAULT_OCTAVE = 3
 
       attr_accessor :notes, :inversions, :pivot_note
+      attr_accessor :original_duration, :duration
 
       def initialize(original_string, options = {})
         @original_string      = original_string
+        build_duration(options)
         build_notes(options)
         build_inversions(options)
+      end
+
+      def build_duration(options)
+        @original_duration = options[:original_duration]
+        @duration = Note::DURATIONS[@original_duration || 'q'] # TODO: Move this to a shared place
       end
 
       def base_note
@@ -63,7 +70,8 @@ module Stretto
               :original_octave      => base_note_options[:original_octave] || DEFAULT_OCTAVE,
               :original_accidental  => base_note_options[:original_accidental],
               :original_key         => base_note_options[:original_key],
-              :original_value       => base_note_options[:original_value]
+              :original_value       => base_note_options[:original_value],
+              :original_duration    => @original_duration
           )
 
           named_chord = options[:named_chord]

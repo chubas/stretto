@@ -1,3 +1,5 @@
+require File.join(File.dirname(__FILE__), 'modifiers/duration')
+
 module Stretto
   module MusicElements
 
@@ -13,6 +15,8 @@ module Stretto
     # from which the value was obtained. The accesor for each one of the attributes returns its calculated value
     class Note
 
+      include Duration
+
       VALUES = { 'C' => 0,
                  'D' => 2,
                  'E' => 4,
@@ -26,18 +30,9 @@ module Stretto
                       '#'  =>  1,
                       '##' =>  2 }
 
-      DURATIONS = {
-                    'w' => 1.0,
-                    'h' => 1.0 / 2,
-                    'q' => 1.0 / 4,
-                    'i' => 1.0 / 8,
-                    's' => 1.0 / 16,
-                    't' => 1.0 / 32,
-                    'x' => 1.0 / 64,
-                    'o' => 1.0 / 128 }
+
 
       DEFAULT_OCTAVE    = 5
-      DEFAULT_DURATION  = DURATIONS['q']
 
       attr_reader :original_string,
                   :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
@@ -52,18 +47,7 @@ module Stretto
         @original_accidental      = options[:original_accidental]
         @original_octave          = options[:original_octave]
         build_note_elements
-        parse_duration
-      end
-
-      def parse_duration
-        @duration = case
-          when !@original_duration_token
-            DEFAULT_DURATION
-          when @original_duration_token.decimal_value
-            @original_duration_token.decimal_value.to_f
-          when @original_duration_token.duration_character
-            DURATIONS[@original_duration_token.duration_character]
-        end
+        @duration = parse_duration(@original_duration_token)
       end
 
       def +(interval)

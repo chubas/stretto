@@ -136,7 +136,7 @@ grammar StrettoSyntax
       end
 
       def dots
-        _dots
+        _dots.text_value.size
       end
 
       def tuplet
@@ -154,7 +154,7 @@ grammar StrettoSyntax
       end
 
       def dots
-        nil
+        0
       end
 
       def tuplet

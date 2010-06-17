@@ -1,9 +1,12 @@
+require File.join(File.dirname(__FILE__), 'modifiers/duration')
 require 'forwardable'
 
 module Stretto
   module MusicElements
 
     class Chord
+
+      include Duration
 
       CHORD_INTERVALS = {
         'maj'       => [4, 7],
@@ -60,7 +63,7 @@ module Stretto
       def build_duration(options)
         @original_duration_token = options[:original_duration_token]
         @original_duration = @original_duration_token.text_value if @original_duration_token
-        @duration = Note::DURATIONS[@original_duration || Note::DEFAULT_DURATION] # TODO: Move this to a shared place
+        @duration = parse_duration(@original_duration_token)
       end
 
       def octave

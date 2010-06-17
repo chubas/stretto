@@ -36,24 +36,38 @@ module Stretto
                     'x' => 1.0 / 64,
                     'o' => 1.0 / 128 }
 
-      DEFAULT_OCTAVE = 5
+      DEFAULT_OCTAVE    = 5
+      DEFAULT_DURATION  = DURATIONS['q']
 
       attr_reader :original_string,
                   :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
                   :key, :accidental, :duration, :octave, :value
 
       def initialize(original_string, options = {})
-        @original_string     = original_string
-        @original_key        = options[:original_key]
-        @original_value      = options[:original_value]
-        @original_duration   = options[:original_duration]
-        @original_accidental = options[:original_accidental]
-        @original_octave     = options[:original_octave]
+        @original_string          = original_string
+        @original_key             = options[:original_key]
+        @original_value           = options[:original_value]
+        @original_duration_token  = options[:original_duration_token]
+        @original_duration        = @original_duration_token.text_value if @original_duration_token
+        @original_accidental      = options[:original_accidental]
+        @original_octave          = options[:original_octave]
         build_note_elements
+        parse_duration
+      end
+
+      def parse_duration
+        @duration = case
+          when !@original_duration_token
+            DEFAULT_DURATION
+          when @original_duration_token.decimal_value
+            @original_duration_token.decimal_value.to_f
+          when @original_duration_token.duration_character
+            DURATIONS[@original_duration_token.duration_character]
+        end
       end
 
       def +(interval)
-        Note.new(nil, :original_value => @value + interval, :original_duration => @original_duration)
+        Note.new(nil, :original_value => @value + interval, :original_duration_token => @original_duration_token)
       end
 
       def ==(other)
@@ -75,7 +89,6 @@ module Stretto
           @accidental  = @original_accidental
           self.value   = calculate_value_from_key_octave_and_accidental(@key, @octave, @accidental)
         end
-        @duration = DURATIONS[@original_duration || 'q']
       end
 
       def calculate_value_from_key_octave_and_accidental(key, octave, accidental)

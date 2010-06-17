@@ -7,15 +7,15 @@ module Stretto
       def to_stretto
         Stretto::MusicElements::Chord.new(text_value,
           :base_note => {
-            :original_string      => note_string.text_value,
-            :original_octave      => octave,
-            :original_accidental  => accidental,
-            :original_key         => key,
-            :original_value       => value
+            :original_string        => note_string.text_value,
+            :original_octave        => octave,
+            :original_accidental    => accidental,
+            :original_key           => key,
+            :original_value         => value
           },
-          :original_duration      => duration,
-          :named_chord            => named_chord.text_value,
-          :original_inversions    => inversions
+          :original_duration_token  => duration,
+          :named_chord              => named_chord.text_value,
+          :original_inversions      => inversions
         )
       end
 
@@ -44,7 +44,7 @@ module Stretto
       end
 
       def duration
-        _duration.text_value if _duration.text_value.present?
+        _duration if _duration and _duration.text_value.present?
       end
 
     end

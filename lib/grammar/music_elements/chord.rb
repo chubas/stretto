@@ -58,8 +58,9 @@ module Stretto
       end
 
       def build_duration(options)
-        @original_duration = options[:original_duration]
-        @duration = Note::DURATIONS[@original_duration || 'q'] # TODO: Move this to a shared place
+        @original_duration_token = options[:original_duration_token]
+        @original_duration = @original_duration_token.text_value if @original_duration_token
+        @duration = Note::DURATIONS[@original_duration || Note::DEFAULT_DURATION] # TODO: Move this to a shared place
       end
 
       def octave
@@ -72,11 +73,11 @@ module Stretto
           base_note_options = options[:base_note]
           @base_note = Note.new(
               base_note_options[:original_string],
-              :original_octave      => base_note_options[:original_octave] || DEFAULT_OCTAVE,
-              :original_accidental  => base_note_options[:original_accidental],
-              :original_key         => base_note_options[:original_key],
-              :original_value       => base_note_options[:original_value],
-              :original_duration    => @original_duration
+              :original_octave          => base_note_options[:original_octave] || DEFAULT_OCTAVE,
+              :original_accidental      => base_note_options[:original_accidental],
+              :original_key             => base_note_options[:original_key],
+              :original_value           => base_note_options[:original_value],
+              :original_duration_token  => @original_duration_token
           )
 
           @named_chord = options[:named_chord]
@@ -89,12 +90,13 @@ module Stretto
           if @original_inversions
             @inversions = @original_inversions[:inversions]
             pivot_note  = @original_inversions[:pivot_note]
-            @pivot_note = Stretto::MusicElements::Note.new(
+            @pivot_note = Note.new(
                 pivot_note.text_value,
-                :original_key         => pivot_note.key,
-                :original_value       => pivot_note.value,
-                :original_accidental  => pivot_note.accidental,
-                :original_octave      => pivot_note.octave || DEFAULT_OCTAVE
+                :original_key             => pivot_note.key,
+                :original_value           => pivot_note.value,
+                :original_accidental      => pivot_note.accidental,
+                :original_octave          => pivot_note.octave || DEFAULT_OCTAVE,
+                :original_duration_token  => @original_duration_token
             ) if pivot_note
           else
             @inversions = 0

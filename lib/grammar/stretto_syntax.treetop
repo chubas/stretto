@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), 'tokens/note_string_token')
+require File.join(File.dirname(__FILE__), 'tokens/duration_token')
 require File.join(File.dirname(__FILE__), 'tokens/note_token')
 require File.join(File.dirname(__FILE__), 'tokens/rest_token')
 require File.join(File.dirname(__FILE__), 'tokens/chord_token')
@@ -37,7 +38,7 @@ grammar StrettoSyntax
   end
 
   rule note
-    note_string duration:duration? attack_and_decay? <Stretto::Tokens::NoteToken>
+    note_string _duration:duration? attack_and_decay? <Stretto::Tokens::NoteToken>
   end
 
   rule rest
@@ -125,11 +126,49 @@ grammar StrettoSyntax
   end
 
   rule duration
-    tie? (([whqistxo]+ '.'* tuplet?) / '/' variable_or_decimal) tie?
+    _start_tie:tie? duration_string _end_tie:tie? <Stretto::Tokens::DurationToken>
+  end
+
+  rule duration_string
+    _duration_character:[whqistxo]+ _dots:('.'*) _tuplet:tuplet? {
+      def duration_character
+        _duration_character.text_value
+      end
+
+      def dots
+        _dots
+      end
+
+      def tuplet
+        _tuplet
+      end
+
+      def decimal_value
+        nil
+      end
+    }
+    /
+    '/' _decimal_value:variable_or_decimal {
+      def duration_character
+        nil
+      end
+
+      def dots
+        nil
+      end
+
+      def tuplet
+        nil
+      end
+
+      def decimal_value
+        _decimal_value
+      end
+    }
   end
 
   rule tuplet
-    '*' (integer ':' integer)?
+    '*' (_numerator:integer ':' _denominator:integer)?
   end
 
   rule tie

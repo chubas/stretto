@@ -7,11 +7,11 @@ module Stretto
       def to_stretto
         Stretto::MusicElements::Note.new(
             text_value,
-            :original_duration    => duration,
-            :original_key         => key,
-            :original_accidental  => accidental,
-            :original_octave      => octave,
-            :original_value       => value
+            :original_duration_token  => duration,
+            :original_key             => key,
+            :original_accidental      => accidental,
+            :original_octave          => octave,
+            :original_value           => value
           )
       end
 
@@ -32,7 +32,7 @@ module Stretto
       end
 
       def duration
-        duration.text_value if duration.text_value.present?
+        _duration if _duration and _duration.text_value.present?
       end
 
     end

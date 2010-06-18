@@ -49,8 +49,16 @@ describe "note and chord durations" do
       # Stretto::Parser.new("C/0").to_stretto.first.duration.should be == 0
     end
 
-    context "when adding dot duration to notes" do
+    it "should return correct decimal duration when using concatenated duration characters" do
+      Stretto::Parser.new("Cww").to_stretto.first.duration.should be == 2.0
+      Stretto::Parser.new("Chh").to_stretto.first.duration.should be == 1.0
+      Stretto::Parser.new("Cwh").to_stretto.first.duration.should be == 1.5
+      Stretto::Parser.new("Chw").to_stretto.first.duration.should be == 1.5
+      Stretto::Parser.new("Cwhq").to_stretto.first.duration.should be == 1.75
+      Stretto::Parser.new("Chqw").to_stretto.first.duration.should be == 1.75
+    end
 
+    context "when adding dot duration to notes" do
       it "should return correct duration when using a single dot" do
         Stretto::Parser.new("Cw.").to_stretto.first.duration.should be == 1.5
         Stretto::Parser.new("Ch.").to_stretto.first.duration.should be == 0.75
@@ -58,7 +66,39 @@ describe "note and chord durations" do
         Stretto::Parser.new("Cmaji.").to_stretto.first.duration.should be == 0.1875
       end
 
+      it "should arbitrarily accept more than one dot" do
+        Stretto::Parser.new("Cw..").to_stretto.first.duration.should be == 1.75
+        Stretto::Parser.new("Cw...").to_stretto.first.duration.should be == 1.875
+        Stretto::Parser.new("Cmajw..").to_stretto.first.duration.should be == 1.75
+        Stretto::Parser.new("Cmajw...").to_stretto.first.duration.should be == 1.875
+      end
+    end
+
+    context "when adding tuplet duration to notes" do
+      it "should return correct duration when using tuplets in single duration characters" do
+        Stretto::Parser.new("Cq*").to_stretto.first.duration.should be == Rational(1, 6) # Two thirds ot 1 / 4
+        Stretto::Parser.new("Cq* Cq* Cq*").to_stretto.map(&:duration).sum.should be == Rational(1, 2)
+      end
+
+      it "should return correct duration when using tuplets in multiple duration characters" do
+        Stretto::Parser.new("Chh*").to_stretto.first.duration.should be == Rational(2, 3)
+        Stretto::Parser.new("Chq*").to_stretto.first.duration.should be == 0.5
+      end
+
+      it "should return correct duration when using n-tuplets" do
+        Stretto::Parser.new("Cq*3:2").to_stretto.first.duration.should be == Rational(1, 6)
+        Stretto::Parser.new("Cw*5:4").to_stretto.first.duration.should be == Rational(4, 5)
+        Stretto::Parser.new("Cw*4:5").to_stretto.first.duration.should be == Rational(5, 4)
+      end
+
+      it "should return correct duration when using tuplets in dotted notes" do
+        Stretto::Parser.new("Ch.*").to_stretto.first.duration.should be     == 0.5
+        Stretto::Parser.new("Ch.*5:4").to_stretto.first.duration.should be  == 0.6
+      end
+    end
+
+    context "when using literal duration value" do
+      it "should return correct duration when using a named variable duration"
     end
   end
-
 end

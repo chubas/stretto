@@ -13,3 +13,9 @@ class Object
   end
 
 end
+
+class Array
+  def sum
+    inject(&:+)
+  end
+end

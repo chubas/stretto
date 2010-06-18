@@ -140,7 +140,7 @@ grammar StrettoSyntax
       end
 
       def tuplet
-        _tuplet
+        _tuplet if _tuplet.text_value.present?
       end
 
       def decimal_value
@@ -168,7 +168,14 @@ grammar StrettoSyntax
   end
 
   rule tuplet
-    '*' (_numerator:integer ':' _denominator:integer)?
+    '*' _ratio:(_numerator:integer ':' _denominator:integer)? {
+      def numerator
+        _ratio._numerator.text_value if _ratio.text_value.present?
+      end
+      def denominator
+        _ratio._denominator.text_value if _ratio.text_value.present?
+      end
+    }
   end
 
   rule tie

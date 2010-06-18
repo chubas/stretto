@@ -40,6 +40,12 @@ describe "parsing durations" do
       Stretto::Parser.new("C/0.25").should be_valid
       Stretto::Parser.new("C/4.3333").should be_valid
       Stretto::Parser.new("Cmaj7/0.25").should be_valid
+      Stretto::Parser.new("C/1").should be_valid
+    end
+
+    it "should not allow dotted duration with numeric values" do
+      Stretto::Parser.new("C/0.25.").should_not be_valid
+      Stretto::Parser.new("Cmaj/1.").should_not be_valid
     end
   end
 
@@ -57,6 +63,19 @@ describe "parsing durations" do
     it "should allow tuplets on dotted duration notes" do
       Stretto::Parser.new("Cw.*3:4").should be_valid
     end
+
+    it "should not allow tuplets in notes with decimal value duration" do
+      Stretto::Parser.new("C/0.15*").should_not be_valid
+      Stretto::Parser.new("C/1*").should_not be_valid
+      Stretto::Parser.new("C/1.0*3:4").should_not be_valid
+    end
+
+    # TODO: Check this
+    it "should not allow tuplets in notes with the default duration" do
+      Stretto::Parser.new("C*").should_not be_valid
+      Stretto::Parser.new("Cmaj*").should_not be_valid
+      Stretto::Parser.new("C*5:4").should_not be_valid
+    end
   end
 
   context "concatenating duration values" do
@@ -66,8 +85,11 @@ describe "parsing durations" do
       Stretto::Parser.new("Cwq..").should be_valid
     end
 
-    it "should not allow mixed concatenated values" do
+    it "should not allow dot after tuplet" do
       Stretto::Parser.new("Cw*3:4.").should_not be_valid
+    end
+
+    it "should not allow concatenated tuplets" do
       Stretto::Parser.new("Cw*3:4*3:4").should_not be_valid
     end
   end

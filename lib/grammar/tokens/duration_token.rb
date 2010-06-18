@@ -11,8 +11,10 @@ module Stretto
       end
 
       def tuplet
-        {:numerator   => _duration_string.tuplet._numerator,
-         :denominator => _duration_string.tuplet._denominator }
+        if duration_string.tuplet
+          {:numerator   => duration_string.tuplet.numerator,
+           :denominator => duration_string.tuplet.denominator}
+        end
       end
 
       def duration_character

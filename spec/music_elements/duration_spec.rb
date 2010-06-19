@@ -45,8 +45,7 @@ describe "note and chord durations" do
       Stretto::Parser.new("C/0.333333333").to_stretto.first.duration.should be == 0.333333333
       Stretto::Parser.new("C/1").to_stretto.first.duration.should be == 1
       Stretto::Parser.new("C/100").to_stretto.first.duration.should be == 100
-      # TODO: Is a duration 0 possible?
-      # Stretto::Parser.new("C/0").to_stretto.first.duration.should be == 0
+      Stretto::Parser.new("C/0").to_stretto.first.duration.should be == 0
     end
 
     it "should return correct decimal duration when using concatenated duration characters" do
@@ -95,6 +94,14 @@ describe "note and chord durations" do
         Stretto::Parser.new("Ch.*").to_stretto.first.duration.should be     == 0.5
         Stretto::Parser.new("Ch.*5:4").to_stretto.first.duration.should be  == 0.6
       end
+    end
+
+    it "should return correctly the duration value for rests" do
+      Stretto::Parser.new("Rw").to_stretto.first.duration.should be == 1.0
+      Stretto::Parser.new("Rh").to_stretto.first.duration.should be == 0.5
+      Stretto::Parser.new("Rw.").to_stretto.first.duration.should be == 1.5
+      Stretto::Parser.new("Rq*").to_stretto.first.duration.should be == Rational(1, 6)
+      Stretto::Parser.new("R/1.5").to_stretto.first.duration.should be == 1.5
     end
 
     context "when using literal duration value" do

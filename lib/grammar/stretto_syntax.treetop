@@ -42,7 +42,7 @@ grammar StrettoSyntax
   end
 
   rule rest
-    'R' duration:duration? <Stretto::Tokens::RestToken>
+    'R' _duration:duration? <Stretto::Tokens::RestToken>
   end
 
   rule note_key

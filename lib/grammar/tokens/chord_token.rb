@@ -1,8 +1,13 @@
+require File.join(File.dirname(__FILE__), 'duration_token')
+require File.join(File.dirname(__FILE__), 'note_string_token')
 require File.join(File.dirname(__FILE__), '../music_elements/chord')
 
 module Stretto
   module Tokens
     class ChordToken < Treetop::Runtime::SyntaxNode
+
+      include WithDurationToken
+      include WithNoteStringToken
 
       def to_stretto
         Stretto::MusicElements::Chord.new(text_value,
@@ -24,27 +29,6 @@ module Stretto
           { :inversions => chord_inversions.inversions,
             :pivot_note => chord_inversions.pivot_note }
         end
-      end
-
-      # TODO: This is shared with note. Extract note_string
-      def octave
-        note_string.octave
-      end
-
-      def accidental
-        note_string.accidental
-      end
-
-      def key
-        note_string.key
-      end
-
-      def value
-        note_string.value
-      end
-
-      def duration
-        _duration if _duration and _duration.text_value.present?
       end
 
     end

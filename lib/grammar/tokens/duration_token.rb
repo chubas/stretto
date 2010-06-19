@@ -30,5 +30,12 @@ module Stretto
       end
 
     end
+
+    module WithDurationToken
+      def duration
+        _duration if _duration and _duration.text_value.present?
+      end
+    end
+
   end
 end

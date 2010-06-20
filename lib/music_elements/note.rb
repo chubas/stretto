@@ -31,12 +31,16 @@ module Stretto
                       '#'  =>  1,
                       '##' =>  2 }
 
+      DEFAULT_OCTAVE = 5
 
-
-      DEFAULT_OCTAVE    = 5
+      DEFAULT_ATTACK = 0
+      DEFAULT_DECAY  = 0
 
       attr_reader :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
                   :key, :accidental, :duration, :octave, :value
+
+      attr_reader :original_attack, :original_decay,
+                  :attack, :decay
 
       def initialize(original_string, options = {})
         @original_string          = original_string
@@ -46,10 +50,16 @@ module Stretto
         @original_octave          = options[:original_octave]
         build_note_elements
         build_duration_from_token(options[:original_duration_token])
+        build_attack(options[:original_attack])
+        build_decay(options[:original_decay])
       end
 
       def +(interval)
-        Note.new(nil, :original_value => @value + interval, :original_duration_token => @original_duration_token)
+        Note.new nil,
+                 :original_value          => @value + interval,
+                 :original_duration_token => @original_duration_token,
+                 :original_attack         => @original_attack,
+                 :original_decay          => @original_decay
       end
 
       def ==(other)
@@ -93,6 +103,18 @@ module Stretto
       def value=(value)
         raise Exceptions::NoteOutOfBoundsException if value < 0 or value > 127
         @value = value
+      end
+
+      def build_attack(original_attack)
+        @original_attack = original_attack
+        @attack = (original_attack && original_attack.to_i) || DEFAULT_ATTACK
+        raise Exceptions::InvalidValueException.new("Attack should be in the range 0..127") if @attack < 0 or @attack > 127
+      end
+
+      def build_decay(original_decay)
+        @original_decay = original_decay
+        @decay = (original_decay && original_decay.to_i) || DEFAULT_DECAY
+        raise Exceptions::InvalidValueException.new("Decay should be in the range 0..127") if @decay < 0 or @decay > 127
       end
 
     end

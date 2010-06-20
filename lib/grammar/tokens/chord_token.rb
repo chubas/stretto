@@ -1,5 +1,6 @@
 require File.join(File.dirname(__FILE__), 'duration_token')
 require File.join(File.dirname(__FILE__), 'note_string_token')
+require File.join(File.dirname(__FILE__), 'attack_decay_token')
 require File.join(File.dirname(__FILE__), '../../music_elements/chord')
 
 module Stretto
@@ -8,6 +9,7 @@ module Stretto
 
       include WithDurationToken
       include WithNoteStringToken
+      include WithAttackDecayToken
 
       def to_stretto
         Stretto::MusicElements::Chord.new(text_value,
@@ -16,7 +18,9 @@ module Stretto
             :original_octave        => octave,
             :original_accidental    => accidental,
             :original_key           => key,
-            :original_value         => value
+            :original_value         => value,
+            :original_attack        => attack,
+            :original_decay         => decay
           },
           :original_duration_token  => duration,
           :named_chord              => named_chord.text_value,

@@ -52,7 +52,10 @@ module Stretto
       extend Forwardable
       def_delegators :@base_note, :original_accidental, :accidental,
                                   :original_value, :value,
-                                  :original_key, :key
+                                  :original_key, :key,
+                                  :original_octave, :octave,
+                                  :original_attack, :attack,
+                                  :original_decay, :decay
 
       def initialize(original_string, options = {})
         @original_string      = original_string
@@ -60,10 +63,6 @@ module Stretto
         build_base_note(options[:base_note])
         build_chord_notes(options[:named_chord])
         build_inversions(options[:original_inversions])
-      end
-
-      def octave
-        @base_note.octave
       end
 
       # Equality of two chords is given by the equality of all its notes, that is, their pitches.
@@ -82,7 +81,9 @@ module Stretto
               :original_accidental      => base_note_options[:original_accidental],
               :original_key             => base_note_options[:original_key],
               :original_value           => base_note_options[:original_value],
-              :original_duration_token  => @original_duration_token
+              :original_duration_token  => @original_duration_token,
+              :original_attack          => base_note_options[:original_attack],
+              :original_decay           => base_note_options[:original_decay]
           )
         end
 

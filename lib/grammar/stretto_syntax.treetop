@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__), 'tokens/duration_token')
 require File.join(File.dirname(__FILE__), 'tokens/note_token')
 require File.join(File.dirname(__FILE__), 'tokens/rest_token')
 require File.join(File.dirname(__FILE__), 'tokens/chord_token')
+require File.join(File.dirname(__FILE__), 'tokens/attack_decay_token')
 require File.join(File.dirname(__FILE__), 'tokens/pattern_token')
 
 grammar StrettoSyntax
@@ -27,11 +28,11 @@ grammar StrettoSyntax
   end
 
   rule chord
-    note_string named_chord chord_inversions:chord_inversions? _duration:duration? attack_and_decay? <Stretto::Tokens::ChordToken>
+    note_string named_chord chord_inversions:chord_inversions? _duration:duration? attack_and_decay <Stretto::Tokens::ChordToken>
   end
 
   rule note
-    note_string _duration:duration? attack_and_decay? <Stretto::Tokens::NoteToken>
+    note_string _duration:duration? attack_and_decay <Stretto::Tokens::NoteToken>
   end
 
   rule rest
@@ -176,7 +177,7 @@ grammar StrettoSyntax
   end
 
   rule attack_and_decay
-    ('a' variable_or_integer)? ('d' variable_or_integer)?
+    _attack:('a' value:variable_or_integer)? _decay:('d' value:variable_or_integer)? <Stretto::Tokens::AttackDecayToken>
   end
 
   rule key_signature

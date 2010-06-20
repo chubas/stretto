@@ -30,4 +30,24 @@ describe "parsing attack and decay velocities" do
     end
   end
 
+  context "using attack and decay velocities with variables" do
+    it "should accept attack velocity as a variable" do
+      Stretto::Parser.new("Ca[SOMEVAR]").should be_valid
+    end
+
+    it "should accept decay velocity as a variable" do
+      Stretto::Parser.new("Cd[SOMEVAR]").should be_valid
+    end
+
+    it "should accept attack and decay velocities as variables" do
+      Stretto::Parser.new("Ca[SOMEVAR]d[SOMEOTHERVAR]").should be_valid
+    end
+  end
+
+  it "should not accept attack nor decay on rests" do
+    Stretto::Parser.new("Ra100").should_not be_valid
+    Stretto::Parser.new("Rd100").should_not be_valid
+    Stretto::Parser.new("Ra100d100").should_not be_valid
+  end
+
 end

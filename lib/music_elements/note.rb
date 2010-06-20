@@ -55,7 +55,7 @@ module Stretto
       def ==(other)
         other.value == value
       end
-
+      
       private
 
       KEYS_FOR_VALUES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']

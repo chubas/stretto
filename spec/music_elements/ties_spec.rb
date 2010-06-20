@@ -8,15 +8,15 @@ describe "building notes with ties" do
   end
 
   it "should return correct value of start_tie?" do
-    Stretto::Pattern.new("Cw- C-w")[0].start_of_tie?.should == true
-    Stretto::Pattern.new("Cw- C-w")[1].start_of_tie?.should == false
-    Stretto::Pattern.new("Cw Cw")[0].start_of_tie?.should == false
+    Stretto::Pattern.new("Cw- C-w")[0].start_of_tie?.should be == true
+    Stretto::Pattern.new("Cw- C-w")[1].start_of_tie?.should be == false
+    Stretto::Pattern.new("Cw Cw")[0].start_of_tie?.should be == false
   end
 
   it "should return correct value of end_tie?" do
-    Stretto::Pattern.new("Cw- C-w")[1].end_of_tie?.should == true
-    Stretto::Pattern.new("Cw- C-w")[0].end_of_tie?.should == false
-    Stretto::Pattern.new("Cw Cw")[0].end_of_tie?.should == false
+    Stretto::Pattern.new("Cw- C-w")[1].end_of_tie?.should be == true
+    Stretto::Pattern.new("Cw- C-w")[0].end_of_tie?.should be == false
+    Stretto::Pattern.new("Cw Cw")[0].end_of_tie?.should be == false
   end
 
   # Note: This is allowed in the original JFugue
@@ -43,4 +43,99 @@ describe "building notes with ties" do
     lambda{ Stretto::Pattern.new("Rw- R-w- R-w") }.should_not raise_error
   end
 
+  it "should return the set of tied notes" do
+    first, second, third = Stretto::Pattern.new("Cw- C-h Cq")
+    first.tied_elements.should be == [first, second]
+    first.tied_duration.should be == 1.5
+    first.duration.should be == 1.0
+    second.duration.should be == 0.5
+    third.duration.should be == 0.25
+
+    first, second, third = Stretto::Pattern.new("Cw- C-h- C-q")
+    first.tied_elements.should be == [first, second, third]
+    first.tied_duration.should be == 1.75
+    first.duration.should be == 1.0
+    second.duration.should be == 0.5
+    third.duration.should be == 0.25
+  end
+
+  it "should return the set of tied chords" do
+    first, second, third = Stretto::Pattern.new("Cmajw- Cmaj-h Cmajq")
+    first.tied_elements.should be == [first, second]
+    first.tied_duration.should be == 1.5
+    first.duration.should be == 1.0
+    second.duration.should be == 0.5
+    third.duration.should be == 0.25
+
+    first, second, third = Stretto::Pattern.new("Cmajw- Cmaj-h- Cmaj-q")
+    first.tied_elements.should be == [first, second, third]
+    first.tied_duration.should be == 1.75
+    first.duration.should be == 1.0
+    second.duration.should be == 0.5
+    third.duration.should be == 0.25
+  end
+
+  it "should return the set of tied rests" do
+    first, second, third = Stretto::Pattern.new("Rh- R-h Rh")
+    first.tied_elements.should be == [first, second]
+    first.tied_duration.should be == 1.0
+    first.duration.should be == 0.5
+    second.duration.should be == 0.5
+    third.duration.should be == 0.5
+  end
+
+  it "should accept notes of different pitch as the same set of tied notes" do
+    first, second, third = Stretto::Pattern.new("Cw- D-h- E-q")
+    first.tied_elements.should be == [first, second, third]
+    first.tied_duration.should be == 1.75
+    first.duration.should be == 1.0
+    second.duration.should be == 0.5
+    third.duration.should be == 0.25
+  end
+
+  it "should accept chords of different pitch as the same set of tied chords" do
+    first, second, third = Stretto::Pattern.new("Cmajw- Dmin7-h- Edom13-q")
+    first.tied_elements.should be == [first, second, third]
+    first.tied_duration.should be == 1.75
+    first.duration.should be == 1.0
+    second.duration.should be == 0.5
+    third.duration.should be == 0.25
+  end
+
+  it "should return an array with a single note if the note doesn't have tied notes to the right" do
+    note = Stretto::Pattern.new("Cq Cq-").first
+    note.tied_elements.should be == [note]
+    note.tied_duration.should be == 0.25
+  end
+
+  it "should return the set of tied notes from the note it was called, and not consider past tied notes" do
+    notes = Stretto::Pattern.new("Cq- C-q- C-q- C-q")
+    notes[0].tied_elements.should have(4).notes
+    notes[0].tied_duration.should be == 1.0
+    notes[1].tied_elements.should have(3).notes
+    notes[1].tied_duration.should be == 0.75
+    notes[2].tied_elements.should have(2).notes
+    notes[2].tied_duration.should be == 0.5
+    notes[3].tied_elements.should have(1).notes
+    notes[3].tied_duration.should be == 0.25
+  end
+
+  it "should cut out the tied set of elements when they are of different type" do
+    elements = Stretto::Pattern.new("C-q- C-q- Emaj-q- Emin7-q- R-q- R-q-")
+    elements[0].tied_elements.should have(2).notes
+    elements[0].tied_duration.should be == 0.5
+    elements[1].tied_elements.should have(1).note
+    elements[1].tied_duration.should be == 0.25
+    elements[2].tied_elements.should have(2).chords
+    elements[2].tied_duration.should be == 0.5
+    elements[3].tied_elements.should have(1).chord
+    elements[3].tied_duration.should be == 0.25
+    elements[4].tied_elements.should have(2).rests
+    elements[4].tied_duration.should be == 0.5
+    elements[5].tied_elements.should have(1).rest
+    elements[5].tied_duration.should be == 0.25
+  end
+
+  it "should return the set of tied notes when there is a vertical bar in between"
+  
 end

@@ -37,6 +37,19 @@ module Stretto
         @start_of_tie = @original_duration_token.start_of_tie? if @original_duration_token
         @end_of_tie   = @original_duration_token.end_of_tie?   if @original_duration_token
       end
+
+      def tied_elements
+        current = self
+        elements = [current]
+        while current.start_of_tie? && current.next && current.next.end_of_tie? && current.class == current.next.class
+          elements << (current = current.next)
+        end
+        elements
+      end
+
+      def tied_duration
+        tied_elements.map(&:duration).sum
+      end
       
       def self.parse_duration(duration_token, default_duration = DEFAULT_DURATION)
         duration = case

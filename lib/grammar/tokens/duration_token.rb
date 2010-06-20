@@ -2,12 +2,12 @@ module Stretto
   module Tokens
     class DurationToken < Treetop::Runtime::SyntaxNode
 
-      def start_tie?
-        _start_tie
+      def start_of_tie?
+        _start_of_tie.text_value.present? if _start_of_tie
       end
 
-      def end_tie?
-        _end_tie
+      def end_of_tie?
+        _end_of_tie.text_value.present? if _end_of_tie
       end
 
       def tuplet

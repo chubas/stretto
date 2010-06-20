@@ -3,19 +3,12 @@ require File.join(File.dirname(__FILE__), 'tokens/duration_token')
 require File.join(File.dirname(__FILE__), 'tokens/note_token')
 require File.join(File.dirname(__FILE__), 'tokens/rest_token')
 require File.join(File.dirname(__FILE__), 'tokens/chord_token')
+require File.join(File.dirname(__FILE__), 'tokens/pattern_token')
 
 grammar StrettoSyntax
 
   rule notes
-    space? head:music_element? more_elements:(space music_element)* space? {
-      def to_stretto
-        unless head.text_value.empty?
-          [head.to_stretto] + more_elements.elements.map{|element| element.music_element.to_stretto }
-        else
-          []
-        end
-      end
-    }
+    space? head:music_element? more_elements:(space music_element)* space? <Stretto::Tokens::PatternToken>
   end
 
   rule music_element
@@ -126,7 +119,7 @@ grammar StrettoSyntax
   end
 
   rule duration
-    _start_tie:tie? duration_string _end_tie:tie? <Stretto::Tokens::DurationToken>
+    _end_of_tie:tie? duration_string _start_of_tie:tie? <Stretto::Tokens::DurationToken>
   end
 
   rule duration_string

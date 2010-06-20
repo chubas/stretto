@@ -7,3 +7,4 @@ $: << File.dirname(__FILE__)
 
 require 'util/utils'
 require 'parsers/parser'
+require 'music_elements/pattern'

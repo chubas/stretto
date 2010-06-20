@@ -1,5 +1,3 @@
-require File.join(File.dirname(__FILE__), '../music_elements/chord')
-
 module Stretto
   module Tokens
     module NoteStringToken

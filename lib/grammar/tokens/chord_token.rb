@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'duration_token')
 require File.join(File.dirname(__FILE__), 'note_string_token')
-require File.join(File.dirname(__FILE__), '../music_elements/chord')
+require File.join(File.dirname(__FILE__), '../../music_elements/chord')
 
 module Stretto
   module Tokens

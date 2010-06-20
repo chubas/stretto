@@ -1,10 +1,11 @@
 require File.join(File.dirname(__FILE__), 'modifiers/duration')
+require File.join(File.dirname(__FILE__), 'music_element')
 require 'forwardable'
 
 module Stretto
   module MusicElements
 
-    class Chord
+    class Chord < MusicElement
 
       include Duration
 
@@ -55,25 +56,26 @@ module Stretto
 
       def initialize(original_string, options = {})
         @original_string      = original_string
-        build_duration(options)
-        build_notes(options)
-        build_inversions(options)
-      end
-
-      def build_duration(options)
-        @original_duration_token = options[:original_duration_token]
-        @original_duration = @original_duration_token.text_value if @original_duration_token
-        @duration = parse_duration(@original_duration_token)
+        build_duration_from_token(options[:original_duration_token])
+        build_base_note(options[:base_note])
+        build_chord_notes(options[:named_chord])
+        build_inversions(options[:original_inversions])
       end
 
       def octave
         @base_note.octave
       end
 
+      # Equality of two chords is given by the equality of all its notes, that is, their pitches.
+      # See <tt>Note#==</tt>
+      def ==(other)
+        notes == other.notes
+      end
+
       private
 
-        def build_notes(options)
-          base_note_options = options[:base_note]
+        def build_base_note(base_note_options)
+          base_note_options = base_note_options
           @base_note = Note.new(
               base_note_options[:original_string],
               :original_octave          => base_note_options[:original_octave] || DEFAULT_OCTAVE,
@@ -82,14 +84,16 @@ module Stretto
               :original_value           => base_note_options[:original_value],
               :original_duration_token  => @original_duration_token
           )
+        end
 
-          @named_chord = options[:named_chord]
+        def build_chord_notes(named_chord)
+          @named_chord = named_chord
           intervals   = CHORD_INTERVALS[@named_chord]
           @notes = [@base_note] + intervals.map{|interval| @base_note + interval}
         end
 
-        def build_inversions(options)
-          @original_inversions  = options[:original_inversions]
+        def build_inversions(original_inversions)
+          @original_inversions  = original_inversions
           if @original_inversions
             @inversions = @original_inversions[:inversions]
             pivot_note  = @original_inversions[:pivot_note]

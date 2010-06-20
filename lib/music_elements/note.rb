@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), 'modifiers/duration')
+require File.join(File.dirname(__FILE__), 'music_element')
 
 module Stretto
   module MusicElements
@@ -13,7 +14,7 @@ module Stretto
     #               a letter (w, h, q, i, s, t, x, o), a numeric value or a n-tuplet
     # For each attribute presented, the note will hold an original_attribute method, that is the string
     # from which the value was obtained. The accesor for each one of the attributes returns its calculated value
-    class Note
+    class Note < MusicElement
 
       include Duration
 
@@ -34,20 +35,17 @@ module Stretto
 
       DEFAULT_OCTAVE    = 5
 
-      attr_reader :original_string,
-                  :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
+      attr_reader :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
                   :key, :accidental, :duration, :octave, :value
 
       def initialize(original_string, options = {})
         @original_string          = original_string
         @original_key             = options[:original_key]
         @original_value           = options[:original_value]
-        @original_duration_token  = options[:original_duration_token]
-        @original_duration        = @original_duration_token.text_value if @original_duration_token
         @original_accidental      = options[:original_accidental]
         @original_octave          = options[:original_octave]
         build_note_elements
-        @duration = parse_duration(@original_duration_token)
+        build_duration_from_token(options[:original_duration_token])
       end
 
       def +(interval)
@@ -91,8 +89,9 @@ module Stretto
         ACCIDENTALS_FOR_VALUE[value % 12]
       end
 
+      # Sets the decimal value (pitch) of the note, but raises an error if it's out of range (0...127)
       def value=(value)
-        raise Exceptions::NoteOutOfBoundsException if value > 127
+        raise Exceptions::NoteOutOfBoundsException if value < 0 or value > 127
         @value = value
       end
 

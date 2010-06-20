@@ -15,7 +15,30 @@ module Stretto
       DEFAULT_TUPLET_NUMERATOR    = 3
       DEFAULT_TUPLET_DENOMINATOR  = 2
 
-      def parse_duration(duration_token, default_duration = DEFAULT_DURATION)
+      attr_accessor :original_duration, :duration
+      attr_accessor :start_tie, :end_tie
+
+      def build_duration_from_token(duration_token, default_duration = DEFAULT_DURATION)
+        @original_duration_token = duration_token
+        @original_duration       = @original_duration_token.text_value if @original_duration_token
+        @duration                = Duration.parse_duration(@original_duration_token, default_duration)
+        build_ties
+      end
+
+      def start_of_tie?
+        @start_of_tie.present?
+      end
+
+      def end_of_tie?
+        @end_of_tie.present?
+      end
+
+      def build_ties
+        @start_of_tie = @original_duration_token.start_of_tie? if @original_duration_token
+        @end_of_tie   = @original_duration_token.end_of_tie?   if @original_duration_token
+      end
+      
+      def self.parse_duration(duration_token, default_duration = DEFAULT_DURATION)
         duration = case
           when !duration_token
             default_duration

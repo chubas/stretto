@@ -18,36 +18,36 @@ describe "building chords" do
 
   context "parsing standard named chords" do
     it "should have the correct number of notes" do
-      Stretto::Pattern.new("Cmaj").first.notes.should have(3).notes
-      Stretto::Pattern.new("Cmin").first.notes.should have(3).notes
-      Stretto::Pattern.new("Caug").first.notes.should have(3).notes
-      Stretto::Pattern.new("Cdim").first.notes.should have(3).notes
-      Stretto::Pattern.new("Cdom7").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cmaj7").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cmin7").first.notes.should have(4).notes
-      Stretto::Pattern.new("Csus4").first.notes.should have(3).notes
-      Stretto::Pattern.new("Csus2").first.notes.should have(3).notes
-      Stretto::Pattern.new("Cmaj6").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cmin6").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cdom9").first.notes.should have(5).notes
-      Stretto::Pattern.new("Cmaj9").first.notes.should have(5).notes
-      Stretto::Pattern.new("Cmin9").first.notes.should have(5).notes
-      Stretto::Pattern.new("Cdim7").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cadd9").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cmin11").first.notes.should have(6).notes
-      Stretto::Pattern.new("Cdom11").first.notes.should have(5).notes
-      Stretto::Pattern.new("Cdom13").first.notes.should have(6).notes
-      Stretto::Pattern.new("Cmin13").first.notes.should have(6).notes
-      Stretto::Pattern.new("Cmaj13").first.notes.should have(6).notes
-      Stretto::Pattern.new("Cdom7<5").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cdom7>5").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cmaj7<5").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cmaj7>5").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cminmaj7").first.notes.should have(4).notes
-      Stretto::Pattern.new("Cdom7<5<9").first.notes.should have(5).notes
-      Stretto::Pattern.new("Cdom7<5>9").first.notes.should have(5).notes
-      Stretto::Pattern.new("Cdom7>5<9").first.notes.should have(5).notes
-      Stretto::Pattern.new("Cdom7>5>9").first.notes.should have(5).notes
+      Stretto::Pattern.new("Cmaj").first.should have(3).notes
+      Stretto::Pattern.new("Cmin").first.should have(3).notes
+      Stretto::Pattern.new("Caug").first.should have(3).notes
+      Stretto::Pattern.new("Cdim").first.should have(3).notes
+      Stretto::Pattern.new("Cdom7").first.should have(4).notes
+      Stretto::Pattern.new("Cmaj7").first.should have(4).notes
+      Stretto::Pattern.new("Cmin7").first.should have(4).notes
+      Stretto::Pattern.new("Csus4").first.should have(3).notes
+      Stretto::Pattern.new("Csus2").first.should have(3).notes
+      Stretto::Pattern.new("Cmaj6").first.should have(4).notes
+      Stretto::Pattern.new("Cmin6").first.should have(4).notes
+      Stretto::Pattern.new("Cdom9").first.should have(5).notes
+      Stretto::Pattern.new("Cmaj9").first.should have(5).notes
+      Stretto::Pattern.new("Cmin9").first.should have(5).notes
+      Stretto::Pattern.new("Cdim7").first.should have(4).notes
+      Stretto::Pattern.new("Cadd9").first.should have(4).notes
+      Stretto::Pattern.new("Cmin11").first.should have(6).notes
+      Stretto::Pattern.new("Cdom11").first.should have(5).notes
+      Stretto::Pattern.new("Cdom13").first.should have(6).notes
+      Stretto::Pattern.new("Cmin13").first.should have(6).notes
+      Stretto::Pattern.new("Cmaj13").first.should have(6).notes
+      Stretto::Pattern.new("Cdom7<5").first.should have(4).notes
+      Stretto::Pattern.new("Cdom7>5").first.should have(4).notes
+      Stretto::Pattern.new("Cmaj7<5").first.should have(4).notes
+      Stretto::Pattern.new("Cmaj7>5").first.should have(4).notes
+      Stretto::Pattern.new("Cminmaj7").first.should have(4).notes
+      Stretto::Pattern.new("Cdom7<5<9").first.should have(5).notes
+      Stretto::Pattern.new("Cdom7<5>9").first.should have(5).notes
+      Stretto::Pattern.new("Cdom7>5<9").first.should have(5).notes
+      Stretto::Pattern.new("Cdom7>5>9").first.should have(5).notes
     end
 
     it "should build correctly the interval of notes" do

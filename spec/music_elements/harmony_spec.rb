@@ -15,6 +15,12 @@ describe "notes in harmony (but not chords)" do
   it "should be a harmony when any note in a chord is a rest" do
     Stretto::Pattern.new("C+D+R").first.should be_kind_of(Stretto::MusicElements::Harmony)
   end
+
+  it "should not be a harmony if is a single melody" do
+    melody = Stretto::Pattern.new("C_D_E").first
+    melody.should_not be_an_instance_of(Stretto::MusicElements::Harmony)
+    melody.should be_an_instance_of(Stretto::MusicElements::Melody)
+  end
   
   context "when accessing its duration" do
     it "should return the duration of the longest of its elements when it is a single element" do
@@ -49,7 +55,6 @@ describe "notes in harmony (but not chords)" do
       Stretto::Pattern.new("Cmaj+R+Dmin").first.should have(3).elements
       Stretto::Pattern.new("C+D_E").first.should have(2).elements
       Stretto::Pattern.new("C_D+E").first.should have(2).elements
-      Stretto::Pattern.new("C_D_E").first.should have(1).elements
     end
 
     it "should return correct type of elements" do

@@ -3,6 +3,8 @@ module Stretto
 
     class Melody < MusicElement
 
+      attr_reader :elements
+
       def initialize(original_string, options = {})
         @original_string = original_string
         @elements = options[:original_elements]

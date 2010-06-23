@@ -6,9 +6,14 @@ module Stretto
     class HarmonyWithMelodyToken < Treetop::Runtime::SyntaxNode
 
       def to_stretto
-        Stretto::MusicElements::Harmony.new(text_value,
-          :original_elements => harmony_elements
-        )
+        elements = harmony_elements
+        if elements.size == 1 and elements.first.kind_of?(Stretto::MusicElements::Melody)
+          elements.first
+        else
+          Stretto::MusicElements::Harmony.new(text_value,
+                                              :original_elements => harmony_elements
+          )
+        end
       end
 
       # TODO: This can be refactored, even return the melodies directly from the token

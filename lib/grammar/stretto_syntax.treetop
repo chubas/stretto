@@ -4,6 +4,8 @@ require File.join(File.dirname(__FILE__), 'tokens/note_token')
 require File.join(File.dirname(__FILE__), 'tokens/rest_token')
 require File.join(File.dirname(__FILE__), 'tokens/chord_token')
 require File.join(File.dirname(__FILE__), 'tokens/attack_decay_token')
+require File.join(File.dirname(__FILE__), 'tokens/harmonic_chord_token')
+require File.join(File.dirname(__FILE__), 'tokens/harmony_with_melody_token')
 require File.join(File.dirname(__FILE__), 'tokens/pattern_token')
 
 grammar StrettoSyntax
@@ -13,14 +15,23 @@ grammar StrettoSyntax
   end
 
   rule music_element
-    harmony_and_melody / single_music_element /
+    harmonic_chord / harmony_with_melody / single_music_element /
     measure_bar / key_signature / instrument / voice / layer / tempo /
     pitch_wheel / channel_pressure / polyphonic_pressure / timing_info /
     controller_change / variable_definition
   end
+  
+  rule harmony_with_melody
+    _first_element:single_music_element _other_elements:([+_] _element:single_music_element)+ <Stretto::Tokens::HarmonyWithMelodyToken>
+  end
+  
+  rule harmonic_chord
+    # Force it to be greedy by putting a lookahead negative assertion.
+    _first_element:chord_or_note _other_elements:('+' _element:chord_or_note)+ ![+_] <Stretto::Tokens::HarmonicChordToken>
+  end
 
-  rule harmony_and_melody
-    single_music_element [_+] single_music_element ([_+] single_music_element)*
+  rule chord_or_note
+    chord / note
   end
 
   rule single_music_element

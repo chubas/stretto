@@ -8,6 +8,13 @@ describe "parsing harmonies and melodies" do
       Stretto::Parser.new("Cmaj+Dmin").should be_valid
       Stretto::Parser.new("C+R+D").should be_valid
     end
+
+    it "should not accept inversions like chords do" do
+      Stretto::Parser.new("C5+C6+C7^").should_not be_valid
+      Stretto::Parser.new("C5+C6+C7^C5").should_not be_valid
+      Stretto::Parser.new("C5+C6+C7^^").should_not be_valid
+    end
+
   end
 
   context "reading melodies" do

@@ -9,7 +9,7 @@ module Stretto
 
     def initialize(music_string)
       @music_string = music_string
-      @parser       =  StrettoSyntaxParser.new
+      @parser       = StrettoSyntaxParser.new
     end
 
     def to_stretto

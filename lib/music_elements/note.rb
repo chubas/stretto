@@ -63,7 +63,15 @@ module Stretto
       end
 
       def ==(other)
-        other.value == value
+        other.value == value rescue false
+      end
+
+      def eql?(other)
+        other.value.eql?(value) rescue false
+      end
+
+      def hash
+        value.hash
       end
       
       private

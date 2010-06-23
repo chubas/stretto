@@ -22,7 +22,7 @@ grammar StrettoSyntax
   end
   
   rule harmony_with_melody
-    _first_element:single_music_element _other_elements:([+_] _element:single_music_element)+ <Stretto::Tokens::HarmonyWithMelodyToken>
+    _first_element:single_music_element _other_elements:(_sep:[+_] _element:single_music_element)+ <Stretto::Tokens::HarmonyWithMelodyToken>
   end
   
   rule harmonic_chord

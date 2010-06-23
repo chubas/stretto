@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '/../spec_helper')
 
-describe "notes in harmony" do
+describe "notes in a chord harmony" do
 
   it "should return the correct type of music element" do
     Stretto::Pattern.new("C+D+E").first.should be_an_instance_of(Stretto::MusicElements::HarmonicChord)
@@ -22,7 +22,7 @@ describe "notes in harmony" do
     end
 
     it "should not be a chord if it has rests" do
-      Stretto::Pattern.new("C+D+R").first.should_not be_kind_of(Stretto::MusicElements::Chord)      
+      Stretto::Pattern.new("C+D+R").first.should_not be_kind_of(Stretto::MusicElements::Chord)
     end
 
     context "when accessing its duration" do
@@ -96,22 +96,6 @@ describe "notes in harmony" do
         lambda{ Stretto::Pattern.new("A10+C5") }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
       end
     end
-  end
-
-  context "when there are simultaneous melody notes" do
-
-    it "should not be a chord"
-
-    context "when accessing its duration" do
-      it "should return the duration of the longest of its elements when it is a note"
-      it "should return the duration of the longest of its elements when it is a melody"
-    end
-
-    context "when accessing its elements" do
-      it "should respond to the 'elements' method"
-      it "should not respond to the 'notes' method"
-    end
-
   end
 
 end

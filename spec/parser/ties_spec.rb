@@ -25,6 +25,16 @@ describe "parsing ties" do
       Stretto::Parser.new("Cw- Cw").should be_valid
       Stretto::Parser.new("Cw C-w").should be_valid
     end
+
+    it "should not allow measures without a space of separation between elements" do
+      Stretto::Parser.new("C7|").should_not be_valid
+      Stretto::Parser.new("|C7").should_not be_valid
+      Stretto::Parser.new("R|").should_not be_valid
+      Stretto::Parser.new("Cmaj|").should_not be_valid
+      Stretto::Parser.new("C5q-|").should_not be_valid
+      Stretto::Parser.new("C+D+|").should_not be_valid
+      Stretto::Parser.new("C+D_|").should_not be_valid
+    end
   end
 
 end

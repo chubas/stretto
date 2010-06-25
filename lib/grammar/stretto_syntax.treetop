@@ -6,6 +6,7 @@ require File.join(File.dirname(__FILE__), 'tokens/chord_token')
 require File.join(File.dirname(__FILE__), 'tokens/attack_decay_token')
 require File.join(File.dirname(__FILE__), 'tokens/harmonic_chord_token')
 require File.join(File.dirname(__FILE__), 'tokens/harmony_with_melody_token')
+require File.join(File.dirname(__FILE__), 'tokens/measure_token')
 require File.join(File.dirname(__FILE__), 'tokens/pattern_token')
 
 grammar StrettoSyntax
@@ -196,7 +197,7 @@ grammar StrettoSyntax
   end
 
   rule measure_bar
-    '|'
+    '|' <Stretto::Tokens::MeasureToken>
   end
 
   rule instrument

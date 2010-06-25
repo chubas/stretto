@@ -110,32 +110,37 @@ describe "building notes with ties" do
 
   it "should return the set of tied notes from the note it was called, and not consider past tied notes" do
     notes = Stretto::Pattern.new("Cq- C-q- C-q- C-q")
-    notes[0].tied_elements.should have(4).notes
+    notes[0].should have(4).tied_elements
     notes[0].tied_duration.should be == 1.0
-    notes[1].tied_elements.should have(3).notes
+    notes[1].should have(3).tied_elements
     notes[1].tied_duration.should be == 0.75
-    notes[2].tied_elements.should have(2).notes
+    notes[2].should have(2).tied_elements
     notes[2].tied_duration.should be == 0.5
-    notes[3].tied_elements.should have(1).notes
+    notes[3].should have(1).tied_elements
     notes[3].tied_duration.should be == 0.25
   end
 
   it "should cut out the tied set of elements when they are of different type" do
     elements = Stretto::Pattern.new("C-q- C-q- Emaj-q- Emin7-q- R-q- R-q-")
-    elements[0].tied_elements.should have(2).notes
+    elements[0].should have(2).tied_elements
     elements[0].tied_duration.should be == 0.5
-    elements[1].tied_elements.should have(1).note
+    elements[1].should have(1).tied_elements
     elements[1].tied_duration.should be == 0.25
-    elements[2].tied_elements.should have(2).chords
+    elements[2].should have(2).tied_elements
     elements[2].tied_duration.should be == 0.5
-    elements[3].tied_elements.should have(1).chord
+    elements[3].should have(1).tied_elements
     elements[3].tied_duration.should be == 0.25
-    elements[4].tied_elements.should have(2).rests
+    elements[4].should have(2).tied_elements
     elements[4].tied_duration.should be == 0.5
-    elements[5].tied_elements.should have(1).rest
+    elements[5].should have(1).tied_elements
     elements[5].tied_duration.should be == 0.25
   end
 
-  it "should return the set of tied notes when there is a vertical bar in between"
+  it "should return the set of tied notes when there is a vertical bar in between" do
+    elements = Stretto::Pattern.new("Cq- | C-h- | C-q")
+    elements[0].should have(3).tied_elements
+    elements[2].should have(2).tied_elements
+    elements[4].should have(1).tied_elements
+  end
   
 end

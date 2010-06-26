@@ -12,7 +12,7 @@ describe "building chords" do
     it "should return the correct number and kind of notes with several chords" do
       chords = Stretto::Pattern.new("Cmaj Dmaj")
       chords.should have(2).chords
-      chords.each{|chord| chord.should be_an_instance_of Stretto::MusicElements::Chord }
+      chords.each { |chord| chord.should be_an_instance_of Stretto::MusicElements::Chord }
     end
   end
 

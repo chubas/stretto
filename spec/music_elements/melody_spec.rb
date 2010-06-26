@@ -13,7 +13,7 @@ describe "melodies" do
   it "should parse melodies as part of harmonies" do
     harmony = Stretto::Pattern.new("C_D+E_F").first
     harmony.should be_an_instance_of(Stretto::MusicElements::Harmony)
-    harmony.elements.each{|melody| melody.should be_an_instance_of(Stretto::MusicElements::Melody) }
+    harmony.elements.each { |melody| melody.should be_an_instance_of(Stretto::MusicElements::Melody) }
   end
 
   context "when accessing its elements" do

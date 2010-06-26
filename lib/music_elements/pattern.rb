@@ -12,7 +12,7 @@ module Stretto
 
     def initialize(music_string = "")
       @parser = Stretto::Parser.new(music_string)
-      @parser.to_stretto.each{|music_element| self << music_element }
+      @parser.to_stretto.each { |music_element| self << music_element }
     end
 
     def <<(other)

@@ -44,10 +44,11 @@ module Stretto
 
       DEFAULT_OCTAVE = 3
 
-      attr_accessor :notes, :base_note
-      attr_accessor :inversions, :pivot_note
-      attr_accessor :original_duration, :duration
-      attr_accessor :named_chord
+      attr_reader :notes, :base_note
+      attr_reader :inversions, :pivot_note
+      attr_reader :original_duration, :duration
+      attr_reader :named_chord
+      attr_reader :key_signature
 
       extend Forwardable
       def_delegators :@base_note, :original_accidental, :accidental,

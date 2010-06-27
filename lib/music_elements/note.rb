@@ -42,6 +42,8 @@ module Stretto
       attr_reader :original_attack, :original_decay,
                   :attack, :decay
 
+      attr_reader :key_signature
+
       def initialize(original_string, options = {})
         @original_string          = original_string
         @original_key             = options[:original_key]
@@ -66,12 +68,22 @@ module Stretto
         other.value == value rescue false
       end
 
+      # TODO: Revisit the semantics of ==
       def eql?(other)
         other.value.eql?(value) rescue false
       end
 
       def hash
         value.hash
+      end
+
+      def key_signature=(key_signature)
+        @key_signature = key_signature
+        if key_signature
+          increment = key_signature.modifier_for(@original_key)
+          # TODO: Handle the case for accidentals and double accidentals
+          self.value += increment if increment
+        end
       end
       
       private

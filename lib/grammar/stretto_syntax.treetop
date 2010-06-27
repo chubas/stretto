@@ -184,7 +184,7 @@ grammar StrettoSyntax
   end
 
   rule key_signature
-    'K' note_key ('maj' / 'min')
+    'K' note_key scale:('maj' / 'min') <Stretto::Tokens::KeySignatureToken>
   end
 
   rule measure_bar

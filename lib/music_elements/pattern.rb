@@ -12,6 +12,7 @@ module Stretto
 
     def initialize(music_string = "")
       @parser = Stretto::Parser.new(music_string)
+      @__key_signature = nil
       @parser.to_stretto.each { |music_element| self << music_element }
     end
 
@@ -20,6 +21,8 @@ module Stretto
         last.next   = other
         other.prev  = last
       end
+      other.key_signature = @__key_signature if other.respond_to?(:key_signature=)
+      @__key_signature = other if other.kind_of?(MusicElements::KeySignature)
       super(other)
     end
 

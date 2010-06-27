@@ -1,5 +1,3 @@
-require File.join(File.dirname(__FILE__), '../parsers/parser')
-
 module Stretto
 
   # Composition is a series of MusicElements, that hold a context (like tied notes or key signature modifications)

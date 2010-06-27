@@ -1,4 +1,3 @@
-require File.join(File.dirname(__FILE__), 'modifiers/duration')
 require File.join(File.dirname(__FILE__), 'music_element')
 require 'forwardable'
 

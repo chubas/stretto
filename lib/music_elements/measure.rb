@@ -1,3 +1,5 @@
+require File.join(File.dirname(__FILE__), 'music_element')
+
 module Stretto
   module MusicElements
 

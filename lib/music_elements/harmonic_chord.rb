@@ -1,5 +1,5 @@
+require File.join(File.dirname(__FILE__), 'music_element')
 require File.join(File.dirname(__FILE__), 'chord')
-require File.join(File.dirname(__FILE__), 'modifiers/duration')
 
 module Stretto
   module MusicElements

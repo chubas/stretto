@@ -192,7 +192,7 @@ grammar StrettoSyntax
   end
 
   rule instrument
-    'I' variable_or_integer
+    kind:'I' value:variable_or_integer <Stretto::Tokens::ModifierToken>
   end
 
   rule voice

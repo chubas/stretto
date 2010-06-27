@@ -74,7 +74,7 @@ module Stretto
         MODIFIERS[:minor]['D#'] = MODIFIERS[:minor]['Eb']
         MODIFIERS[:minor]['G#'] = MODIFIERS[:minor]['Ab']
 
-      # EQUIVALENCES FROM MINOR SCALE TO MAJOR SCALE
+        # EQUIVALENCES FROM MINOR SCALE TO MAJOR SCALE
         MODIFIERS[:minor]['Db'] = MODIFIERS[:minor]['C#'] = MODIFIERS[:major]['E' ]
         MODIFIERS[:minor]['Gb'] = MODIFIERS[:minor]['F#'] = MODIFIERS[:major]['A' ]
         MODIFIERS[:minor]['Cb'] = MODIFIERS[:minor]['B' ] = MODIFIERS[:major]['D' ]

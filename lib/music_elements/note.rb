@@ -81,8 +81,9 @@ module Stretto
         @key_signature = key_signature
         if key_signature
           increment = key_signature.modifier_for(@original_key)
-          # TODO: Handle the case for accidentals and double accidentals
-          self.value += increment if increment
+          if increment
+            self.value += increment unless accidental
+          end
         end
       end
       

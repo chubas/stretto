@@ -238,17 +238,93 @@ describe 'Key signatures' do
     end
 
     context "when altering a note with an already specified accidental" do
-      it "should not alter the note when a sharp is placed in a note already raised by a key signature"
-      it "should not lower the note when a flat is placed in a note already lowered by a key signature"
-      it "should only raise half tone when a double sharp is placed in a note raised by a key signature"
-      it "should only lower half tone when a double flat is placed in a note lowered by a key signature"
-      it "should leave the note in its natural state when there is a natural accidental"
 
+      it "should not alter the note when a sharp is placed in a note already raised by a key signature" do
+        notes = Stretto::Pattern.new("KGmaj F F#")[1..-1]
+        notes[0].value.should be == 66
+        notes[1].value.should be == 66
+      end
 
-      it "should ask what to do when a flat is placed on a lowered note by a key signature"
-      it "should ask what to do when a sharp is placed on a raised note by a key signature"
+      it "should not lower the note when a flat is placed in a note already lowered by a key signature" do
+        notes = Stretto::Pattern.new("KDmin B Bb")[1..-1]
+        notes[0].value.should be == 70
+        notes[1].value.should be == 70
+      end
+
+      it "should only raise half tone when a double sharp is placed in a note raised by a key signature" do
+        notes = Stretto::Pattern.new("KGmaj F F##")[1..-1]
+        notes[0].value.should be == 66
+        notes[1].value.should be == 67
+      end
+
+      it "should only lower half tone when a double flat is placed in a note lowered by a key signature" do
+        notes = Stretto::Pattern.new("KDmin B Bbb")[1..-1]
+        notes[0].value.should be == 70
+        notes[1].value.should be == 69
+      end
+
+      it "should leave the note in its natural state when there is a natural accidental in a major key signature" do
+        notes = Stretto::Pattern.new("KGmaj F Fn")[1..-1]
+        notes[0].value.should be == 66
+        notes[1].value.should be == 65
+      end
+
+      it "should leave the note in its natural state when there is a natural accidental in a minor key signature" do
+        notes = Stretto::Pattern.new("KDmin B Bn")[1..-1]
+        notes[0].value.should be == 70
+        notes[1].value.should be == 71
+      end
+
+      it "should lower note by half tone as without key signature when a note with flat accidental is raised by a key signature" do
+        notes = Stretto::Pattern.new("KGmaj F Fb")[1..-1]
+        notes[0].value.should be == 66
+        notes[1].value.should be == 64
+      end
+
+      it "should raise note by half tone as without key signature when a note with sharp accidental is lowered by a key signature" do
+        notes = Stretto::Pattern.new("KDmin B B#")[1..-1]
+        notes[0].value.should be == 70
+        notes[1].value.should be == 72
+      end
+
+      it "should lower note by one tone as without key signature when a note with double flat accidental is raised by a key signature" do
+        notes = Stretto::Pattern.new("KGmaj F Fbb")[1..-1]
+        notes[0].value.should be == 66
+        notes[1].value.should be == 63
+      end
+
+      it "should raise note by one tone as without key signature when a note with double sharp accidental is lowered by a key signature" do
+        notes = Stretto::Pattern.new("KDmin B B##")[1..-1]
+        notes[0].value.should be == 70
+        notes[1].value.should be == 73
+      end
     end
 
+  end
+
+  context "when using it on chords" do
+    it "should store the key_signature" do
+      key_signature, chord = Stretto::Pattern.new("KGmaj Fmaj")
+      chord.key_signature.should be == key_signature
+    end
+
+    it "should alter the base note" do
+      chord = Stretto::Pattern.new("KGmaj Fmaj")[1]
+      chord.base_note.value.should be == 42
+      chord.notes.map(&:value).should be == [42, 46, 49]
+    end
+
+    it "should not affect the elements individually, as they lack original key signature" do
+      chord = Stretto::Pattern.new("KGmaj Csus4")[1]
+      chord.base_note.value.should be == 36
+      chord.notes.map(&:value).should be == [36, 41, 43] # It should not affect F, which would be 42 otherwise
+    end
+
+    it "should affect key base note with chord inversions" do
+      chord = Stretto::Pattern.new("KGmaj Fmaj^")[1]
+      chord.base_note.value.should be == 42
+      chord.notes.map(&:value).should be == [46, 49, 54]
+    end
   end
 
   context "when using it on a multi voice composition" do

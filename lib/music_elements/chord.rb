@@ -71,6 +71,15 @@ module Stretto
         @notes == other.notes
       end
 
+      def key_signature=(key_signature)
+        @key_signature = key_signature
+        if @base_note
+          @base_note.key_signature = key_signature
+          build_chord_notes(@named_chord)
+          build_inversions(@original_inversions)
+        end
+      end
+
       private
 
         def build_base_note(base_note_options)

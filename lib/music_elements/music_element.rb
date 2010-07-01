@@ -20,6 +20,14 @@ module Stretto
 
       alias inspect to_s
 
+      def start_of_tie?
+        true
+      end
+
+      def end_of_tie?
+        true
+      end
+
     end
 
   end

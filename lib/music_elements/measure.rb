@@ -15,14 +15,6 @@ module Stretto
         0
       end
 
-      def start_of_tie?
-        true
-      end
-
-      def end_of_tie?
-        true
-      end
-
       def tied_elements
         next_element = self.next
         if next_element

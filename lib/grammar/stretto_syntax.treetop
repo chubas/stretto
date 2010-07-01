@@ -196,7 +196,7 @@ grammar StrettoSyntax
   end
 
   rule voice
-    'V' variable_or_integer
+    kind:'V' value:variable_or_integer <Stretto::Tokens::ModifierToken>
   end
 
   rule layer

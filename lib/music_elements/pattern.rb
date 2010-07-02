@@ -16,15 +16,9 @@ module Stretto
 
     def initialize(music_string = "")
       @parser           = Stretto::Parser.new(music_string)
-      @current_voice    = Voice.new
-      @voices           = { DEFAULT_VOICE_INDEX => @current_voice }
+      @voices           = { }
       @__key_signature  = nil
       @parser.to_stretto.each { |music_element| self << music_element }
-      eliminate_mute_voices
-    end
-
-    def eliminate_mute_voices
-      @voices.delete_if{|key, value| value.empty? }
     end
 
     def <<(other)
@@ -38,6 +32,7 @@ module Stretto
       if other.kind_of?(MusicElements::VoiceChange)
         @current_voice = (@voices[other.index] ||= Voice.new)
       else
+        @voices[DEFAULT_VOICE_INDEX] = @current_voice = Voice.new unless @current_voice
         @current_voice << other
       end
       super(other)

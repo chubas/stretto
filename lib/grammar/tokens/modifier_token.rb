@@ -6,18 +6,13 @@ module Stretto
     class ModifierToken < Treetop::Runtime::SyntaxNode
 
       def to_stretto
-        case kind.text_value
+        klass = case kind.text_value
           when 'I'
-            Stretto::MusicElements::Instrument.new(
-                text_value,
-                :original_value => value.text_value
-            )
+            Stretto::MusicElements::Instrument
           when 'V'
-            Stretto::MusicElements::VoiceChange.new(
-                text_value,
-                :original_value => value.text_value
-            )
+            Stretto::MusicElements::VoiceChange
         end
+        klass.new(text_value, :original_value => value.text_value)
       end
 
     end

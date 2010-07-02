@@ -34,6 +34,14 @@ describe "voice changes" do
     voices[4].should be_an_instance_of(Stretto::Voice)
     voices[5].should be_nil
   end
+
+  it "should create voices even if empty" do
+    voices = Stretto::Pattern.new("V0 C D E V1 V2 V3").voices
+    voices[0].should_not be_nil
+    voices[1].should_not be_nil
+    voices[2].should_not be_nil
+    voices[3].should_not be_nil
+  end
 end
 
 describe "voice objects" do

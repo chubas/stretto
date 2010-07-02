@@ -200,7 +200,7 @@ grammar StrettoSyntax
   end
 
   rule layer
-    'L' variable_or_integer
+    kind:'L' value:variable_or_integer <Stretto::Tokens::ModifierToken>
   end
 
   rule tempo

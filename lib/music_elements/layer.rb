@@ -1,7 +1,11 @@
 module Stretto
 
-#  class Layer < Array
-#
-#  end
+  class Layer < Array
+
+    def elements
+      to_a
+    end
+
+  end
   
 end

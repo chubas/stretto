@@ -21,6 +21,10 @@ module Stretto
       @parser.to_stretto.each { |music_element| self << music_element }
     end
 
+    def elements
+      to_a
+    end
+
     def <<(other)
       if last
         last.next   = other

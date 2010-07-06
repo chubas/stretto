@@ -7,8 +7,10 @@ module Stretto
 
       include Duration
 
-      def initialize(text_value, options = {})
-        @original_string = text_value
+      #-
+      # TODO: This should be able to call super()
+      def initialize(original_string, options = {})
+        @original_string = original_string
         @base_notes      = options[:original_base_notes]
         @notes           = normalize_notes(@base_notes)
         @duration        = @notes.map(&:duration).max

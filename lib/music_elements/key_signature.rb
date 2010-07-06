@@ -7,7 +7,7 @@ module Stretto
       attr_reader :key, :scale
 
       def initialize(original_string, options = {})
-        @original_string = original_string
+        super(original_string, options)
         @key = options[:original_key]
         @scale = SCALES[options[:original_scale]]
       end

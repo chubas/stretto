@@ -11,7 +11,7 @@ module Stretto
       attr_reader :pitch, :value
 
       def initialize(original_string, options = {})
-        @original_string = original_string
+        super(original_string, options)
         self.pitch = options[:original_pitch].to_i
         self.value = options[:original_value].to_i
       end

@@ -5,10 +5,8 @@ module Stretto
 
     class Measure < MusicElement
 
-      #-
-      # Original string and options kept for consistency with the other initializers
       def initialize(original_string, options = {})
-        @original_string = original_string
+        super(original_string, options)
       end
 
       def duration

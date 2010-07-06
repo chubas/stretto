@@ -8,7 +8,7 @@ module Stretto
 
       include Stretto::Node
 
-      attr_accessor :original_string
+      attr_reader :original_string
 
       def to_s
         original_string || build_music_string

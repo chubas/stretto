@@ -58,7 +58,7 @@ module Stretto
                                   :original_decay,      :decay
 
       def initialize(original_string, options = {})
-        @original_string      = original_string
+        super(original_string, options)
         build_duration_from_token(options[:original_duration_token])
         build_base_note(options[:base_note])
         build_chord_notes(options[:named_chord])

@@ -44,7 +44,7 @@ module Stretto
       attr_reader :key_signature
 
       def initialize(original_string, options = {})
-        @original_string          = original_string
+        super(original_string, options)
         @original_key             = options[:original_key]
         @original_value           = options[:original_value]
         @original_accidental      = options[:original_accidental]

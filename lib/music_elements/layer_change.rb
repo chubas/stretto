@@ -8,7 +8,7 @@ module Stretto
       attr_reader :index
 
       def initialize(original_string, options = {})
-        @original_string = original_string
+        super(original_string, options)
         self.index = options[:original_value].to_i
       end
 

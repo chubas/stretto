@@ -204,7 +204,7 @@ grammar StrettoSyntax
   end
 
   rule tempo
-    'T' variable_or_integer
+    kind:'T' value:variable_or_integer <Stretto::Tokens::ModifierToken>
   end
 
   rule pitch_wheel

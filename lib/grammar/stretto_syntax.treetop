@@ -224,7 +224,7 @@ grammar StrettoSyntax
   end
 
   rule timing_info
-    '@' variable_or_integer
+    kind:'@' value:variable_or_integer <Stretto::Tokens::ModifierToken>
   end
 
   rule variable_definition

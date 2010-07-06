@@ -4,6 +4,7 @@ require File.join(File.dirname(__FILE__), '../../music_elements/layer_change')
 require File.join(File.dirname(__FILE__), '../../music_elements/tempo')
 require File.join(File.dirname(__FILE__), '../../music_elements/pitch_wheel')
 require File.join(File.dirname(__FILE__), '../../music_elements/channel_pressure')
+require File.join(File.dirname(__FILE__), '../../music_elements/timing')
 
 module Stretto
   module Tokens
@@ -23,6 +24,8 @@ module Stretto
             Stretto::MusicElements::PitchWheel
           when '+'
             Stretto::MusicElements::ChannelPressure
+          when '@'
+            Stretto::MusicElements::Timing
         end
         klass.new(text_value, :original_value => value.text_value)
       end

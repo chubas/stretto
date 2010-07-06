@@ -5,6 +5,8 @@ module Stretto
 
     class Instrument < MusicElement
 
+      MAX_INSTRUMENT_VALUE = 127
+
       attr_reader :value
 
       def initialize(original_string, options = {})
@@ -13,8 +15,8 @@ module Stretto
       end
 
       def value=(value)
-        if value < 0 or value > 127
-          raise Exceptions::ValueOutOfBoundsException.new("Instrument value should be in range 0..127")
+        if value < 0 or value > MAX_INSTRUMENT_VALUE
+          raise Exceptions::ValueOutOfBoundsException.new("Instrument value should be in range 0..#{MAX_INSTRUMENT_VALUE}")
         end
         @value = value
       end

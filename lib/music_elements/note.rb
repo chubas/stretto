@@ -30,11 +30,14 @@ module Stretto
                       '#'  =>  1,
                       '##' =>  2 }
 
+      MAX_PITCH      = 127
+
       DEFAULT_OCTAVE = 5
 
       DEFAULT_ATTACK = 0
       DEFAULT_DECAY  = 0
 
+      # TODO: Redefine pitch instead of value
       attr_reader :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
                   :key, :accidental, :duration, :octave, :value
 
@@ -121,7 +124,7 @@ module Stretto
 
       # Sets the decimal value (pitch) of the note, but raises an error if it's out of range (0...127)
       def value=(value)
-        raise Exceptions::NoteOutOfBoundsException if value < 0 or value > 127
+        raise Exceptions::NoteOutOfBoundsException if value < 0 or value > MAX_PITCH
         @value = value
       end
 

@@ -212,11 +212,11 @@ grammar StrettoSyntax
   end
 
   rule channel_pressure
-    '+' variable_or_integer
+    kind:'+' value:variable_or_integer <Stretto::Tokens::ModifierToken>
   end
 
   rule polyphonic_pressure
-    '*' variable_or_integer ',' variable_or_integer
+    '*' pitch:variable_or_integer ',' value:variable_or_integer <Stretto::Tokens::PolyphonicPressureToken>
   end
 
   rule controller_change

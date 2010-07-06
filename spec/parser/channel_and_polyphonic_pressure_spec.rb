@@ -21,6 +21,12 @@ describe "parsing channel and polyphonic pressures" do
       Stretto::Parser.new("*100,").should_not be_valid
       Stretto::Parser.new("*,100").should_not be_valid
     end
+
+    it "should allow values as variables for polyphonic pressure" do
+      Stretto::Parser.new("*[SOME_VAR],10").should be_valid
+      Stretto::Parser.new("*10,[SOME_VAR]").should be_valid
+      Stretto::Parser.new("*[SOME_VAR],[SOME_OTHER_VAR]").should be_valid
+    end
   end
 
 end

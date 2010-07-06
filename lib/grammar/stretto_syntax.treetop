@@ -208,7 +208,7 @@ grammar StrettoSyntax
   end
 
   rule pitch_wheel
-    '&' variable_or_integer
+    kind:'&' value:variable_or_integer <Stretto::Tokens::ModifierToken>
   end
 
   rule channel_pressure

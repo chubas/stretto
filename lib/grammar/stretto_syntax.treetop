@@ -220,7 +220,7 @@ grammar StrettoSyntax
   end
 
   rule controller_change
-    'X' variable_or_integer '=' variable_or_integer
+    'X' controller:variable_or_integer '=' value:variable_or_integer <Stretto::Tokens::ControllerChangeToken>
   end
 
   rule timing_info

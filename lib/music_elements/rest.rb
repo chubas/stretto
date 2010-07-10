@@ -6,7 +6,7 @@ module Stretto
 
       include Duration
 
-      attr_reader :original_duration, :duration
+      attr_reader :original_duration
 
       def initialize(original_string, options = {})
         super(original_string, options)

@@ -9,13 +9,19 @@ module Stretto
       include Stretto::Node
 
       attr_reader :original_string
+      attr_reader :pattern
+
+      def initialize(original_string, options = {})
+        @original_string = original_string
+        @pattern = options[:pattern]
+      end
 
       def to_s
         original_string || build_music_string
       end
 
       def build_music_string
-        raise "Not implemented"
+        raise "build_music_string not implemented in #{self.class}"
       end
 
       alias inspect to_s
@@ -26,6 +32,17 @@ module Stretto
 
       def end_of_tie?
         true
+      end
+
+      # TODO: Big TODO - Change this method's name for a callback.
+      # This method should not exist. Element state should be independent of presence of @pattern, and
+      # values that need a definite value of pattern should raise an error instead
+      def substitute_variables!
+      end
+
+      def pattern=(pattern)
+        @pattern = pattern
+        substitute_variables! # TODO: Remove this call
       end
 
     end

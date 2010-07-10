@@ -39,10 +39,9 @@ module Stretto
 
       # TODO: Redefine pitch instead of value
       attr_reader :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
-                  :key, :accidental, :duration, :octave, :value
+                  :key, :accidental, :octave
 
-      attr_reader :original_attack, :original_decay,
-                  :attack, :decay
+      attr_reader :original_attack, :original_decay
 
       attr_reader :key_signature
 
@@ -52,25 +51,35 @@ module Stretto
         @original_value           = options[:original_value]
         @original_accidental      = options[:original_accidental]
         @original_octave          = options[:original_octave]
-        build_note_elements
         build_duration_from_token(options[:original_duration_token])
         build_attack(options[:original_attack])
         build_decay(options[:original_decay])
       end
 
       def +(interval)
-        Note.new nil,
-                 :original_value          => @value + interval,
-                 :original_duration_token => @original_duration_token,
-                 :original_attack         => @original_attack,
-                 :original_decay          => @original_decay
+        if @original_value.has_value?
+          Note.new "#{@original_string}+#{interval}",
+                   :original_value          => @original_value + interval,
+                   :original_duration_token => @original_duration_token,
+                   :original_attack         => @original_attack,
+                   :original_decay          => @original_decay
+        else
+          new_value = calculate_value_from_key_octave_and_accidental(@key, @octave, @accidental) + interval + (key_signature_increment || 0)
+          new_value_token = Stretto::Value.new(Stretto::Value::NumericValue.new(new_value))
+          Note.new "#{@original_string}+#{interval}",
+                   :original_value          => new_value_token,
+                   :original_duration_token => @original_duration_token,
+                   :original_attack         => @original_attack,
+                   :original_decay          => @original_decay
+        end
       end
 
+      # TODO: Revisit the semantics of ==
       def ==(other)
         other.value == value rescue false
       end
 
-      # TODO: Revisit the semantics of ==
+      # TODO: Revisit the semantics of eql?
       def eql?(other)
         other.value.eql?(value) rescue false
       end
@@ -81,20 +90,44 @@ module Stretto
 
       def key_signature=(key_signature)
         @key_signature = key_signature
-        if key_signature
-          increment = key_signature.modifier_for(@original_key)
-          if increment
-            self.value += increment unless accidental
-          end
+        increment = key_signature_increment
+        self.value += key_signature_increment if increment
+      end
+
+      def key_signature_increment
+        if @key_signature and !@accidental
+          @key_signature.modifier_for(@original_key)
+        else
+          nil
         end
       end
-      
+
+      def attack
+        @original_attack.to_i(@pattern) || DEFAULT_ATTACK
+      end
+
+      def decay
+        @original_decay.to_i(@pattern) || DEFAULT_DECAY
+      end
+
+      def original_value
+        if @original_value.has_value?
+          @original_value.to_s
+        end
+      end
+
+      # TODO: Raise value if it cannot be calculated beforehand (Original value should never be nil)
+      def value
+        @value
+      end
+
       private
 
       KEYS_FOR_VALUES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
-      def build_note_elements
-        if @original_value
-          self.value   = @original_value.to_i
+
+      def build_value
+        if @original_value.has_value?
+          self.value   = @original_value.to_i(@pattern)
           @key         = KEYS_FOR_VALUES[@value % 12]
           @octave      = calculate_octave_from_value(@value)
           @accidental  = calculate_accidental_from_value(@value)
@@ -123,6 +156,7 @@ module Stretto
       end
 
       # Sets the decimal value (pitch) of the note, but raises an error if it's out of range (0...127)
+      # TODO: Raise error if nil
       def value=(value)
         raise Exceptions::NoteOutOfBoundsException if value < 0 or value > MAX_PITCH
         @value = value
@@ -130,14 +164,27 @@ module Stretto
 
       def build_attack(original_attack)
         @original_attack = original_attack
-        @attack = (original_attack && original_attack.to_i) || DEFAULT_ATTACK
+      end
+
+      def attack=(attack)
+        @attack = attack || DEFAULT_ATTACK
         raise Exceptions::InvalidValueException.new("Attack should be in the range 0..127") if @attack < 0 or @attack > 127
       end
 
       def build_decay(original_decay)
         @original_decay = original_decay
-        @decay = (original_decay && original_decay.to_i) || DEFAULT_DECAY
+      end
+
+      def decay=(decay)
+        @decay = decay || DEFAULT_DECAY
         raise Exceptions::InvalidValueException.new("Decay should be in the range 0..127") if @decay < 0 or @decay > 127
+      end
+
+      def substitute_variables!
+        self.attack = attack
+        self.decay = decay
+        build_value
+        self.key_signature = @key_signature
       end
 
     end

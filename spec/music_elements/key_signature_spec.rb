@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/../spec_helper'
+
 describe 'Key signatures' do
 
   it "should return a key signature as a music element" do

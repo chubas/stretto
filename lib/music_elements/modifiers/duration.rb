@@ -15,14 +15,24 @@ module Stretto
       DEFAULT_TUPLET_NUMERATOR    = 3
       DEFAULT_TUPLET_DENOMINATOR  = 2
 
-      attr_accessor :original_duration, :duration
-      attr_accessor :start_tie, :end_tie
+      attr_reader :original_duration
+      attr_reader :start_tie, :end_tie
 
+      #-
+      # param duration_token should be a DurationToken element
+      # TODO: Make duration receive Stretto::Value(nil) instead of nil
       def build_duration_from_token(duration_token, default_duration = DEFAULT_DURATION)
         @original_duration_token = duration_token
-        @original_duration       = @original_duration_token.text_value if @original_duration_token
-        @duration                = Duration.parse_duration(@original_duration_token, default_duration)
+        @original_duration       = duration_token ? duration_token.text_value : ''
+        @processed_value         = Duration.parse_duration(@original_duration_token, default_duration)
         build_ties
+      end
+
+      def duration
+        case @processed_value
+          when Stretto::Value then @processed_value.to_f(@pattern)
+          else @processed_value
+        end
       end
 
       def start_of_tie?
@@ -51,32 +61,29 @@ module Stretto
       def tied_duration
         tied_elements.inject(0){|sum, element| sum + element.duration}
       end
-      
+
+      # TODO: Big else case. Refactor
       def self.parse_duration(duration_token, default_duration = DEFAULT_DURATION)
-        duration = case
-          when !duration_token
-            default_duration
-          when duration_token.decimal_value
-            duration_token.decimal_value.to_f
-          when duration_token.duration_character
-            duration_token.duration_character.split('').map do |char_duration| # TODO: deprecation. each_char is only 1.9+
-              DURATIONS[char_duration]
-            end.sum
-        end
-        if duration_token
+        if !duration_token
+          default_duration
+        elsif duration_token.value
+          duration_token.value
+        else
+          # It comes as a character + modifiers
+          duration = duration_token.duration_character.split('').map do |char_duration| # TODO: deprecation. each_char is only 1.9+
+            DURATIONS[char_duration]
+          end.sum
           original_duration = duration
           duration_token.dots.times do |dot_duration|
-            duration += (original_duration * Rational(1,  2 ** (dot_duration + 1)))  
+            duration += (original_duration * Rational(1,  2 ** (dot_duration + 1)))
           end
-
-
           if duration_token.tuplet
             numerator = duration_token.tuplet[:numerator]     || DEFAULT_TUPLET_NUMERATOR
             denominator = duration_token.tuplet[:denominator] || DEFAULT_TUPLET_DENOMINATOR
             duration *= Rational(denominator.to_i, numerator.to_i)
           end
+          duration
         end
-        duration
       end
 
       private

@@ -4,11 +4,13 @@ module Stretto
   module Tokens
     class PolyphonicPressureToken < Treetop::Runtime::SyntaxNode
 
-      def to_stretto
+      def to_stretto(pattern = nil)
         Stretto::MusicElements::PolyphonicPressure.new(
             text_value,
             :original_pitch => pitch.text_value,
-            :original_value => value.text_value)
+            :original_value => value.text_value,
+            :pattern        => pattern
+        )
       end
 
     end

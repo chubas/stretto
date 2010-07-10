@@ -105,7 +105,9 @@ describe "note and chord durations" do
     end
 
     context "when using literal duration value" do
-      it "should return correct duration when using a named variable duration"
+      it "should return correct duration when using a named variable duration" do
+        Stretto::Pattern.new("$MY_VAR=0.5 C/[MY_VAR]")[1].duration.should be == 0.5
+      end
     end
   end
 end

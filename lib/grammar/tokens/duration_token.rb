@@ -21,8 +21,8 @@ module Stretto
         duration_string.duration_character
       end
 
-      def decimal_value
-        duration_string.decimal_value.text_value if duration_string.decimal_value and duration_string.decimal_value.text_value.present?
+      def value
+        Stretto::Value.new(duration_string.value.wrap) if duration_string.value
       end
 
       def dots

@@ -5,11 +5,21 @@ module Stretto
 
     class Timing < MusicElement
 
-      attr_reader :value
-
       def initialize(original_string, options = {})
         super(original_string, options)
-        @value = options[:original_value].to_i
+        @original_value = options[:value]
+      end
+
+      def value=(value)
+        @value = value
+      end
+
+      def value
+        @original_value.to_i(@pattern)
+      end
+
+      def substitute_variables!
+        self.value = value
       end
 
     end

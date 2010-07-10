@@ -7,11 +7,9 @@ module Stretto
 
       MAX_PITCH_WHEEL_VALUE = 16383
 
-      attr_reader :value
-
       def initialize(original_string, options = {})
         super(original_string, options)
-        self.value = options[:original_value].to_i
+        @original_value = options[:value]
       end
 
       def value=(value)
@@ -19,6 +17,14 @@ module Stretto
           raise Exceptions::ValueOutOfBoundsException.new("Pitch wheel should be in range 0..#{MAX_PITCH_WHEEL_VALUE}")
         end
         @value = value
+      end
+
+      def value
+        @original_value.to_i(@pattern)
+      end
+
+      def substitute_variables!
+        self.value = value
       end
 
     end

@@ -47,39 +47,21 @@ grammar StrettoSyntax
   end
 
   rule note_string
-    note_key _octave:octave? {
-      def key
-        note_key.key.text_value
-      end
+    note_key _octave:octave? <Stretto::Tokens::NoteKeyOctaveAndAccidentalToken>
+    /
+    '[' _value:integer_or_variable_name ']' <Stretto::Tokens::NoteValueToken>
+  end
 
-      def accidental
-        note_key.accidental.text_value if note_key.accidental and note_key.accidental.text_value.present?
-      end
-
-      def value
-        nil
-      end
-
-      def octave
-        _octave.text_value if _octave and _octave.text_value.present?
+  rule integer_or_variable_name
+    integer {
+      def is_numeric?
+        true
       end
     }
     /
-    "[" _value:(integer / variable_name) "]" {
-      def accidental
-        nil
-      end
-
-      def octave
-        nil
-      end
-
-      def key
-        nil
-      end
-
-      def value
-        _value.text_value
+    variable_name {
+      def is_numeric?
+        false
       end
     }
   end
@@ -140,12 +122,12 @@ grammar StrettoSyntax
         _tuplet if _tuplet.text_value.present?
       end
 
-      def decimal_value
+      def value
         nil
       end
     }
     /
-    '/' _decimal_value:variable_or_decimal {
+    '/' _value:variable_or_decimal {
       def duration_character
         nil
       end
@@ -158,8 +140,8 @@ grammar StrettoSyntax
         nil
       end
 
-      def decimal_value
-        _decimal_value
+      def value
+        _value
       end
     }
   end
@@ -229,15 +211,19 @@ grammar StrettoSyntax
 
   rule variable_definition
     # It can be set to a integer also, but decimal handles that case
-    '$' variable_name '=' variable_or_decimal
+    '$' name:variable_name '=' value:variable_or_decimal <Stretto::Tokens::VariableDefinitionToken>
   end
 
   rule variable_or_integer
-    variable / integer
+    variable <Stretto::Tokens::VariableToken>
+    /
+    integer <Stretto::Tokens::NumericToken>
   end
 
   rule variable_or_decimal
-    variable / decimal
+    variable <Stretto::Tokens::VariableToken>
+    /
+    decimal <Stretto::Tokens::NumericToken>
   end
 
   rule integer

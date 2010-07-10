@@ -11,20 +11,22 @@ module Stretto
       include WithNoteStringToken
       include WithAttackDecayToken
 
-      def to_stretto
-        Stretto::MusicElements::Chord.new(text_value,
-          :base_note => {
-            :original_string        => note_string.text_value,
-            :original_octave        => octave,
-            :original_accidental    => accidental,
-            :original_key           => key,
-            :original_value         => value,
-            :original_attack        => attack,
-            :original_decay         => decay
-          },
-          :original_duration_token  => duration,
-          :named_chord              => named_chord.text_value,
-          :original_inversions      => inversions
+      def to_stretto(pattern = nil)
+        Stretto::MusicElements::Chord.new(
+            text_value,
+            :base_note => {
+                :original_string        => note_string.text_value,
+                :original_octave        => octave,
+                :original_accidental    => accidental,
+                :original_key           => key,
+                :original_value         => value,
+                :original_attack        => attack,
+                :original_decay         => decay
+            },
+            :original_duration_token  => duration,
+            :named_chord              => named_chord.text_value,
+            :original_inversions      => inversions,
+            :pattern                  => pattern
         )
       end
 

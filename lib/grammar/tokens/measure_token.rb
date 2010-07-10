@@ -5,8 +5,11 @@ module Stretto
 
    class MeasureToken < Treetop::Runtime::SyntaxNode
 
-     def to_stretto
-       Stretto::MusicElements::Measure.new(text_value)
+     def to_stretto(pattern = nil)
+       Stretto::MusicElements::Measure.new(
+           text_value,
+           :pattern => pattern
+       )
      end
 
    end

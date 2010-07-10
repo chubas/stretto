@@ -56,6 +56,18 @@ describe "attack and decay velocities" do
     chord.decay.should == 0
   end
 
-  it "should return attack and decay velocities expressed as variables"
+  it "should return attack velocity expressed as variable" do
+    Stretto::Pattern.new("$MY_VAR=60 Ca[MY_VAR]d40")[1].attack.should be == 60
+  end
+
+  it "should return decay velocity expressed as variable" do
+    Stretto::Pattern.new("$MY_VAR=40 Ca60d[MY_VAR]")[1].decay.should be == 40
+  end
+
+  it "should return attack and decay velocities expressed as variables" do
+    note = Stretto::Pattern.new("$MY_ATTACK=60 $MY_DECAY=40 Cmaja[MY_ATTACK]d[MY_DECAY]")[2]
+    note.attack.should be == 60
+    note.decay.should be == 40
+  end
 
 end

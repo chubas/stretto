@@ -1,3 +1,5 @@
+require File.join(File.dirname(__FILE__), '../../music_elements/modifiers/value')
+
 require File.join(File.dirname(__FILE__), '../../music_elements/instrument')
 require File.join(File.dirname(__FILE__), '../../music_elements/voice_change')
 require File.join(File.dirname(__FILE__), '../../music_elements/layer_change')
@@ -10,7 +12,7 @@ module Stretto
   module Tokens
     class ModifierToken < Treetop::Runtime::SyntaxNode
 
-      def to_stretto
+      def to_stretto(pattern = nil)
         klass = case kind.text_value
           when 'I'
             Stretto::MusicElements::Instrument
@@ -27,7 +29,11 @@ module Stretto
           when '@'
             Stretto::MusicElements::Timing
         end
-        klass.new(text_value, :original_value => value.text_value)
+        klass.new(
+            text_value,
+            :value   => Value.new(value.wrap),
+            :pattern => pattern
+        )
       end
 
     end

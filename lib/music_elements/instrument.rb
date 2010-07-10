@@ -7,18 +7,23 @@ module Stretto
 
       MAX_INSTRUMENT_VALUE = 127
 
-      attr_reader :value
-
       def initialize(original_string, options = {})
         super(original_string, options)
-        self.value = options[:original_value].to_i
+        @original_value = options[:value]
       end
 
       def value=(value)
         if value < 0 or value > MAX_INSTRUMENT_VALUE
           raise Exceptions::ValueOutOfBoundsException.new("Instrument value should be in range 0..#{MAX_INSTRUMENT_VALUE}")
         end
-        @value = value
+      end
+
+      def value
+        @original_value.to_i(@pattern)
+      end
+
+      def substitute_variables!
+        self.value = value
       end
 
     end

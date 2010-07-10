@@ -18,8 +18,14 @@ describe "handling instruments" do
   end
 
   context "when using variable value" do
-    it "should return the correct value"
-    it "should not allow a value higher than 127"
+    it "should return the correct value" do
+      Stretto::Pattern.new("$MY_VAR=20 I[MY_VAR]")[1].value.should be == 20
+    end
+
+    it "should not allow a value higher than 127" do
+      lambda{ Stretto::Pattern.new("$MY_VALUE=128 I[MY_VALUE]") }.should raise_error(Stretto::Exceptions::ValueOutOfBoundsException, /instrument/i)
+    end
+
     it "should accept the predefined variables according to the JFugue guide"
   end
 

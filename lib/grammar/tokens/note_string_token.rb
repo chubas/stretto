@@ -1,24 +1,7 @@
 module Stretto
   module Tokens
-    module NoteStringToken
 
-      def octave
-        super.text_value if super and super.text_value.present?
-      end
-
-      def accidental
-        super.text_value if super and super.text_value.present?
-      end
-
-      def key
-        super.text_value if super and super.text_value.present?
-      end
-
-      def value
-        super.text_value if super and super.text_value.present?
-      end
-
-    end
+    # TODO: Remove from Tokens Section, or create a new file now that NoteStringToken has disappeared
 
     module WithNoteStringToken
       def octave
@@ -33,6 +16,7 @@ module Stretto
         note_string.key
       end
 
+      # Optimize: Validates only accepts Stretto::Value
       def value
         note_string.value
       end

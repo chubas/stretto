@@ -22,6 +22,8 @@ describe "tempo changes" do
     tempo.bpm.should be == 120
   end
 
-  it "should correctly return its value if given as a constant"
+  it "should correctly return its value if given as a constant" do
+    Stretto::Pattern.new("$MY_VAR=150 T[MY_VAR]")[1].value.should be == 150
+  end
 
 end

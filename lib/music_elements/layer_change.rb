@@ -11,7 +11,8 @@ module Stretto
 
       def initialize(original_string, options = {})
         super(original_string, options)
-        self.index = options[:original_value].to_i
+        @original_value = options[:value]
+        self.index      = @original_value.to_i(@pattern)
       end
 
       def index=(index)

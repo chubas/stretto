@@ -7,10 +7,12 @@ module Stretto
 
       include WithDurationToken
 
-      def to_stretto
+      # OPTIMIZE: Validates that duration is always a duration token, wrapping a nil value if needed
+      def to_stretto(pattern = nil)
         Stretto::MusicElements::Rest.new(
             text_value, 
-            :original_duration_token => duration
+            :original_duration_token  => duration,
+            :pattern                  => pattern
         )
       end
 

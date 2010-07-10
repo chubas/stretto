@@ -11,7 +11,7 @@ module Stretto
       include WithNoteStringToken
       include WithAttackDecayToken
 
-      def to_stretto
+      def to_stretto(pattern = nil)
         Stretto::MusicElements::Note.new(
             text_value,
             :original_duration_token  => duration,
@@ -20,8 +20,9 @@ module Stretto
             :original_octave          => octave,
             :original_value           => value,
             :original_attack          => attack,
-            :original_decay           => decay
-          )
+            :original_decay           => decay,
+            :pattern                  => pattern
+        )
       end
 
     end

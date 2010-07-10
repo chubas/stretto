@@ -43,9 +43,22 @@ describe "parsing durations" do
       Stretto::Parser.new("C/1").should be_valid
     end
 
+    it "should allow numeric duration specified with variable notation" do
+      Stretto::Parser.new("C/[SOME_VAR]").should be_valid
+      Stretto::Parser.new("Cmaj/[SOME_VAR]").should be_valid
+    end
+
     it "should not allow dotted duration with numeric values" do
       Stretto::Parser.new("C/0.25.").should_not be_valid
       Stretto::Parser.new("Cmaj/1.").should_not be_valid
+      Stretto::Parser.new("C/[SOME_VAR].").should_not be_valid
+    end
+
+    it "should not allow tuplets with numeric value" do
+      Stretto::Parser.new("C/0.25*").should_not be_valid
+      Stretto::Parser.new("C/0.25*2:3").should_not be_valid
+      Stretto::Parser.new("C/[SOME_VAR]*").should_not be_valid
+      Stretto::Parser.new("C/[SOME_VAR]*2:3").should_not be_valid
     end
   end
 
@@ -70,7 +83,6 @@ describe "parsing durations" do
       Stretto::Parser.new("C/1.0*3:4").should_not be_valid
     end
 
-    # TODO: Check this
     it "should not allow tuplets in notes with the default duration" do
       Stretto::Parser.new("C*").should_not be_valid
       Stretto::Parser.new("Cmaj*").should_not be_valid

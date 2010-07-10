@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'voice')
 
 module Stretto
 
-  # Composition is a series of MusicElements, that hold a context (like tied notes or key signature modifications)
+  # Pattern is a series of MusicElements, that hold a context (like tied notes or key signature modifications)
   # Is the equivalent of the JFugue implementation <tt>Pattern</tt>.
   #-
   # NOTE: This class behavior is not definite, and may change during the development of Stretto
@@ -12,13 +12,14 @@ module Stretto
 
     DEFAULT_VOICE_INDEX = 0
 
-    attr_reader :voices
+    attr_reader :voices, :variables # TODO: Limit access to variables
 
     def initialize(music_string = "")
       @parser           = Stretto::Parser.new(music_string)
       @voices           = { }
+      @variables        = { }
       @__key_signature  = nil
-      @parser.to_stretto.each { |music_element| self << music_element }
+      @parser.to_stretto(self).each { |music_element| self << music_element }
     end
 
     def elements
@@ -26,12 +27,18 @@ module Stretto
     end
 
     def <<(other)
+      other.pattern = self
       if last
         last.next   = other
         other.prev  = last
       end
+
       other.key_signature = @__key_signature if other.respond_to?(:key_signature=)
       @__key_signature = other if other.kind_of?(MusicElements::KeySignature)
+
+      if other.kind_of?(MusicElements::VariableDefinition)
+        @variables[other.name] = other.value
+      end
 
       if other.kind_of?(MusicElements::VoiceChange)
         @current_voice = (@voices[other.index] ||= Voice.new)
@@ -44,6 +51,10 @@ module Stretto
 
     def voice(index)
       @voices[index]
+    end
+
+    def variable(name)
+      @variables[name] || raise(Exceptions::VariableNotDefinedException.new("Variable '#{name}' not defined in pattern"))
     end
 
   end

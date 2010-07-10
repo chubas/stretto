@@ -5,7 +5,7 @@ describe "parsing timing information" do
     Stretto::Parser.new("@2000").should be_valid
   end
 
-  it "should parse timing information with a constant" do
+  it "should parse timing information with a variable" do
     Stretto::Parser.new("@[MY_VAR]").should be_valid
   end
 end

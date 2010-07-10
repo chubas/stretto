@@ -50,7 +50,7 @@ describe "building notes" do
     end
   end
 
-  context "parsing notes with constant value syntax" do
+  context "parsing notes with variable value syntax" do
     it "should correctly parse note values" # Add test when variables are implemented
   end
 

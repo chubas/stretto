@@ -6,7 +6,7 @@ describe "parsing controller changes" do
     Stretto::Parser.new("X25=[MY_VAR]").should be_valid
   end
 
-  it "should allow controller value change with constant notation" do
+  it "should allow controller value change with variable notation" do
     Stretto::Parser.new("X[MY_VAR]=30").should be_valid
     Stretto::Parser.new("X[MY_VAR]=30").should be_valid
   end

@@ -9,6 +9,20 @@ describe "parsing constants" do
         Stretto::Parser.new("[MY_VAR]w-").should be_valid
         Stretto::Parser.new("[MY_VAR]q+[OTHER_VAR]h_[MORE_VAR]w").should be_valid
       end
+
+      it "should validates that constant names start with a letter or underscore, and contain only letters, digits and underscores" do
+        Stretto::Parser.new("[Myvar]").should be_valid
+        Stretto::Parser.new("[myvar]").should be_valid
+        Stretto::Parser.new("[my_var]").should be_valid
+        Stretto::Parser.new("[MY_VAR2]").should be_valid
+        Stretto::Parser.new("[MY_VAR_]").should be_valid
+        Stretto::Parser.new("[_MY_VAR]").should be_valid
+
+        Stretto::Parser.new("[]").should_not be_valid
+        Stretto::Parser.new("[4_VAR]").should_not be_valid
+        Stretto::Parser.new("[*MY_VAR]").should_not be_valid
+        Stretto::Parser.new("[MY_VAR~]").should_not be_valid
+      end
       
       it "should allow constants in note duration definition, when using a fixed value" do
         Stretto::Parser.new("C6/[MY_VAR]").should be_valid

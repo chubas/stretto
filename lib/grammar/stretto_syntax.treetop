@@ -249,11 +249,11 @@ grammar StrettoSyntax
   end
 
   rule variable
-    '[' variable_name ']'
+    '[' name:variable_name ']'
   end
 
   rule variable_name
-    [A-Za-z_]+
+    [A-Za-z_] [A-Za-z0-9_]+
   end
 
   rule space

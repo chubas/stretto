@@ -19,6 +19,8 @@ describe "channel presure" do
     channel_pressures[1].value.should be == 120
   end
 
-  it "should return correct value when given as a constant value"
+  it "should return correct value when given as a variable value" do
+    Stretto::Pattern.new("$MY_VAR=80 &[MY_VAR]")[1].value.should be == 80
+  end
   
 end

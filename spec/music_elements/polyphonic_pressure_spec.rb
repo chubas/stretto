@@ -26,6 +26,16 @@ describe "polyphonic pressure" do
     Stretto::Pattern.new("*80,100")[0].value.should be == 100
   end
 
-  it "should return its variable correctly when using constant notation"
+  it "should return its variable correctly when using variable notation" do
+    elements = Stretto::Pattern.new("$MY_PITCH=80 $MY_VALUE=100 *[MY_PITCH],60 *60,[MY_VALUE] *[MY_PITCH],[MY_VALUE]")
+    elements[2].pitch.should be == 80
+    elements[2].value.should be == 60
+
+    elements[3].pitch.should be == 60
+    elements[3].value.should be == 100
+
+    elements[4].pitch.should be == 80
+    elements[4].value.should be == 100
+  end
 
 end

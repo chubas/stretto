@@ -7,8 +7,8 @@ module Stretto
       def to_stretto(pattern)
         Stretto::MusicElements::ControllerChange.new(
             text_value,
-            :original_controller  => controller.text_value,
-            :original_value       => value.text_value,
+            :original_controller  => Stretto::Value.new(controller.wrap),
+            :original_value       => Stretto::Value.new(value.wrap),
             :pattern              => pattern
         )
       end

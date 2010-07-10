@@ -7,8 +7,8 @@ module Stretto
       def to_stretto(pattern = nil)
         Stretto::MusicElements::PolyphonicPressure.new(
             text_value,
-            :original_pitch => pitch.text_value,
-            :original_value => value.text_value,
+            :original_pitch => Stretto::Value.new(pitch.wrap),
+            :original_value => Stretto::Value.new(value.wrap),
             :pattern        => pattern
         )
       end

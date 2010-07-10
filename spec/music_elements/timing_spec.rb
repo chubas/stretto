@@ -12,6 +12,8 @@ describe "timing information" do
     Stretto::Pattern.new("@1000")[0].value.should be == 1000
   end
 
-  it "should return value correctly when specified in constant notation"
+  it "should return value correctly when specified in constant notation" do
+    Stretto::Pattern.new("$MY_VAR=5000 @[MY_VAR]")[1].value.should be == 5000
+  end
 
 end

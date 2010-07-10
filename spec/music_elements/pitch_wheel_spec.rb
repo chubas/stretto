@@ -19,5 +19,7 @@ describe "pitch wheel modifier" do
     pitch_wheels[2].value.should be == 16383
   end
 
-  it "should return value correctly when using a constant value"
+  it "should return value correctly when using a constant value" do
+    Stretto::Pattern.new("$MY_VAR=80 &[MY_VAR]")[1].value.should be == 80
+  end
 end

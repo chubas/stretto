@@ -69,6 +69,20 @@ describe "voice objects" do
     pattern.voices[0].should have(6).elements
   end
 
+  context "when using predefined values for percussion track" do
+    it "should accept the percussion predefined variables" do
+        Stretto::Pattern.new(<<-PERCUSSION).map(&:pitch).should be == [*35..81]
+          [ACOUSTIC_BASE_DRUM] [BASS_DRUM] [SIDE_KICK] [ACOUSTIC_SNARE] [HAND_CLAP] [ELECTRIC_SNARE] [LOW_FLOOR_TOM]
+          [CLOSED_HI_HAT] [HIGH_FLOOR_TOM] [PEDAL_HI_TOM] [LOW_TOM] [OPEN_HI_HAT] [LOW_MID_TOM] [HI_MID_TOM]
+          [CRASH_CYMBAL_1] [HIGH_TOM] [RIDE_CYMBAL_1] [CHINESE_CYMBAL] [RIDE_BELL] [TAMBOURINE] [SPLASH_CYMBAL]
+          [COWBELL] [CRASH_CYMBAL_2] [VIBRASLAP] [RIDE_CYMBAL_2] [HI_BONGO] [LOW_BONGO] [MUTE_HI_CONGA]
+          [OPEN_HI_CONGA] [LOW_CONGO] [HIGH_TIMBALE] [LOW_TIMBALE] [HIGH_AGOGO] [LOW_AGOGO] [CABASA] [MARACAS]
+          [SHORT_WHISTLE] [LONG_WHISTLE] [SHORT_GUIRO] [LONG_GUIRO] [CLAVES] [HI_WOOD_BLOCK] [LOW_WOOD_BLOCK]
+          [MUTE_CUICA] [OPEN_CUICA] [MUTE_TRIANGLE] [OPEN_TRIANGLE]
+        PERCUSSION
+      end
+  end
+
   # TODO: Not sure about this. What is better approach?
   it "should tie correctly notes separated by a voice"
   it "should adjust correctly the next and prev elements of voice elements"

@@ -8,6 +8,7 @@ describe 'Key signatures' do
 
   context "when interacting with elements in a composition" do
 
+    # TODO: Reconsider this, and make this consistent with default voice, instrument, etc.
     it "should not have a default key signature (even Cmaj is default, it should not build an element)" do
       notes = Stretto::Pattern.new("C D E F G A B")
       notes.each { |note| note.key_signature.should be_nil }
@@ -330,8 +331,21 @@ describe 'Key signatures' do
   end
 
   context "when using it on a multi voice composition" do
-    it "should affect only the track it is applied to"
-    it "should reset the key signature per track independently"
+    it "should affect only the value it is applied to" do
+      pattern = Stretto::Pattern.new("KGmaj F  V1 F")
+      pattern[1].value.should be == 66 # F#
+      pattern[3].value.should be == 65 # F
+    end
+    
+    it "should reset the key signature per track independently" do
+      pattern = Stretto::Pattern.new("V0 KGmaj F V1 F V0 KCmaj F V1 KGmaj F")
+      pattern[2].value.should be == 66
+      pattern[4].value.should be == 65
+      pattern[7].value.should be == 65
+      pattern[10].value.should be == 66
+    end
+
+    it "should not affect each layer individually?"
   end
 
 end

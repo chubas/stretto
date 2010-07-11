@@ -18,7 +18,7 @@ module Stretto
       @parser           = Stretto::Parser.new(music_string)
       @voices           = { }
       @variables        = { }
-      @__key_signature  = nil
+      @__key_signature  = { }
       @__instruments    = { }
       @parser.to_stretto(self).each { |music_element| self << music_element }
     end
@@ -34,9 +34,6 @@ module Stretto
         other.prev  = last
       end
 
-      other.key_signature = @__key_signature if other.respond_to?(:key_signature=)
-      @__key_signature = other if other.kind_of?(MusicElements::KeySignature)
-
       if other.kind_of?(MusicElements::VariableDefinition)
         @variables[other.name] = other.value
       end
@@ -46,6 +43,12 @@ module Stretto
       else
         @voices[DEFAULT_VOICE_INDEX] = @current_voice = Voice.new(DEFAULT_VOICE_INDEX) unless @current_voice
         @current_voice << other
+      end
+
+      if other.kind_of?(MusicElements::KeySignature)
+        @__key_signature[@current_voice.index] = other
+      else
+        other.key_signature = @__key_signature[@current_voice.index] if other.respond_to?(:key_signature=)
       end
 
       if other.kind_of?(MusicElements::Instrument)

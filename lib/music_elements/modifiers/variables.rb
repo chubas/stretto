@@ -208,8 +208,25 @@ module Stretto
       'MUTE_TRIANGLE'       => 80,
       'OPEN_TRIANGLE'       => 81,
     }
-    
-    PREDEFINED_VARIABLES = INSTRUMENT_VARIABLES.merge(PERCUSSION_VARIABLES)
+
+    TEMPO_VARIABLES = {
+      'GRAVE'       => 40,
+      'LARGO'       => 45,
+      'LARGHETTO'   => 50,
+      'LENTO'       => 55,
+      'ADAGIO'      => 60,
+      'ADAGIETTO'   => 65,
+      'ANDANTE'     => 70,
+      'ANDANTINO'   => 80,
+      'MODERATO'    => 95,
+      'ALLEGRETTO'  => 110,
+      'ALLEGRO'     => 120,
+      'VIVACE'      => 145,
+      'PRESTO'      => 180,
+      'PRESTISSIMO' => 220,
+    }
+
+    PREDEFINED_VARIABLES = INSTRUMENT_VARIABLES.merge(PERCUSSION_VARIABLES).merge(TEMPO_VARIABLES)
     
   end
 end

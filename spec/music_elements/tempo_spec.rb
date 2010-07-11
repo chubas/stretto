@@ -26,4 +26,11 @@ describe "tempo changes" do
     Stretto::Pattern.new("$MY_VAR=150 T[MY_VAR]")[1].value.should be == 150
   end
 
+  it "should use the tempo variables predefined by JFugue" do
+    Stretto::Pattern.new(<<-TEMPOS).map(&:value).should be == [40, 45, 50, 55, 60, 65, 70, 80, 95, 110, 120, 145, 180, 220]
+      T[GRAVE] T[LARGO] T[LARGHETTO] T[LENTO] T[ADAGIO] T[ADAGIETTO] T[ANDANTE] T[ANDANTINO]
+      T[MODERATO] T[ALLEGRETTO] T[ALLEGRO] T[VIVACE] T[PRESTO] T[PRESTISSIMO]
+    TEMPOS
+  end
+
 end

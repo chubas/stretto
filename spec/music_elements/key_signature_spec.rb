@@ -27,56 +27,56 @@ describe 'Key signatures' do
         it "should not alter notes if the scale is Cmaj" do
           notes = Stretto::Pattern.new("KCmaj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C D E F G A B")
-          notes.map(&:value).should be == [60, 62, 64, 65, 67, 69, 71]
+          notes.map(&:pitch).should be == [60, 62, 64, 65, 67, 69, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for F when the key signature is Gmaj" do
           notes = Stretto::Pattern.new("KGmaj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C D E F# G A B")
-          notes.map(&:value).should be == [60, 62, 64, 66, 67, 69, 71]
+          notes.map(&:pitch).should be == [60, 62, 64, 66, 67, 69, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for F, C when the key signature is Dmaj" do
           notes = Stretto::Pattern.new("KDmaj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C# D E F# G A B")
-          notes.map(&:value).should be == [61, 62, 64, 66, 67, 69, 71]
+          notes.map(&:pitch).should be == [61, 62, 64, 66, 67, 69, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for F, C, G when the key signature is Amaj" do
           notes = Stretto::Pattern.new("KAmaj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C# D E F# G# A B")
-          notes.map(&:value).should be == [61, 62, 64, 66, 68, 69, 71]
+          notes.map(&:pitch).should be == [61, 62, 64, 66, 68, 69, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for F, C, G, D when the key signature is Emaj" do
           notes = Stretto::Pattern.new("KEmaj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C# D# E F# G# A B")
-          notes.map(&:value).should be == [61, 63, 64, 66, 68, 69, 71]
+          notes.map(&:pitch).should be == [61, 63, 64, 66, 68, 69, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for F, C, G, D, A when the key signature is Bmaj" do
           notes = Stretto::Pattern.new("KBmaj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C# D# E F# G# A# B")
-          notes.map(&:value).should be == [61, 63, 64, 66, 68, 70, 71]
+          notes.map(&:pitch).should be == [61, 63, 64, 66, 68, 70, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for F, C, G, D, A, E when the key signature is F#maj" do
           notes = Stretto::Pattern.new("KF#maj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C# D# E# F# G# A# B")
-          notes.map(&:value).should be == [61, 63, 65, 66, 68, 70, 71]
+          notes.map(&:pitch).should be == [61, 63, 65, 66, 68, 70, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for F, C, G, D, A, E, B when the key signature is C#maj" do
           notes = Stretto::Pattern.new("KC#maj C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C# D# E# F# G# A# B#")
-          notes.map(&:value).should be == [61, 63, 65, 66, 68, 70, 72]
+          notes.map(&:pitch).should be == [61, 63, 65, 66, 68, 70, 72]
           notes.should be == equivalent_notes
         end
       end
@@ -85,56 +85,56 @@ describe 'Key signatures' do
         it "should not alter notes if the scale is Amin" do
           notes = Stretto::Pattern.new("KAmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C D E F G A B")
-          notes.map(&:value).should be == [60, 62, 64, 65, 67, 69, 71]
+          notes.map(&:pitch).should be == [60, 62, 64, 65, 67, 69, 71]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for B when the key signature is Dmin" do
           notes = Stretto::Pattern.new("KDmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C D E F G A Bb")
-          notes.map(&:value).should be == [60, 62, 64, 65, 67, 69, 70]
+          notes.map(&:pitch).should be == [60, 62, 64, 65, 67, 69, 70]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for B, E when the key signature is Gmin" do
           notes = Stretto::Pattern.new("KGmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C D Eb F G A Bb")
-          notes.map(&:value).should be == [60, 62, 63, 65, 67, 69, 70]
+          notes.map(&:pitch).should be == [60, 62, 63, 65, 67, 69, 70]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for B, E, A when the key signature is Cmin" do
           notes = Stretto::Pattern.new("KCmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C D Eb F G Ab Bb")
-          notes.map(&:value).should be == [60, 62, 63, 65, 67, 68, 70]
+          notes.map(&:pitch).should be == [60, 62, 63, 65, 67, 68, 70]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for B, E, A, D when the key signature is Fmin" do
           notes = Stretto::Pattern.new("KFmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C Db Eb F G Ab Bb")
-          notes.map(&:value).should be == [60, 61, 63, 65, 67, 68, 70]
+          notes.map(&:pitch).should be == [60, 61, 63, 65, 67, 68, 70]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for B, E, A, D, G when the key signature is Bbmin" do
           notes = Stretto::Pattern.new("KBbmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("C Db Eb F Gb Ab Bb")
-          notes.map(&:value).should be == [60, 61, 63, 65, 66, 68, 70]
+          notes.map(&:pitch).should be == [60, 61, 63, 65, 66, 68, 70]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for B, E, A, D, G, C when the key signature is Ebmin" do
           notes = Stretto::Pattern.new("KEbmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("Cb Db Eb F Gb Ab Bb")
-          notes.map(&:value).should be == [59, 61, 63, 65, 66, 68, 70]
+          notes.map(&:pitch).should be == [59, 61, 63, 65, 66, 68, 70]
           notes.should be == equivalent_notes
         end
 
         it "should raise notes half tone for B, E, A, D, G, C, F when the key signature is Abmin" do
           notes = Stretto::Pattern.new("KAbmin C D E F G A B")[1..-1]
           equivalent_notes = Stretto::Pattern.new("Cb Db Eb Fb Gb Ab Bb")
-          notes.map(&:value).should be == [59, 61, 63, 64, 66, 68, 70]
+          notes.map(&:pitch).should be == [59, 61, 63, 64, 66, 68, 70]
           notes.should be == equivalent_notes
         end
       end
@@ -165,7 +165,7 @@ describe 'Key signatures' do
           begin
             it "should ask what to do here"
             # While being enharmonic equivalents (that is, they sound the same due to note transposition),
-            # they don't have the same values. We'll leave their enharmonic equivalent in the opposite scale
+            # they don't have the same pitches. We'll leave their enharmonic equivalent in the opposite scale
             # by now. We should agree if allow this, and/or add whole tones (double sharps or flats) to notes
 
             it "should make G#maj and Abmaj equivalent to Fmin" do
@@ -244,62 +244,62 @@ describe 'Key signatures' do
 
       it "should not alter the note when a sharp is placed in a note already raised by a key signature" do
         notes = Stretto::Pattern.new("KGmaj F F#")[1..-1]
-        notes[0].value.should be == 66
-        notes[1].value.should be == 66
+        notes[0].pitch.should be == 66
+        notes[1].pitch.should be == 66
       end
 
       it "should not lower the note when a flat is placed in a note already lowered by a key signature" do
         notes = Stretto::Pattern.new("KDmin B Bb")[1..-1]
-        notes[0].value.should be == 70
-        notes[1].value.should be == 70
+        notes[0].pitch.should be == 70
+        notes[1].pitch.should be == 70
       end
 
       it "should only raise half tone when a double sharp is placed in a note raised by a key signature" do
         notes = Stretto::Pattern.new("KGmaj F F##")[1..-1]
-        notes[0].value.should be == 66
-        notes[1].value.should be == 67
+        notes[0].pitch.should be == 66
+        notes[1].pitch.should be == 67
       end
 
       it "should only lower half tone when a double flat is placed in a note lowered by a key signature" do
         notes = Stretto::Pattern.new("KDmin B Bbb")[1..-1]
-        notes[0].value.should be == 70
-        notes[1].value.should be == 69
+        notes[0].pitch.should be == 70
+        notes[1].pitch.should be == 69
       end
 
       it "should leave the note in its natural state when there is a natural accidental in a major key signature" do
         notes = Stretto::Pattern.new("KGmaj F Fn")[1..-1]
-        notes[0].value.should be == 66
-        notes[1].value.should be == 65
+        notes[0].pitch.should be == 66
+        notes[1].pitch.should be == 65
       end
 
       it "should leave the note in its natural state when there is a natural accidental in a minor key signature" do
         notes = Stretto::Pattern.new("KDmin B Bn")[1..-1]
-        notes[0].value.should be == 70
-        notes[1].value.should be == 71
+        notes[0].pitch.should be == 70
+        notes[1].pitch.should be == 71
       end
 
       it "should lower note by half tone as without key signature when a note with flat accidental is raised by a key signature" do
         notes = Stretto::Pattern.new("KGmaj F Fb")[1..-1]
-        notes[0].value.should be == 66
-        notes[1].value.should be == 64
+        notes[0].pitch.should be == 66
+        notes[1].pitch.should be == 64
       end
 
       it "should raise note by half tone as without key signature when a note with sharp accidental is lowered by a key signature" do
         notes = Stretto::Pattern.new("KDmin B B#")[1..-1]
-        notes[0].value.should be == 70
-        notes[1].value.should be == 72
+        notes[0].pitch.should be == 70
+        notes[1].pitch.should be == 72
       end
 
       it "should lower note by one tone as without key signature when a note with double flat accidental is raised by a key signature" do
         notes = Stretto::Pattern.new("KGmaj F Fbb")[1..-1]
-        notes[0].value.should be == 66
-        notes[1].value.should be == 63
+        notes[0].pitch.should be == 66
+        notes[1].pitch.should be == 63
       end
 
       it "should raise note by one tone as without key signature when a note with double sharp accidental is lowered by a key signature" do
         notes = Stretto::Pattern.new("KDmin B B##")[1..-1]
-        notes[0].value.should be == 70
-        notes[1].value.should be == 73
+        notes[0].pitch.should be == 70
+        notes[1].pitch.should be == 73
       end
     end
 
@@ -313,36 +313,36 @@ describe 'Key signatures' do
 
     it "should alter the base note" do
       chord = Stretto::Pattern.new("KGmaj Fmaj")[1]
-      chord.base_note.value.should be == 42
-      chord.notes.map(&:value).should be == [42, 46, 49]
+      chord.base_note.pitch.should be == 42
+      chord.notes.map(&:pitch).should be == [42, 46, 49]
     end
 
     it "should not affect the elements individually, as they lack original key signature" do
       chord = Stretto::Pattern.new("KGmaj Csus4")[1]
-      chord.base_note.value.should be == 36
-      chord.notes.map(&:value).should be == [36, 41, 43] # It should not affect F, which would be 42 otherwise
+      chord.base_note.pitch.should be == 36
+      chord.notes.map(&:pitch).should be == [36, 41, 43] # It should not affect F, which would be 42 otherwise
     end
 
     it "should affect key base note with chord inversions" do
       chord = Stretto::Pattern.new("KGmaj Fmaj^")[1]
-      chord.base_note.value.should be == 42
-      chord.notes.map(&:value).should be == [46, 49, 54]
+      chord.base_note.pitch.should be == 42
+      chord.notes.map(&:pitch).should be == [46, 49, 54]
     end
   end
 
   context "when using it on a multi voice composition" do
-    it "should affect only the value it is applied to" do
+    it "should affect only the pitch it is applied to" do
       pattern = Stretto::Pattern.new("KGmaj F  V1 F")
-      pattern[1].value.should be == 66 # F#
-      pattern[3].value.should be == 65 # F
+      pattern[1].pitch.should be == 66 # F#
+      pattern[3].pitch.should be == 65 # F
     end
     
     it "should reset the key signature per track independently" do
       pattern = Stretto::Pattern.new("V0 KGmaj F V1 F V0 KCmaj F V1 KGmaj F")
-      pattern[2].value.should be == 66
-      pattern[4].value.should be == 65
-      pattern[7].value.should be == 65
-      pattern[10].value.should be == 66
+      pattern[2].pitch.should be == 66
+      pattern[4].pitch.should be == 65
+      pattern[7].pitch.should be == 65
+      pattern[10].pitch.should be == 66
     end
 
     it "should not affect each layer individually?"

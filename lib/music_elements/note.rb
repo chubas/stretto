@@ -7,7 +7,7 @@ module Stretto
     # It is composed of several elements:
     # - key:        Represents the note name (from C to A)
     # - accidental: The modifier of the note (#, ##, b, bb or n)
-    # - value:      The actual numeric value of the note, according to MIDI specification (0 to 127)
+    # - pitch:      The actual numeric pitch of the note, according to MIDI specification (0 to 127)
     # - octave:     Octave in which the note is located. (0 to 10)
     # - duration:   Represents the duration of the whole note, not taking into account ties. Can be one
     #               a letter (w, h, q, i, s, t, x, o), a numeric value or a n-tuplet
@@ -17,13 +17,13 @@ module Stretto
 
       include Duration
 
-      VALUES = { 'C' => 0,
-                 'D' => 2,
-                 'E' => 4,
-                 'F' => 5,
-                 'G' => 7,
-                 'A' => 9,
-                 'B' => 11 }
+      PITCHES = { 'C' => 0,
+                  'D' => 2,
+                  'E' => 4,
+                  'F' => 5,
+                  'G' => 7,
+                  'A' => 9,
+                  'B' => 11 }
 
       ACCIDENTALS = { 'bb' => -2,
                       'b'  => -1,
@@ -37,8 +37,7 @@ module Stretto
       DEFAULT_ATTACK = 0
       DEFAULT_DECAY  = 0
 
-      # TODO: Redefine pitch instead of value
-      attr_reader :original_key, :original_accidental, :original_duration, :original_octave, :original_value,
+      attr_reader :original_key, :original_accidental, :original_duration, :original_octave,
                   :key, :accidental, :octave
 
       attr_reader :original_attack, :original_decay
@@ -48,7 +47,7 @@ module Stretto
       def initialize(original_string, options = {})
         super(original_string, options)
         @original_key             = options[:original_key]
-        @original_value           = options[:original_value]
+        @original_pitch           = options[:original_pitch]
         @original_accidental      = options[:original_accidental]
         @original_octave          = options[:original_octave]
         build_duration_from_token(options[:original_duration_token])
@@ -57,17 +56,17 @@ module Stretto
       end
 
       def +(interval)
-        if @original_value.has_value?
+        if @original_pitch.has_value?
           Note.new "#{@original_string}+#{interval}",
-                   :original_value          => @original_value + interval,
+                   :original_pitch          => @original_pitch + interval,
                    :original_duration_token => @original_duration_token,
                    :original_attack         => @original_attack,
                    :original_decay          => @original_decay
         else
-          new_value = calculate_value_from_key_octave_and_accidental(@key, @octave, @accidental) + interval + (key_signature_increment || 0)
-          new_value_token = Stretto::Value.new(Stretto::Value::NumericValue.new(new_value))
+          new_pitch = calculate_pitch_from_key_octave_and_accidental(@key, @octave, @accidental) + interval + (key_signature_increment || 0)
+          new_pitch_token = Stretto::Value.new(Stretto::Value::NumericValue.new(new_pitch))
           Note.new "#{@original_string}+#{interval}",
-                   :original_value          => new_value_token,
+                   :original_pitch          => new_pitch_token,
                    :original_duration_token => @original_duration_token,
                    :original_attack         => @original_attack,
                    :original_decay          => @original_decay
@@ -76,22 +75,22 @@ module Stretto
 
       # TODO: Revisit the semantics of ==
       def ==(other)
-        other.value == value rescue false
+        other.pitch == @pitch rescue false
       end
 
       # TODO: Revisit the semantics of eql?
       def eql?(other)
-        other.value.eql?(value) rescue false
+        other.pitch.eql?(@pitch) rescue false
       end
 
       def hash
-        value.hash
+        @pitch.hash
       end
 
       def key_signature=(key_signature)
         @key_signature = key_signature
         increment = key_signature_increment
-        self.value += key_signature_increment if increment
+        self.pitch += key_signature_increment if increment
       end
 
       def key_signature_increment
@@ -110,56 +109,54 @@ module Stretto
         @original_decay.to_i(@pattern) || DEFAULT_DECAY
       end
 
-      def original_value
-        if @original_value.has_value?
-          @original_value.to_s
-        end
+      def original_pitch
+        @original_pitch.to_s if @original_pitch.has_value?
       end
 
-      # TODO: Raise value if it cannot be calculated beforehand (Original value should never be nil)
-      def value
-        @value
+      # TODO: Raise value if it cannot be calculated beforehand (Original pitch should never be nil)
+      def pitch
+        @pitch
       end
 
       private
 
-      KEYS_FOR_VALUES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
+      KEYS_FOR_PITCHES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
 
-      def build_value
-        if @original_value.has_value?
-          self.value   = @original_value.to_i(@pattern)
-          @key         = KEYS_FOR_VALUES[@value % 12]
-          @octave      = calculate_octave_from_value(@value)
-          @accidental  = calculate_accidental_from_value(@value)
+      def build_pitch
+        if @original_pitch.has_value?
+          self.pitch   = @original_pitch.to_i(@pattern)
+          @key         = KEYS_FOR_PITCHES[@pitch % 12]
+          @octave      = calculate_octave_from_pitch(@pitch)
+          @accidental  = calculate_accidental_from_pitch(@pitch)
         else
           @key         = @original_key
           @octave      = (@original_octave && @original_octave.to_i) || 5
           @accidental  = @original_accidental
-          self.value   = calculate_value_from_key_octave_and_accidental(@key, @octave, @accidental)
+          self.pitch   = calculate_pitch_from_key_octave_and_accidental(@key, @octave, @accidental)
         end
       end
 
-      def calculate_value_from_key_octave_and_accidental(key, octave, accidental)
-        value = 12 * octave
-        value += VALUES[key]
-        value += ACCIDENTALS[accidental] || 0
-        value
+      def calculate_pitch_from_key_octave_and_accidental(key, octave, accidental)
+        pitch = 12 * octave
+        pitch += PITCHES[key]
+        pitch += ACCIDENTALS[accidental] || 0
+        pitch
       end
 
-      def calculate_octave_from_value(value)
-        value / 12
+      def calculate_octave_from_pitch(pitch)
+        pitch / 12
       end
 
-      ACCIDENTALS_FOR_VALUE = [nil, '#', nil, '#', nil, nil, '#', nil, '#', nil, '#', nil]
-      def calculate_accidental_from_value(value)
-        ACCIDENTALS_FOR_VALUE[value % 12]
+      ACCIDENTALS_FOR_PITCH = [nil, '#', nil, '#', nil, nil, '#', nil, '#', nil, '#', nil]
+      def calculate_accidental_from_pitch(value)
+        ACCIDENTALS_FOR_PITCH[value % 12]
       end
 
       # Sets the decimal value (pitch) of the note, but raises an error if it's out of range (0...127)
       # TODO: Raise error if nil
-      def value=(value)
-        raise Exceptions::NoteOutOfBoundsException if value < 0 or value > MAX_PITCH
-        @value = value
+      def pitch=(pitch)
+        raise Exceptions::NoteOutOfBoundsException if pitch < 0 or pitch > MAX_PITCH
+        @pitch = pitch
       end
 
       def build_attack(original_attack)
@@ -183,7 +180,7 @@ module Stretto
       def substitute_variables!
         self.attack = attack
         self.decay = decay
-        build_value
+        build_pitch
         self.key_signature = @key_signature
       end
 

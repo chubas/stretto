@@ -17,8 +17,8 @@ module Stretto
       end
 
       # Optimize: Validates only accepts Stretto::Value
-      def value
-        note_string.value
+      def pitch
+        note_string.pitch
       end
     end
 

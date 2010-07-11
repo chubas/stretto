@@ -1,6 +1,6 @@
 module Stretto
   module Tokens
-    module NoteValueToken
+    module NotePitchToken
 
       def accidental
         nil
@@ -14,13 +14,13 @@ module Stretto
         nil
       end
 
-      def value
-        klass = if _value.is_numeric?
+      def pitch
+        klass = if _pitch.is_numeric?
           Stretto::Value::NumericValue
         else
           Stretto::Value::VariableValue
         end
-        Stretto::Value.new(klass.new(_value.text_value))
+        Stretto::Value.new(klass.new(_pitch.text_value))
       end
 
     end

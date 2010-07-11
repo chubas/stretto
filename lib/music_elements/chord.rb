@@ -51,7 +51,7 @@ module Stretto
 
       extend Forwardable
       def_delegators :@base_note, :original_accidental, :accidental,
-                                  :original_value,      :value,
+                                  :original_pitch,      :pitch,
                                   :original_key,        :key,
                                   :original_octave,     :octave,
                                   :original_attack,     :attack,
@@ -96,7 +96,7 @@ module Stretto
               :original_octave          => base_note_options[:original_octave] || DEFAULT_OCTAVE,
               :original_accidental      => base_note_options[:original_accidental],
               :original_key             => base_note_options[:original_key],
-              :original_value           => base_note_options[:original_value],
+              :original_pitch           => base_note_options[:original_pitch],
               :original_duration_token  => @original_duration_token,
               :original_attack          => base_note_options[:original_attack],
               :original_decay           => base_note_options[:original_decay]
@@ -118,7 +118,7 @@ module Stretto
               @pivot_note = Note.new(
                   pivot_note.text_value,
                   :original_key             => pivot_note.key,
-                  :original_value           => pivot_note.value,
+                  :original_pitch           => pivot_note.pitch,
                   :original_accidental      => pivot_note.accidental,
                   :original_octave          => pivot_note.octave || DEFAULT_OCTAVE,
                   :original_duration_token  => @original_duration_token,
@@ -134,8 +134,8 @@ module Stretto
 
           @notes.each{ |note| note.pattern = @pattern }
           if @pivot_note
-            actual_pivot = @notes.index { |note| @pivot_note.value == note.value }
-            raise Exceptions::ChordInversionsException.new("Note #{@pivot_note.original_string}(#{@pivot_note.value}) does not belong to chord #{@original_string}") unless actual_pivot
+            actual_pivot = @notes.index { |note| @pivot_note.pitch == note.pitch }
+            raise Exceptions::ChordInversionsException.new("Note #{@pivot_note.original_string}(#{@pivot_note.pitch}) does not belong to chord #{@original_string}") unless actual_pivot
             actual_pivot.times { @notes << @notes.shift + 12 }
           else
             @inversions.times  { @notes << @notes.shift + 12 }

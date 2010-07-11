@@ -18,7 +18,7 @@ module Stretto
             :original_key             => key,
             :original_accidental      => accidental,
             :original_octave          => octave,
-            :original_value           => value,
+            :original_pitch           => pitch,
             :original_attack          => attack,
             :original_decay           => decay,
             :pattern                  => pattern

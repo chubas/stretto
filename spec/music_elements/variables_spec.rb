@@ -24,7 +24,7 @@ describe "stretto variables" do
     end
 
     it "should coerce floats into integers when used in an integer context" do
-      Stretto::Pattern.new("$MY_VAR=60.8 [MY_VAR]")[1].value.should be == 60
+      Stretto::Pattern.new("$MY_VAR=60.8 [MY_VAR]")[1].pitch.should be == 60
     end
 
     it "should store its value correctly" do
@@ -44,8 +44,8 @@ describe "stretto variables" do
 
     it "should allow redefinition of a variable" do
       pattern = Stretto::Pattern.new("$MY_VAR=60 [MY_VAR] $MY_VAR=80 [MY_VAR]")
-      pattern[1].value.should be == 60
-      pattern[3].value.should be == 80
+      pattern[1].pitch.should be == 60
+      pattern[3].pitch.should be == 80
     end
   end
 

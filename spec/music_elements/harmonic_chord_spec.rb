@@ -78,7 +78,7 @@ describe "notes in a chord harmony" do
       it "should filter out repeated notes" do
         chord = Stretto::Pattern.new("C+D##+E+Fb").first
         chord.should have(2).notes
-        chord.notes.map(&:value).should be == [60, 64]
+        chord.notes.map(&:pitch).should be == [60, 64]
       end
 
       it "should keep the first note when they are repeated on the same chord" do

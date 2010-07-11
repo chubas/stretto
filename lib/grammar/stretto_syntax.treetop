@@ -49,7 +49,7 @@ grammar StrettoSyntax
   rule note_string
     note_key _octave:octave? <Stretto::Tokens::NoteKeyOctaveAndAccidentalToken>
     /
-    '[' _value:integer_or_variable_name ']' <Stretto::Tokens::NoteValueToken>
+    '[' _pitch:integer_or_variable_name ']' <Stretto::Tokens::NotePitchToken>
   end
 
   rule integer_or_variable_name

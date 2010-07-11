@@ -52,14 +52,14 @@ describe "building chords" do
 
     it "should build correctly the interval of notes" do
       maj_chord = Stretto::Pattern.new("C#5maj").first
-      maj_chord.notes.map(&:value).should be == [61, 65, 68]
+      maj_chord.notes.map(&:pitch).should be == [61, 65, 68]
 
       dom_chord = Stretto::Pattern.new("C#5dom7>5>9").first
-      dom_chord.notes.map(&:value).should be == [61, 65, 69, 71, 76]
+      dom_chord.notes.map(&:pitch).should be == [61, 65, 69, 71, 76]
     end
 
-    it "should not allow a chord that goes beyond the allowed max values for notes" do
-      lambda { Stretto::Pattern.new("C10maj") }.should_not raise_error # C E G, last value is 127
+    it "should not allow a chord that goes beyond the allowed max values for pitch of notes" do
+      lambda { Stretto::Pattern.new("C10maj") }.should_not raise_error # C E G, last pitch is 127
       lambda { Stretto::Pattern.new("F10maj") }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
     end
 
@@ -88,7 +88,7 @@ describe "building chords" do
     it "should specify the pivot note when doing a chord inversion by note" do
       chord = Stretto::Pattern.new("Cmaj^E").first
       chord.pivot_note.should_not be_nil
-      chord.pivot_note.value.should == 40
+      chord.pivot_note.pitch.should == 40
     end
 
     it "should not allow more inversions that one less than notes there are" do
@@ -98,35 +98,35 @@ describe "building chords" do
 
     it "should adjust the notes according to the chord invertion when using inversion count" do
       chord = Stretto::Pattern.new("Cmaj").first
-      chord.notes.map(&:value).should be == [36, 40, 43]
+      chord.notes.map(&:pitch).should be == [36, 40, 43]
 
       chord = Stretto::Pattern.new("Cmaj^").first
-      chord.notes.map(&:value).should be == [40, 43, 48]
+      chord.notes.map(&:pitch).should be == [40, 43, 48]
 
       chord = Stretto::Pattern.new("Cmaj^^").first
-      chord.notes.map(&:value).should be == [43, 48, 52]
+      chord.notes.map(&:pitch).should be == [43, 48, 52]
     end
 
     it "should adjust the notes according to the chord invertion when using pivot note" do
       chord = Stretto::Pattern.new("Cmaj^E").first
-      chord.pivot_note.value.should   be == 40
-      chord.notes.map(&:value).should be == [40, 43, 48]
+      chord.pivot_note.pitch.should   be == 40
+      chord.notes.map(&:pitch).should be == [40, 43, 48]
 
       chord = Stretto::Pattern.new("Cmaj^Fb").first
-      chord.pivot_note.value.should   be == 40
-      chord.notes.map(&:value).should be == [40, 43, 48]
+      chord.pivot_note.pitch.should   be == 40
+      chord.notes.map(&:pitch).should be == [40, 43, 48]
 
       chord = Stretto::Pattern.new("Cmaj^D##").first
-      chord.pivot_note.value.should   be == 40
-      chord.notes.map(&:value).should be == [40, 43, 48]
+      chord.pivot_note.pitch.should   be == 40
+      chord.notes.map(&:pitch).should be == [40, 43, 48]
     end
 
     it "should not allow to do a chord inversion if the note is not present" do
       lambda{ Stretto::Pattern.new("Cmaj^F") }.should raise_error(Stretto::Exceptions::ChordInversionsException)
     end
 
-    it "should not allow chord inversions when the value of the inverted note goes beyond allowed value" do
-      lambda { Stretto::Pattern.new("C10maj") }.should_not raise_error # C E G, last value is 127
+    it "should not allow chord inversions when the pitch of the inverted note goes beyond allowed value" do
+      lambda { Stretto::Pattern.new("C10maj") }.should_not raise_error # C E G, last pitch is 127
       lambda { Stretto::Pattern.new("C10maj^") }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
     end
 
@@ -144,7 +144,7 @@ describe "building chords" do
     it "should retain the base note even in an inverted chord" do
       chord = Stretto::Pattern.new("Cmaj^^").first
       chord.base_note.key.should be == 'C'
-      chord.base_note.value.should be == 36
+      chord.base_note.pitch.should be == 36
     end
 
   end

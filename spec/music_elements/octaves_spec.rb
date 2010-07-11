@@ -9,7 +9,7 @@ context "parsing octaves" do
       note.octave.should          be == 7
     end
 
-    it "should calculate correctly the octave for a note given its value" do
+    it "should calculate correctly the octave for a note given its pitch" do
       note = Stretto::Pattern.new("[0]").first
       note.original_octave.should be == nil
       note.octave.should          be == 0
@@ -41,7 +41,7 @@ context "parsing octaves" do
       Stretto::Pattern.new("C10maj").first.octave.should be == 10
     end
     
-    it "should calculate correctly the octave for the base note on a chord given its value" do
+    it "should calculate correctly the octave for the base note on a chord given its pitch" do
       Stretto::Pattern.new("[0]maj").first.octave.should   be == 0
       Stretto::Pattern.new("[11]maj").first.octave.should  be == 0
       Stretto::Pattern.new("[60]maj").first.octave.should  be == 5

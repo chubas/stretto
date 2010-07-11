@@ -10,7 +10,7 @@ module Stretto
         note_key.accidental.text_value if note_key.accidental and note_key.accidental.text_value.present?
       end
 
-      def value
+      def pitch
         Stretto::Value.nil_value
       end
 

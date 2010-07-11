@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), 'voice')
+require File.dirname(__FILE__) + '/modifiers/variables'
 
 module Stretto
 
@@ -9,6 +10,8 @@ module Stretto
   # until the first stable version
   #+
   class Pattern < Array
+
+    include Variables
 
     DEFAULT_VOICE_INDEX = 0
 
@@ -66,7 +69,9 @@ module Stretto
     end
 
     def variable(name)
-      @variables[name] || raise(Exceptions::VariableNotDefinedException.new("Variable '#{name}' not defined in pattern"))
+      @variables[name] ||
+          (Value.new(Value::NumericValue.new(PREDEFINED_VARIABLES[name])) if PREDEFINED_VARIABLES[name]) ||
+          raise(Exceptions::VariableNotDefinedException.new("Variable '#{name}' not defined in pattern"))
     end
 
   end

@@ -6,6 +6,16 @@ describe "handling instruments" do
     Stretto::Pattern.new("I100").first.should be_an_instance_of(Stretto::MusicElements::Instrument)
   end
 
+  it "should assign an instrument to the music element being played" do
+    note = Stretto::Pattern.new("I100 C5")[1]
+    note.instrument.should_not be_nil
+    note.instrument.value.should be == 100
+  end
+
+  it "should use the default intrument of 0 if not present" do
+    Stretto::Pattern.new("C5").first.instrument.value.should be == 0
+  end
+
   context "when using literal (numeric) value" do
     it "should return the correct value" do
       Stretto::Pattern.new("I100").first.value.should be == 100
@@ -30,8 +40,23 @@ describe "handling instruments" do
   end
 
   context "when using multiple voices in a composition" do
-    it "should not affect the instrtument of other voices"
-    it "should reset the instrument per voice effectively"
+    it "should not affect the instrument of other voices" do
+      pattern = Stretto::Pattern.new("V0 I80 C V1 D")
+      pattern[2].instrument.value.should be == 80
+      pattern[4].instrument.value.should be == 0
+    end
+
+    it "should change the instrument per voice effectively" do
+      pattern = Stretto::Pattern.new("V0 I50 C V1 Dmaj V0 I60 E V1 I80 Fmaj")
+      pattern[2].instrument.value.should be == 50
+      pattern[4].instrument.value.should be == 0
+      pattern[7].instrument.value.should be == 60
+      pattern[10].instrument.value.should be == 80
+    end
+
+    it "should use the same instrument per voice even if in different layers?"
+    # TODO: What happens for example in "V0 L0 I80 C I100 D" ?
+
   end
 
 end

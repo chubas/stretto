@@ -19,6 +19,7 @@ module Stretto
       @voices           = { }
       @variables        = { }
       @__key_signature  = nil
+      @__instruments    = { }
       @parser.to_stretto(self).each { |music_element| self << music_element }
     end
 
@@ -41,11 +42,19 @@ module Stretto
       end
 
       if other.kind_of?(MusicElements::VoiceChange)
-        @current_voice = (@voices[other.index] ||= Voice.new)
+        @current_voice = (@voices[other.index] ||= Voice.new(other.index))
       else
-        @voices[DEFAULT_VOICE_INDEX] = @current_voice = Voice.new unless @current_voice
+        @voices[DEFAULT_VOICE_INDEX] = @current_voice = Voice.new(DEFAULT_VOICE_INDEX) unless @current_voice
         @current_voice << other
       end
+
+      if other.kind_of?(MusicElements::Instrument)
+        @__instruments[@current_voice.index] = other
+      else
+        @__instruments[@current_voice.index] ||= MusicElements::Instrument.new('', :value => Value.new(Value::NumericValue.new(0)))
+        other.instrument = @__instruments[@current_voice.index]
+      end
+
       super(other)
     end
 

@@ -7,9 +7,11 @@ module Stretto
     DEFAULT_LAYER_INDEX = 0
 
     attr_reader :layers
+    attr_reader :index
 
-    def initialize(*args)
+    def initialize(index, *args)
       @layers = {}
+      @index = index
       super(*args)
     end
 

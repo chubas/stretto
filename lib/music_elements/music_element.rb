@@ -10,6 +10,7 @@ module Stretto
 
       attr_reader :original_string
       attr_reader :pattern
+      attr_accessor :instrument
 
       def initialize(original_string, options = {})
         @original_string = original_string

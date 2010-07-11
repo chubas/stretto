@@ -48,10 +48,48 @@ describe "building notes" do
       lambda{ Stretto::Pattern.new("Ab10")  }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
       lambda{ Stretto::Pattern.new("Abb10") }.should_not raise_error
     end
+
+    it "should not be affected by a key signature" do
+      note = Stretto::Pattern.new("KGmaj [65]")[1]
+      note.value.should be == 65 # The equivalent to a F, being F# because of the key Gmaj
+    end
   end
 
   context "parsing notes with variable value syntax" do
-    it "should correctly parse note values" # Add test when variables are implemented
+    it "should correctly parse note values" do
+      Stretto::Pattern.new("$MY_VAR=100 [MY_VAR]")[1].should be_an_instance_of(Stretto::MusicElements::Note)
+    end
+
+    it "should return correctly its value and original value" do
+      note = Stretto::Pattern.new("$MY_VAR=100 [MY_VAR]")[1]
+      note.value.should be == 100
+      note.original_value.should be == "[MY_VAR]"
+    end
+
+    it "should throw an error when value is over 127" do
+      lambda{ Stretto::Pattern.new("$MY_VAR=127 [MY_VAR]") }.should_not raise_error
+      lambda{ Stretto::Pattern.new("$MY_VAR=128 [MY_VAR]") }.should raise_error(Stretto::Exceptions::NoteOutOfBoundsException)
+    end
+
+    it "should not store original key, octave nor accidental" do
+      note = Stretto::Pattern.new("$MY_VAR=61 [MY_VAR]")[1]
+      note.value.should be == 61 # The equivalent to a C#5
+      note.original_value.should be == "[MY_VAR]"
+
+      note.key.should be == "C"
+      note.original_key.should be_nil
+
+      note.accidental.should be == "#"
+      note.original_accidental.should be_nil
+
+      note.octave.should be == 5
+      note.original_octave.should be_nil
+    end
+
+    it "should not be affected by a key signature" do
+      note = Stretto::Pattern.new("KGmaj $MY_VAR=65 [MY_VAR]")[2]
+      note.value.should be == 65 # The equivalent to a F, being F# because of the key Gmaj
+    end
   end
 
 end

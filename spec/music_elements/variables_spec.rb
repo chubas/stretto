@@ -47,6 +47,12 @@ describe "stretto variables" do
       pattern[1].pitch.should be == 60
       pattern[3].pitch.should be == 80
     end
+
+    it "should allow override of predefined variables" do
+      pattern = Stretto::Pattern.new("I[PIANO] $PIANO=100 I[PIANO]")
+      pattern[0].value.should be == 0
+      pattern[2].value.should be == 100
+    end
   end
 
 end

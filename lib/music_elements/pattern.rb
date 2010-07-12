@@ -38,7 +38,7 @@ module Stretto
       end
 
       if other.kind_of?(MusicElements::VariableDefinition)
-        @variables[other.name] = other.value
+        @variables[other.name.upcase] = other.value
       end
 
       if other.kind_of?(MusicElements::VoiceChange)
@@ -69,8 +69,8 @@ module Stretto
     end
 
     def variable(name)
-      @variables[name] ||
-          (Value.new(Value::NumericValue.new(PREDEFINED_VARIABLES[name])) if PREDEFINED_VARIABLES[name]) ||
+      @variables[name.upcase] ||
+          (Value.new(Value::NumericValue.new(PREDEFINED_VARIABLES[name.upcase])) if PREDEFINED_VARIABLES[name.upcase]) ||
           raise(Exceptions::VariableNotDefinedException.new("Variable '#{name}' not defined in pattern"))
     end
 

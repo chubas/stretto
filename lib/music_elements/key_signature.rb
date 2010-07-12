@@ -8,8 +8,8 @@ module Stretto
 
       def initialize(original_string, options = {})
         super(original_string, options)
-        @key = options[:original_key]
-        @scale = SCALES[options[:original_scale]]
+        @key = normalize_keysig(options[:original_key])
+        @scale = SCALES[options[:original_scale].downcase]
       end
 
       def modifier_for(note_key)
@@ -84,6 +84,9 @@ module Stretto
 
         SCALES = { 'maj' => :major, 'min' => :minor }
 
+        def normalize_keysig(string)
+          string.downcase.sub(/\w/){ |initial| initial.upcase }
+        end
     end
   end
 end

@@ -45,8 +45,7 @@ module Stretto
 
       attr_reader :notes, :base_note
       attr_reader :inversions, :pivot_note
-      attr_reader :original_duration
-      attr_reader :named_chord
+      attr_reader :original_named_chord, :named_chord
       attr_reader :key_signature
 
       extend Forwardable
@@ -61,7 +60,8 @@ module Stretto
         super(original_string, options)
         build_duration_from_token(options[:original_duration_token])
         @base_note_options = options[:base_note]
-        @named_chord = options[:named_chord]
+        @original_named_chord = options[:named_chord]
+        @named_chord = @original_named_chord.downcase
         @original_inversions = options[:original_inversions]
       end
 

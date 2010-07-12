@@ -71,7 +71,7 @@ module Stretto
         else
           # It comes as a character + modifiers
           duration = duration_token.duration_character.split('').map do |char_duration| # TODO: deprecation. each_char is only 1.9+
-            DURATIONS[char_duration]
+            DURATIONS[char_duration.downcase]
           end.sum
           original_duration = duration
           duration_token.dots.times do |dot_duration|

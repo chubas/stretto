@@ -94,8 +94,8 @@ module Stretto
       end
 
       def key_signature_increment
-        if @key_signature and !@accidental
-          @key_signature.modifier_for(@original_key)
+        if @key_signature and @original_key and !@accidental
+          @key_signature.modifier_for(@key)
         else
           nil
         end
@@ -129,9 +129,9 @@ module Stretto
           @octave      = calculate_octave_from_pitch(@pitch)
           @accidental  = calculate_accidental_from_pitch(@pitch)
         else
-          @key         = @original_key
+          @key         = @original_key.upcase
           @octave      = (@original_octave && @original_octave.to_i) || 5
-          @accidental  = @original_accidental
+          @accidental  = @original_accidental.downcase if @original_accidental
           self.pitch   = calculate_pitch_from_key_octave_and_accidental(@key, @octave, @accidental)
         end
       end

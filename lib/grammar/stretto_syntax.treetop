@@ -39,11 +39,11 @@ grammar StrettoSyntax
   end
 
   rule rest
-    'R' _duration:duration? <Stretto::Tokens::RestToken>
+    [Rr] _duration:duration? <Stretto::Tokens::RestToken>
   end
 
   rule note_key
-    key:[A-G] accidental:accidental?
+    key:[A-Ga-g] accidental:accidental?
   end
 
   rule note_string
@@ -67,15 +67,36 @@ grammar StrettoSyntax
   end
 
   rule accidental
-    "##" / "#" / "bb" / "b" / "n"
+    "##" / "#" / "bb" / "BB" / "b" / "B" / "n" / "N"
   end
 
   rule named_chord
     # Make sure they're in reverse order, so 'maj6' is parsed before 'maj', for instance
-    "dom7>5>9" / "dom7>5<9" / "dom7<5>9" / "dom7<5<9" / "minmaj7" / "maj7>5" / "maj7<5" /
-    "dom7>5" / "dom7<5" / "maj13" / "min13" / "dom13" / "dom11" / "min11" / "add9" / "dim7" /
-    "min9" / "maj9" / "dom9" / "min6" / "maj6" / "sus2" / "sus4" / "min7" / "maj7" /
-    "dom7" / "dim" / "aug" / "min" / "maj"
+    dom "7>5>9" / dom "7>5<9" / dom "7<5>9" / dom "7<5<9" / min maj "7" / maj "7>5" / maj "7<5" /
+    dom "7>5" / dom "7<5" / maj "13" / min "13" / dom "13" / dom "11" / min "11" /
+    [aA] [dD] [dD] "9" / dim "7" /
+    min "9" / maj "9" / dom "9" / min "6" / maj "6" / sus "2" / sus "4" / min "7" / maj "7" /
+    dom "7" / dim / [aA] [uU] [gG] / min / maj
+  end
+
+  rule maj
+    [mM] [aA] [jJ]
+  end
+
+  rule min
+    [mM] [iI] [nN]
+  end
+
+  rule dom
+    [dD] [oO] [mM]
+  end
+
+  rule sus
+    [sS] [uU] [sS]
+  end
+
+  rule dim
+    [dD] [iI] [mM]
   end
 
   rule chord_inversions
@@ -109,7 +130,7 @@ grammar StrettoSyntax
   end
 
   rule duration_string
-    _duration_character:[whqistxo]+ _dots:('.'*) _tuplet:tuplet? {
+    _duration_character:[whqistxoWHQISTXO]+ _dots:('.'*) _tuplet:tuplet? {
       def duration_character
         _duration_character.text_value
       end
@@ -162,11 +183,11 @@ grammar StrettoSyntax
   end
 
   rule attack_and_decay
-    _attack:('a' value:variable_or_integer)? _decay:('d' value:variable_or_integer)? <Stretto::Tokens::AttackDecayToken>
+    _attack:([aA] value:variable_or_integer)? _decay:([dD] value:variable_or_integer)? <Stretto::Tokens::AttackDecayToken>
   end
 
   rule key_signature
-    'K' note_key scale:('maj' / 'min') <Stretto::Tokens::KeySignatureToken>
+    [kK] note_key scale:(maj / min) <Stretto::Tokens::KeySignatureToken>
   end
 
   rule measure_bar

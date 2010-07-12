@@ -34,8 +34,6 @@ module Stretto
       @layers[index]
     end
 
-    private
-
   end
 
 end

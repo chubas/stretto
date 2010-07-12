@@ -16,10 +16,11 @@ module Stretto
         if value < 0 or value > MAX_INSTRUMENT_VALUE
           raise Exceptions::ValueOutOfBoundsException.new("Instrument value should be in range 0..#{MAX_INSTRUMENT_VALUE}")
         end
+        @value = value
       end
 
       def value
-        @original_value.to_i(@pattern)
+        @value || @original_value.to_i(@pattern)
       end
 
       def substitute_variables!

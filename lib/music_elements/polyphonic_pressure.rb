@@ -17,7 +17,7 @@ module Stretto
       end
 
       def pitch
-        @original_pitch.to_i(@pattern)
+        @pitch || @original_pitch.to_i(@pattern)
       end
 
       def pitch=(pitch)
@@ -28,7 +28,7 @@ module Stretto
       end
 
       def value
-        @original_value.to_i(@pattern)
+        @value || @original_value.to_i(@pattern)
       end
 
       def value=(value)

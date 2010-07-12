@@ -20,7 +20,7 @@ module Stretto
       end
 
       def value
-        @original_value.to_i(@pattern)
+        @value || @original_value.to_i(@pattern)
       end
 
       def substitute_variables!

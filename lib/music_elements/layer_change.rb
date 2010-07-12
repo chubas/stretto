@@ -12,7 +12,9 @@ module Stretto
       def initialize(original_string, options = {})
         super(original_string, options)
         @original_value = options[:value]
-        self.index      = @original_value.to_i(@pattern)
+
+        # TODO: As layer is inherent to a pattern, raise an error if @pattern is nil
+        self.index = @original_value.to_i(@pattern)
       end
 
       def index=(index)

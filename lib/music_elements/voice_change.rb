@@ -7,9 +7,14 @@ module Stretto
 
       MAX_VOICES = 15
 
+      attr_reader :index
+
       def initialize(original_string, options = {})
         super(original_string, options)
         @original_value = options[:value]
+
+        # TODO: As voice is inherent to a pattern, raise an error if @pattern is nil
+        self.index = @original_value.to_i(@pattern)
       end
 
       def index=(index)
@@ -17,14 +22,6 @@ module Stretto
           raise Exceptions::ValueOutOfBoundsException.new("Voice value should be in range 0..#{MAX_VOICES}")
         end
         @index = index
-      end
-
-      def index
-        @original_value.to_i(@pattern)
-      end
-
-      def substitute_variables!
-        self.index = index
       end
       
     end

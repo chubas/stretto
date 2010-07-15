@@ -1,0 +1,9 @@
+grammar ControllerChangeGrammar
+
+  include ValueGrammar
+
+  rule controller_change
+    'X' __controller:variable_or_integer '=' __value:variable_or_integer <Stretto::Tokens::ControllerChangeToken>
+  end
+
+end

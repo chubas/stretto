@@ -2,15 +2,18 @@ require File.join(File.dirname(__FILE__), '../../music_elements/controller_chang
 
 module Stretto
   module Tokens
-    class ControllerChangeToken < Treetop::Runtime::SyntaxNode
+    class ControllerChangeToken < HashToken
 
       def to_stretto(pattern)
-        Stretto::MusicElements::ControllerChange.new(
-            text_value,
-            :original_controller  => Stretto::Value.new(controller.wrap),
-            :original_value       => Stretto::Value.new(value.wrap),
-            :pattern              => pattern
-        )
+        Stretto::MusicElements::ControllerChange.new(self, pattern)
+      end
+
+      def controller
+        Value.new(__controller.wrap)
+      end
+
+      def value
+        Value.new(__value.wrap)
       end
 
     end

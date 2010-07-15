@@ -9,9 +9,9 @@ module Stretto
 
       attr_reader :index
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-        @original_value = options[:value]
+      def initialize(token, pattern = nil)
+        super(token[:text_value], :pattern => pattern)
+        @original_value = token[:value]
 
         # TODO: As voice is inherent to a pattern, raise an error if @pattern is nil
         self.index = @original_value.to_i(@pattern)

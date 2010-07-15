@@ -1,0 +1,9 @@
+grammar TempoGrammar
+
+  include ValueGrammar
+
+  rule tempo
+    kind:'T' __value:variable_or_integer <Stretto::Tokens::TempoToken>
+  end
+
+end

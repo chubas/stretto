@@ -7,9 +7,21 @@ module Stretto
 
       MAX_INSTRUMENT_VALUE = 127
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-        @original_value = options[:value]
+      def self.default_instrument(pattern = nil)
+        params = {
+          :text_value => '',
+          :value => Value.new(Value::NumericValue.new(0))
+        }
+        new(params, pattern)
+      end
+
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::InstrumentParser.parse!(string_hash_or_token)
+          else string_hash_or_token
+        end
+        super(token[:text_value], :pattern => pattern )
+        @original_value = token[:value]
       end
 
       def value=(value)

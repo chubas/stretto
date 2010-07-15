@@ -1,6 +1,9 @@
-require File.join(File.dirname(__FILE__), '/exceptions')
+require File.dirname(__FILE__) + '/exceptions'
 
-Treetop.load File.join(File.dirname(__FILE__), "../grammar/stretto_syntax")
+Treetop.load File.join(File.dirname(__FILE__), "../grammar/stretto_grammar")
+
+require File.dirname(__FILE__) + '/instrument_parser'
+require File.dirname(__FILE__) + '/tempo_parser'
 
 module Stretto
   class Parser
@@ -9,7 +12,7 @@ module Stretto
 
     def initialize(music_string)
       @music_string = music_string
-      @parser       = StrettoSyntaxParser.new
+      @parser       = StrettoGrammarParser.new
     end
 
     def to_stretto(pattern = nil)

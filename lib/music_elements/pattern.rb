@@ -1,5 +1,4 @@
 require File.join(File.dirname(__FILE__), 'voice')
-require File.dirname(__FILE__) + '/modifiers/variables'
 
 module Stretto
 
@@ -57,7 +56,7 @@ module Stretto
       if other.kind_of?(MusicElements::Instrument)
         @__instruments[@current_voice.index] = other
       else
-        @__instruments[@current_voice.index] ||= MusicElements::Instrument.new('', :value => Value.new(Value::NumericValue.new(0)))
+        @__instruments[@current_voice.index] ||= MusicElements::Instrument.default_instrument(self)
         other.instrument = @__instruments[@current_voice.index]
       end
 

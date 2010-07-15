@@ -1,6 +1,13 @@
 require File.dirname(__FILE__) + '/grammar_helper'
+require File.dirname(__FILE__) + '/value_grammar'
+require File.dirname(__FILE__) + '/instrument_grammar'
+require File.dirname(__FILE__) + '/tempo_grammar'
 
-grammar StrettoSyntax
+grammar StrettoGrammar
+
+  include ValueGrammar
+  include InstrumentGrammar
+  include TempoGrammar
 
   rule notes
     space? head:music_element? more_elements:(space music_element)* space? <Stretto::Tokens::PatternToken>
@@ -194,28 +201,20 @@ grammar StrettoSyntax
     '|' <Stretto::Tokens::MeasureToken>
   end
 
-  rule instrument
-    kind:'I' value:variable_or_integer <Stretto::Tokens::ModifierToken>
-  end
-
   rule voice
-    kind:'V' value:variable_or_integer <Stretto::Tokens::ModifierToken>
+    kind:'V' __value:variable_or_integer <Stretto::Tokens::VoiceChangeToken>
   end
 
   rule layer
-    kind:'L' value:variable_or_integer <Stretto::Tokens::ModifierToken>
-  end
-
-  rule tempo
-    kind:'T' value:variable_or_integer <Stretto::Tokens::ModifierToken>
+    kind:'L' __value:variable_or_integer <Stretto::Tokens::LayerChangeToken>
   end
 
   rule pitch_wheel
-    kind:'&' value:variable_or_integer <Stretto::Tokens::ModifierToken>
+    kind:'&' __value:variable_or_integer <Stretto::Tokens::PitchWheelToken>
   end
 
   rule channel_pressure
-    kind:'+' value:variable_or_integer <Stretto::Tokens::ModifierToken>
+    kind:'+' __value:variable_or_integer <Stretto::Tokens::ChannelPressureToken>
   end
 
   rule polyphonic_pressure
@@ -227,40 +226,12 @@ grammar StrettoSyntax
   end
 
   rule timing_info
-    kind:'@' value:variable_or_integer <Stretto::Tokens::ModifierToken>
+    kind:'@' __value:variable_or_integer <Stretto::Tokens::TimingToken>
   end
 
   rule variable_definition
     # It can be set to a integer also, but decimal handles that case
     '$' name:variable_name '=' value:variable_or_decimal <Stretto::Tokens::VariableDefinitionToken>
-  end
-
-  rule variable_or_integer
-    variable <Stretto::Tokens::VariableToken>
-    /
-    integer <Stretto::Tokens::NumericToken>
-  end
-
-  rule variable_or_decimal
-    variable <Stretto::Tokens::VariableToken>
-    /
-    decimal <Stretto::Tokens::NumericToken>
-  end
-
-  rule integer
-    "0" / [1-9] [0-9]*
-  end
-
-  rule decimal
-    integer ('.' [0-9]+)?
-  end
-
-  rule variable
-    '[' name:variable_name ']'
-  end
-
-  rule variable_name
-    [A-Za-z_] [A-Za-z0-9_]+
   end
 
   rule space

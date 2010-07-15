@@ -1,0 +1,31 @@
+grammar ValueGrammar
+
+  rule variable_or_integer
+    variable <Stretto::Tokens::VariableToken>
+    /
+    integer <Stretto::Tokens::NumericToken>
+  end
+
+  rule variable_or_decimal
+    variable <Stretto::Tokens::VariableToken>
+    /
+    decimal <Stretto::Tokens::NumericToken>
+  end
+
+  rule integer
+    "0" / [1-9] [0-9]*
+  end
+
+  rule decimal
+    integer ('.' [0-9]+)?
+  end
+
+  rule variable
+    '[' name:variable_name ']'
+  end
+
+  rule variable_name
+    [A-Za-z_] [A-Za-z0-9_]+
+  end
+
+end

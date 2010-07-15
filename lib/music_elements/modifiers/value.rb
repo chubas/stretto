@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/variables'
+
 module Stretto
   class Value
 
@@ -28,6 +30,8 @@ module Stretto
 
     class VariableValue
 
+      include Variables
+
       attr_reader :name
 
       def initialize(name)
@@ -43,7 +47,15 @@ module Stretto
       end
 
       def value(pattern)
-        pattern.variable(@name)
+        if pattern
+          pattern.variable(@name)
+        else
+          predefined = PREDEFINED_VARIABLES[name.upcase]
+          unless predefined
+            raise Stretto::Exceptions::VariableContextException.new("A pattern is needed to access variable #{@name}")
+          end
+          Value.new(Value::NumericValue.new(predefined))
+        end
       end
 
       def ==(other)

@@ -1,0 +1,9 @@
+grammar InstrumentGrammar
+
+  include ValueGrammar
+
+  rule instrument
+    kind:'I' __value:variable_or_integer <Stretto::Tokens::InstrumentToken>
+  end
+
+end

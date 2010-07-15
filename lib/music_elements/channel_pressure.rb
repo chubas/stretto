@@ -8,9 +8,9 @@ module Stretto
       MAX_CHANNEL_PRESSURE_VALUE = 127
 
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-        @original_value = options[:value]
+      def initialize(token, pattern = nil)
+        super(token[:text_value], :pattern => pattern)
+        @original_value = token[:value]
       end
 
       def value=(value)

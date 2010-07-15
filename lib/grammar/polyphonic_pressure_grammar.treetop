@@ -1,0 +1,9 @@
+grammar PolyphonicPressureGrammar
+
+  include ValueGrammar
+
+  rule polyphonic_pressure
+    '*' __pitch:variable_or_integer ',' __value:variable_or_integer <Stretto::Tokens::PolyphonicPressureToken>
+  end
+
+end

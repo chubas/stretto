@@ -37,12 +37,13 @@ module Stretto
       public
 
       elements = {
-        :channel_pressure   => ChannelPressureGrammarParser,
-        :controller_change  => ControllerChangeGrammarParser,
-        :instrument         => InstrumentGrammarParser,
-        :pitch_wheel        => PitchWheelGrammarParser,
-        :timing             => TimingGrammarParser,
-        :tempo              => TempoGrammarParser,
+        :channel_pressure     => ChannelPressureGrammarParser,
+        :controller_change    => ControllerChangeGrammarParser,
+        :instrument           => InstrumentGrammarParser,
+        :pitch_wheel          => PitchWheelGrammarParser,
+        :polyphonic_pressure  => PolyphonicPressureGrammarParser,
+        :timing               => TimingGrammarParser,
+        :tempo                => TempoGrammarParser,
       }
       elements.each do |element, klass|
         define_method "parse_#{element}!" do |music_element|

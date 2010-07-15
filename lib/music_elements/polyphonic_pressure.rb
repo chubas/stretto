@@ -10,10 +10,14 @@ module Stretto
 
       attr_reader :pitch, :value
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-        @original_pitch = options[:original_pitch]
-        @original_value = options[:original_value]
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::Parser.parse_polyphonic_pressure!(string_hash_or_token)
+          else string_hash_or_token
+        end
+        super(token[:text_value], :pattern => pattern)
+        @original_pitch = token[:pitch]
+        @original_value = token[:value]
       end
 
       def pitch

@@ -6,6 +6,7 @@ require File.dirname(__FILE__) + '/channel_pressure_grammar'
 require File.dirname(__FILE__) + '/controller_change_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
 require File.dirname(__FILE__) + '/pitch_wheel_grammar'
+require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
 require File.dirname(__FILE__) + '/timing_grammar'
 
@@ -17,6 +18,7 @@ grammar StrettoGrammar
   include ControllerChangeGrammar
   include InstrumentGrammar
   include PitchWheelGrammar
+  include PolyphonicPressureGrammar
   include TempoGrammar
   include TimingGrammar
 
@@ -218,10 +220,6 @@ grammar StrettoGrammar
 
   rule layer
     kind:'L' __value:variable_or_integer <Stretto::Tokens::LayerChangeToken>
-  end
-
-  rule polyphonic_pressure
-    '*' pitch:variable_or_integer ',' value:variable_or_integer <Stretto::Tokens::PolyphonicPressureToken>
   end
 
   rule variable_definition

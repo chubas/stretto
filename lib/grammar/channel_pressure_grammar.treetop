@@ -1,0 +1,9 @@
+grammar ChannelPressureGrammar
+
+  include ValueGrammar
+
+  rule channel_pressure
+    kind:'+' __value:variable_or_integer <Stretto::Tokens::ChannelPressureToken>
+  end
+
+end

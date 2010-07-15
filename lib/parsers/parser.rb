@@ -29,7 +29,7 @@ module Stretto
     class << self
 
       private
-        def parse_music_element(klass, music_string, expected_element)
+        def parse_music_element!(klass, music_string, expected_element)
           klass.new.parse(music_string) ||
               raise(Exceptions::ParseError.new("Invalid #{expected_element}: #{music_string}"))
         end
@@ -37,12 +37,14 @@ module Stretto
       public
 
       elements = {
-        :instrument => InstrumentGrammarParser,
-        :timing     => TimingGrammarParser,
+        :channel_pressure => ChannelPressureGrammarParser,
+        :instrument       => InstrumentGrammarParser,
+        :timing           => TimingGrammarParser,
+        :tempo            => TempoGrammarParser,
       }
       elements.each do |element, klass|
         define_method "parse_#{element}!" do |music_element|
-          parse_music_element(klass, music_element, element)
+          parse_music_element!(klass, music_element, element.to_s.gsub('_', ' '))
         end
       end
 

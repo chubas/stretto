@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/grammar_helper'
 
 require File.dirname(__FILE__) + '/value_grammar'
+
+require File.dirname(__FILE__) + '/channel_pressure_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
 require File.dirname(__FILE__) + '/timing_grammar'
@@ -8,6 +10,8 @@ require File.dirname(__FILE__) + '/timing_grammar'
 grammar StrettoGrammar
 
   include ValueGrammar
+
+  include ChannelPressureGrammar
   include InstrumentGrammar
   include TempoGrammar
   include TimingGrammar
@@ -214,10 +218,6 @@ grammar StrettoGrammar
 
   rule pitch_wheel
     kind:'&' __value:variable_or_integer <Stretto::Tokens::PitchWheelToken>
-  end
-
-  rule channel_pressure
-    kind:'+' __value:variable_or_integer <Stretto::Tokens::ChannelPressureToken>
   end
 
   rule polyphonic_pressure

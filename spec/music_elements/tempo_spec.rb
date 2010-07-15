@@ -12,11 +12,11 @@ describe Stretto::MusicElements::Tempo do
       end
 
       it "should not have a pattern attached" do
-        Stretto::MusicElements::Tempo.new("T140")
+        Stretto::MusicElements::Tempo.new("T140").pattern.should be_nil
       end
 
       ALL_ELEMENTS.except(:tempo).each do |element, string|
-        it "should not parse #{element} as instrument" do
+        it "should not parse #{element} as tempo" do
           lambda do
             Stretto::MusicElements::Tempo.new(string)
           end.should raise_error(Stretto::Exceptions::ParseError, /tempo/i)

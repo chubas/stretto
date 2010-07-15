@@ -4,6 +4,7 @@ Treetop.load File.join(File.dirname(__FILE__), "../grammar/stretto_grammar")
 
 require File.dirname(__FILE__) + '/instrument_parser'
 require File.dirname(__FILE__) + '/tempo_parser'
+require File.dirname(__FILE__) + '/timing_parser'
 
 module Stretto
   class Parser

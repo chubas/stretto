@@ -1,0 +1,9 @@
+grammar TimingGrammar
+
+  include ValueGrammar
+
+  rule timing
+    kind:'@' __value:variable_or_integer <Stretto::Tokens::TimingToken>
+  end
+
+end

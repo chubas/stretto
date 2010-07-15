@@ -1,13 +1,16 @@
 require File.dirname(__FILE__) + '/grammar_helper'
+
 require File.dirname(__FILE__) + '/value_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
+require File.dirname(__FILE__) + '/timing_grammar'
 
 grammar StrettoGrammar
 
   include ValueGrammar
   include InstrumentGrammar
   include TempoGrammar
+  include TimingGrammar
 
   rule notes
     space? head:music_element? more_elements:(space music_element)* space? <Stretto::Tokens::PatternToken>
@@ -16,7 +19,7 @@ grammar StrettoGrammar
   rule music_element
     harmonic_chord / harmony_with_melody / single_music_element /
     measure_bar / key_signature / instrument / voice / layer / tempo /
-    pitch_wheel / channel_pressure / polyphonic_pressure / timing_info /
+    pitch_wheel / channel_pressure / polyphonic_pressure / timing /
     controller_change / variable_definition
   end
   
@@ -223,10 +226,6 @@ grammar StrettoGrammar
 
   rule controller_change
     'X' controller:variable_or_integer '=' value:variable_or_integer <Stretto::Tokens::ControllerChangeToken>
-  end
-
-  rule timing_info
-    kind:'@' __value:variable_or_integer <Stretto::Tokens::TimingToken>
   end
 
   rule variable_definition

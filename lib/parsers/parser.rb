@@ -2,10 +2,6 @@ require File.dirname(__FILE__) + '/exceptions'
 
 Treetop.load File.join(File.dirname(__FILE__), "../grammar/stretto_grammar")
 
-require File.dirname(__FILE__) + '/instrument_parser'
-require File.dirname(__FILE__) + '/tempo_parser'
-require File.dirname(__FILE__) + '/timing_parser'
-
 module Stretto
   class Parser
 
@@ -29,6 +25,28 @@ module Stretto
       def parsed_string
         @parser.parse(@music_string)
       end
+
+    class << self
+
+      private
+        def parse_music_element(klass, music_string, expected_element)
+          klass.new.parse(music_string) ||
+              raise(Exceptions::ParseError.new("Invalid #{expected_element}: #{music_string}"))
+        end
+
+      public
+
+      elements = {
+        :instrument => InstrumentGrammarParser,
+        :timing     => TimingGrammarParser,
+      }
+      elements.each do |element, klass|
+        define_method "parse_#{element}!" do |music_element|
+          parse_music_element(klass, music_element, element)
+        end
+      end
+
+    end
 
   end
 end

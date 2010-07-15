@@ -17,7 +17,7 @@ module Stretto
 
       def initialize(string_hash_or_token, pattern = nil)
         token = case string_hash_or_token
-          when String then Stretto::InstrumentParser.parse!(string_hash_or_token)
+          when String then Stretto::Parser.parse_instrument!(string_hash_or_token)
           else string_hash_or_token
         end
         super(token[:text_value], :pattern => pattern )

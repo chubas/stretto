@@ -45,6 +45,7 @@ module Stretto
         :measure              => MeasureGrammarParser,
         :pitch_wheel          => PitchWheelGrammarParser,
         :polyphonic_pressure  => PolyphonicPressureGrammarParser,
+        :rest                 => RestGrammarParser,
         :timing               => TimingGrammarParser,
         :tempo                => TempoGrammarParser,
         :variable             => VariableGrammarParser

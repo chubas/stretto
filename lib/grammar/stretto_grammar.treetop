@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/grammar_helper'
 
 require File.dirname(__FILE__) + '/value_grammar'
+require File.dirname(__FILE__) + '/duration_grammar'
 require File.dirname(__FILE__) + '/note_grammar'
 require File.dirname(__FILE__) + '/chord_grammar'
 
@@ -12,6 +13,7 @@ require File.dirname(__FILE__) + '/layer_change_grammar'
 require File.dirname(__FILE__) + '/measure_grammar'
 require File.dirname(__FILE__) + '/pitch_wheel_grammar'
 require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
+require File.dirname(__FILE__) + '/rest_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
 require File.dirname(__FILE__) + '/timing_grammar'
 require File.dirname(__FILE__) + '/variable_grammar'
@@ -19,6 +21,7 @@ require File.dirname(__FILE__) + '/variable_grammar'
 grammar StrettoGrammar
 
   include ValueGrammar
+  include DurationGrammar
 
   include ChannelPressureGrammar
   include ControllerChangeGrammar
@@ -28,6 +31,7 @@ grammar StrettoGrammar
   include MeasureGrammar
   include PitchWheelGrammar
   include PolyphonicPressureGrammar
+  include RestGrammar
   include TempoGrammar
   include TimingGrammar
   include VariableGrammar
@@ -61,15 +65,11 @@ grammar StrettoGrammar
   end
 
   rule chord
-    note_string named_chord chord_inversions:chord_inversions? _duration:duration? attack_and_decay <Stretto::Tokens::ChordToken>
+    note_string named_chord chord_inversions:chord_inversions? __duration:duration? attack_and_decay <Stretto::Tokens::ChordToken>
   end
 
   rule note
-    note_string _duration:duration? attack_and_decay <Stretto::Tokens::NoteToken>
-  end
-
-  rule rest
-    [Rr] _duration:duration? <Stretto::Tokens::RestToken>
+    note_string __duration:duration? attack_and_decay <Stretto::Tokens::NoteToken>
   end
 
   rule note_string
@@ -141,63 +141,6 @@ grammar StrettoGrammar
 
   rule octave
     integer
-  end
-
-  rule duration
-    _end_of_tie:tie? duration_string _start_of_tie:tie? <Stretto::Tokens::DurationToken>
-  end
-
-  rule duration_string
-    _duration_character:[whqistxoWHQISTXO]+ _dots:('.'*) _tuplet:tuplet? {
-      def duration_character
-        _duration_character.text_value
-      end
-
-      def dots
-        _dots.text_value.size
-      end
-
-      def tuplet
-        _tuplet if _tuplet.text_value.present?
-      end
-
-      def value
-        nil
-      end
-    }
-    /
-    '/' _value:variable_or_decimal {
-      def duration_character
-        nil
-      end
-
-      def dots
-        0
-      end
-
-      def tuplet
-        nil
-      end
-
-      def value
-        _value
-      end
-    }
-  end
-
-  rule tuplet
-    '*' _ratio:(_numerator:integer ':' _denominator:integer)? {
-      def numerator
-        _ratio._numerator.text_value if _ratio.text_value.present?
-      end
-      def denominator
-        _ratio._denominator.text_value if _ratio.text_value.present?
-      end
-    }
-  end
-
-  rule tie
-    '-'
   end
 
   rule attack_and_decay

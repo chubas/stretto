@@ -1,0 +1,9 @@
+grammar RestGrammar
+
+  include DurationGrammar
+  
+  rule rest
+    [Rr] __duration:duration? <Stretto::Tokens::RestToken>
+  end
+
+end

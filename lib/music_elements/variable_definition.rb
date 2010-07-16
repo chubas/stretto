@@ -4,7 +4,7 @@ require File.join(File.dirname(__FILE__), 'music_element')
 module Stretto
   module MusicElements
 
-    class VariableDefinition < MusicElement
+    class Variable < MusicElement
 
       attr_reader :name, :value
 

@@ -5,8 +5,8 @@ describe "stretto variables" do
   context "when parsing them" do
     it "should parse a variable initialization as a music element" do
       pattern = Stretto::Pattern.new("$MY_VAR=1 C D E $OTHER_VAR=2 F G A")
-      pattern[0].should be_an_instance_of(Stretto::MusicElements::VariableDefinition)
-      pattern[4].should be_an_instance_of(Stretto::MusicElements::VariableDefinition)
+      pattern[0].should be_an_instance_of(Stretto::MusicElements::Variable)
+      pattern[4].should be_an_instance_of(Stretto::MusicElements::Variable)
     end
   end
 

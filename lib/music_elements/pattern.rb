@@ -36,7 +36,7 @@ module Stretto
         other.prev  = last
       end
 
-      if other.kind_of?(MusicElements::VariableDefinition)
+      if other.kind_of?(MusicElements::Variable)
         @variables[other.name.upcase] = other.value
       end
 

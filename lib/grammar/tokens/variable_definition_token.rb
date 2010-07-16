@@ -6,7 +6,7 @@ module Stretto
     class VariableDefinitionToken < Treetop::Runtime::SyntaxNode
 
       def to_stretto(pattern = nil)
-        Stretto::MusicElements::VariableDefinition.new(
+        Stretto::MusicElements::Variable.new(
             text_value,
             :original_name  => name.text_value,
             :name           => name.text_value,

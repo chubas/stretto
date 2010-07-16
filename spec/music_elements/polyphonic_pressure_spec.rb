@@ -29,6 +29,16 @@ describe Stretto::MusicElements::PolyphonicPressure do
     end
 
     it "should not accept undefined variables" do
+      pressure = Stretto::MusicElements::PolyphonicPressure.new("*[SOME_VAR],[OTHER_VAR]")
+      lambda do
+        pressure.pitch
+      end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/)
+      lambda do
+        pressure.value
+      end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/)
+    end
+
+    it "should accept variables when attached to a pattern" do
       pattern = Stretto::Pattern.new("$SOME_VAR=60 $OTHER_VAR=80")
       pressure = Stretto::MusicElements::PolyphonicPressure.new("*[SOME_VAR],[OTHER_VAR]")
       pattern << pressure

@@ -43,6 +43,7 @@ module Stretto
         :key_signature        => KeySignatureGrammarParser,
         :layer_change         => LayerChangeGrammarParser,
         :measure              => MeasureGrammarParser,
+        :note                 => NoteGrammarParser,
         :pitch_wheel          => PitchWheelGrammarParser,
         :polyphonic_pressure  => PolyphonicPressureGrammarParser,
         :rest                 => RestGrammarParser,

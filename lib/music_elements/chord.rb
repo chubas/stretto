@@ -92,14 +92,14 @@ module Stretto
 
         def build_base_note(base_note_options)
           @base_note = Note.new(
-              base_note_options[:original_string],
-              :original_octave          => base_note_options[:original_octave] || DEFAULT_OCTAVE,
-              :original_accidental      => base_note_options[:original_accidental],
-              :original_key             => base_note_options[:original_key],
-              :original_pitch           => base_note_options[:original_pitch],
-              :original_duration_token  => @original_duration_token,
-              :original_attack          => base_note_options[:original_attack],
-              :original_decay           => base_note_options[:original_decay]
+              { :text_value => base_note_options[:original_string],
+              :octave          => base_note_options[:original_octave] || DEFAULT_OCTAVE,
+              :accidental      => base_note_options[:original_accidental],
+              :key             => base_note_options[:original_key],
+              :pitch           => base_note_options[:original_pitch],
+              :duration        => @original_duration_token,
+              :attack          => base_note_options[:original_attack],
+              :decay           => base_note_options[:original_decay] }, @pattern
           )
         end
 
@@ -116,14 +116,14 @@ module Stretto
             pivot_note  = @original_inversions[:pivot_note]
             if pivot_note
               @pivot_note = Note.new(
-                  pivot_note.text_value,
-                  :original_key             => pivot_note.key,
-                  :original_pitch           => pivot_note.pitch,
-                  :original_accidental      => pivot_note.accidental,
-                  :original_octave          => pivot_note.octave || DEFAULT_OCTAVE,
-                  :original_duration_token  => @original_duration_token,
-                  :original_attack          => original_attack,
-                  :original_decay           => original_decay
+                  { :text_value => pivot_note.text_value,
+                  :key             => pivot_note.key,
+                  :pitch           => pivot_note.pitch,
+                  :accidental      => pivot_note.accidental,
+                  :octave          => pivot_note.octave || DEFAULT_OCTAVE,
+                  :duration        => @original_duration_token,
+                  :attack          => original_attack,
+                  :decay           => original_decay}, @pattern
               )
               @pivot_note.pattern = @pattern
             end

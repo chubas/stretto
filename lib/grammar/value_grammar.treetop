@@ -28,4 +28,18 @@ grammar ValueGrammar
     [A-Za-z_] [A-Za-z0-9_]+
   end
 
+  rule integer_or_variable_name
+    integer {
+      def is_numeric?
+        true
+      end
+    }
+    /
+    variable_name {
+      def is_numeric?
+        false
+      end
+    }
+  end
+
 end

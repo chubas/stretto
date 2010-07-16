@@ -37,39 +37,42 @@ module Stretto
       DEFAULT_ATTACK = 0
       DEFAULT_DECAY  = 0
 
-      attr_reader :original_key, :original_accidental, :original_duration, :original_octave,
-                  :key, :accidental, :octave
+      attr_reader :original_key, :original_accidental, :original_duration, :original_octave
 
       attr_reader :original_attack, :original_decay
 
       attr_reader :key_signature
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-        @original_key             = options[:original_key]
-        @original_pitch           = options[:original_pitch]
-        @original_accidental      = options[:original_accidental]
-        @original_octave          = options[:original_octave]
-        build_duration_from_token(options[:original_duration_token])
-        build_attack(options[:original_attack])
-        build_decay(options[:original_decay])
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::Parser.parse_note!(string_hash_or_token)
+          else string_hash_or_token
+        end
+        super(string_hash_or_token[:text_value], :pattern => pattern)
+        @original_key             = token[:key]
+        @original_pitch           = token[:pitch]
+        @original_accidental      = token[:accidental]
+        @original_octave          = token[:octave]
+        build_duration_from_token(token[:duration])
+        build_attack(token[:attack])
+        build_decay(token[:decay])
       end
 
       def +(interval)
         if @original_pitch.has_value?
-          Note.new "#{@original_string}+#{interval}",
-                   :original_pitch          => @original_pitch + interval,
-                   :original_duration_token => @original_duration_token,
-                   :original_attack         => @original_attack,
-                   :original_decay          => @original_decay
+          Note.new({:text_value => "#{@original_string}+#{interval}",
+                   :pitch          => @original_pitch + interval,
+                   :duration => @original_duration_token,
+                   :attack         => @original_attack,
+                   :decay          => @original_decay}, @pattern)
         else
           new_pitch = calculate_pitch_from_key_octave_and_accidental(@key, @octave, @accidental) + interval + (key_signature_increment || 0)
           new_pitch_token = Stretto::Value.new(Stretto::Value::NumericValue.new(new_pitch))
-          Note.new "#{@original_string}+#{interval}",
-                   :original_pitch          => new_pitch_token,
-                   :original_duration_token => @original_duration_token,
-                   :original_attack         => @original_attack,
-                   :original_decay          => @original_decay
+          Note.new({:text_value => "#{@original_string}+#{interval}",
+                   :pitch          => new_pitch_token,
+                   :duration => @original_duration_token,
+                   :attack         => @original_attack,
+                   :decay          => @original_decay}, @pattern)
         end
       end
 
@@ -115,7 +118,22 @@ module Stretto
 
       # TODO: Raise value if it cannot be calculated beforehand (Original pitch should never be nil)
       def pitch
-        @pitch
+        @pitch || build_pitch
+      end
+
+      def octave
+        build_pitch unless @octave
+        @octave
+      end
+
+      def key
+        build_pitch unless @key
+        @key
+      end
+
+      def accidental
+        build_pitch unless @accidental
+        @accidental
       end
 
       private
@@ -134,6 +152,7 @@ module Stretto
           @accidental  = @original_accidental.downcase if @original_accidental
           self.pitch   = calculate_pitch_from_key_octave_and_accidental(@key, @octave, @accidental)
         end
+        @pitch
       end
 
       def calculate_pitch_from_key_octave_and_accidental(key, octave, accidental)
@@ -180,7 +199,7 @@ module Stretto
       def substitute_variables!
         self.attack = attack
         self.decay = decay
-        build_pitch
+        self.pitch = build_pitch
         self.key_signature = @key_signature
       end
 

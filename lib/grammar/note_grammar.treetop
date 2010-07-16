@@ -1,6 +1,17 @@
 grammar NoteGrammar
 
   include ValueGrammar
+  include DurationGrammar
+
+  rule note
+    note_string __duration:duration? attack_and_decay <Stretto::Tokens::NoteToken>
+  end
+
+  rule note_string
+    note_key _octave:octave? <Stretto::Tokens::NoteKeyOctaveAndAccidentalToken>
+    /
+    '[' _pitch:integer_or_variable_name ']' <Stretto::Tokens::NotePitchToken>
+  end
 
   rule note_key
     key:[A-Ga-g] accidental:accidental?
@@ -8,6 +19,14 @@ grammar NoteGrammar
 
   rule accidental
     "##" / "#" / [bB] [bB] / [bB] / "n" / "N"
+  end
+
+  rule octave
+    integer
+  end
+
+  rule attack_and_decay
+    _attack:([aA] value:variable_or_integer)? _decay:([dD] value:variable_or_integer)? <Stretto::Tokens::AttackDecayToken>
   end
 
 end

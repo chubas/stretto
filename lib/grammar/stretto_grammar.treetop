@@ -22,6 +22,7 @@ grammar StrettoGrammar
 
   include ValueGrammar
   include DurationGrammar
+  include NoteGrammar
 
   include ChannelPressureGrammar
   include ControllerChangeGrammar
@@ -66,30 +67,6 @@ grammar StrettoGrammar
 
   rule chord
     note_string named_chord chord_inversions:chord_inversions? __duration:duration? attack_and_decay <Stretto::Tokens::ChordToken>
-  end
-
-  rule note
-    note_string __duration:duration? attack_and_decay <Stretto::Tokens::NoteToken>
-  end
-
-  rule note_string
-    note_key _octave:octave? <Stretto::Tokens::NoteKeyOctaveAndAccidentalToken>
-    /
-    '[' _pitch:integer_or_variable_name ']' <Stretto::Tokens::NotePitchToken>
-  end
-
-  rule integer_or_variable_name
-    integer {
-      def is_numeric?
-        true
-      end
-    }
-    /
-    variable_name {
-      def is_numeric?
-        false
-      end
-    }
   end
 
   rule named_chord
@@ -137,14 +114,6 @@ grammar StrettoGrammar
         nil
       end
     }
-  end
-
-  rule octave
-    integer
-  end
-
-  rule attack_and_decay
-    _attack:([aA] value:variable_or_integer)? _decay:([dD] value:variable_or_integer)? <Stretto::Tokens::AttackDecayToken>
   end
 
   rule voice

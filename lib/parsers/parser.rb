@@ -40,6 +40,7 @@ module Stretto
         :channel_pressure     => ChannelPressureGrammarParser,
         :controller_change    => ControllerChangeGrammarParser,
         :instrument           => InstrumentGrammarParser,
+        :key_signature        => KeySignatureGrammarParser,
         :pitch_wheel          => PitchWheelGrammarParser,
         :polyphonic_pressure  => PolyphonicPressureGrammarParser,
         :timing               => TimingGrammarParser,

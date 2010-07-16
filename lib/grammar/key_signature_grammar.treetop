@@ -1,0 +1,10 @@
+grammar KeySignatureGrammar
+
+  include NoteGrammar
+  include ChordGrammar
+
+  rule key_signature
+    [kK] __note_key:note_key __scale:(maj / min) <Stretto::Tokens::KeySignatureToken>
+  end
+
+end

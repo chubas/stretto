@@ -1,10 +1,13 @@
 require File.dirname(__FILE__) + '/grammar_helper'
 
 require File.dirname(__FILE__) + '/value_grammar'
+require File.dirname(__FILE__) + '/note_grammar'
+require File.dirname(__FILE__) + '/chord_grammar'
 
 require File.dirname(__FILE__) + '/channel_pressure_grammar'
 require File.dirname(__FILE__) + '/controller_change_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
+require File.dirname(__FILE__) + '/key_signature_grammar'
 require File.dirname(__FILE__) + '/pitch_wheel_grammar'
 require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
@@ -21,6 +24,7 @@ grammar StrettoGrammar
   include PolyphonicPressureGrammar
   include TempoGrammar
   include TimingGrammar
+  include KeySignatureGrammar
 
   rule notes
     space? head:music_element? more_elements:(space music_element)* space? <Stretto::Tokens::PatternToken>
@@ -62,10 +66,6 @@ grammar StrettoGrammar
     [Rr] _duration:duration? <Stretto::Tokens::RestToken>
   end
 
-  rule note_key
-    key:[A-Ga-g] accidental:accidental?
-  end
-
   rule note_string
     note_key _octave:octave? <Stretto::Tokens::NoteKeyOctaveAndAccidentalToken>
     /
@@ -86,10 +86,6 @@ grammar StrettoGrammar
     }
   end
 
-  rule accidental
-    "##" / "#" / "bb" / "BB" / "b" / "B" / "n" / "N"
-  end
-
   rule named_chord
     # Make sure they're in reverse order, so 'maj6' is parsed before 'maj', for instance
     dom "7>5>9" / dom "7>5<9" / dom "7<5>9" / dom "7<5<9" / min maj "7" / maj "7>5" / maj "7<5" /
@@ -97,10 +93,6 @@ grammar StrettoGrammar
     [aA] [dD] [dD] "9" / dim "7" /
     min "9" / maj "9" / dom "9" / min "6" / maj "6" / sus "2" / sus "4" / min "7" / maj "7" /
     dom "7" / dim / [aA] [uU] [gG] / min / maj
-  end
-
-  rule maj
-    [mM] [aA] [jJ]
   end
 
   rule min
@@ -204,10 +196,6 @@ grammar StrettoGrammar
 
   rule attack_and_decay
     _attack:([aA] value:variable_or_integer)? _decay:([dD] value:variable_or_integer)? <Stretto::Tokens::AttackDecayToken>
-  end
-
-  rule key_signature
-    [kK] note_key scale:(maj / min) <Stretto::Tokens::KeySignatureToken>
   end
 
   rule measure_bar

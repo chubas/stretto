@@ -1,0 +1,7 @@
+grammar ChordGrammar
+
+  rule maj
+    [mM] [aA] [jJ]
+  end
+
+end

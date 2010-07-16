@@ -1,0 +1,13 @@
+grammar NoteGrammar
+
+  include ValueGrammar
+
+  rule note_key
+    key:[A-Ga-g] accidental:accidental?
+  end
+
+  rule accidental
+    "##" / "#" / [bB] [bB] / [bB] / "n" / "N"
+  end
+
+end

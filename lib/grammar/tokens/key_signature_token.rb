@@ -3,15 +3,18 @@ require File.join(File.dirname(__FILE__), '../../music_elements/key_signature')
 module Stretto
   module Tokens
 
-    class KeySignatureToken < Treetop::Runtime::SyntaxNode
+    class KeySignatureToken < HashToken
 
       def to_stretto(pattern = nil)
-        Stretto::MusicElements::KeySignature.new(
-            text_value,
-            :original_key   => note_key.text_value,
-            :original_scale => scale.text_value,
-            :pattern        => pattern
-        )
+        Stretto::MusicElements::KeySignature.new(self, pattern)
+      end
+
+      def key
+        __note_key.text_value
+      end
+
+      def scale
+        __scale.text_value
       end
 
     end

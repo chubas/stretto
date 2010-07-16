@@ -6,10 +6,14 @@ module Stretto
 
       attr_reader :key, :scale
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-        @key = normalize_keysig(options[:original_key])
-        @scale = SCALES[options[:original_scale].downcase]
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::Parser.parse_key_signature!(string_hash_or_token)
+          else string_hash_or_token
+        end
+        super(token[:text_value], :pattern => pattern)
+        @key = normalize_keysig(token[:key])
+        @scale = SCALES[token[:scale].downcase]
       end
 
       def modifier_for(note_key)

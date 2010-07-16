@@ -5,12 +5,12 @@ module Stretto
 
     class Measure < MusicElement
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-      end
-
-      def duration
-        0
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::Parser.parse_measure!(string_hash_or_token)
+          else string_hash_or_token
+        end
+        super(token[:text_value], :pattern => pattern)
       end
 
       def tied_elements

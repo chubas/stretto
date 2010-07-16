@@ -35,6 +35,10 @@ module Stretto
         true
       end
 
+      def duration
+        0
+      end
+
       # TODO: Big TODO - Change this method's name for a callback.
       # This method should not exist. Element state should be independent of presence of @pattern, and
       # values that need a definite value of pattern should raise an error instead

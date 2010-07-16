@@ -1,0 +1,7 @@
+grammar MeasureGrammar
+
+  rule measure
+    '|' <Stretto::Tokens::MeasureToken>
+  end
+
+end

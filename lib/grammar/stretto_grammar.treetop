@@ -8,6 +8,7 @@ require File.dirname(__FILE__) + '/channel_pressure_grammar'
 require File.dirname(__FILE__) + '/controller_change_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
 require File.dirname(__FILE__) + '/key_signature_grammar'
+require File.dirname(__FILE__) + '/measure_grammar'
 require File.dirname(__FILE__) + '/pitch_wheel_grammar'
 require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
@@ -21,11 +22,12 @@ grammar StrettoGrammar
   include ChannelPressureGrammar
   include ControllerChangeGrammar
   include InstrumentGrammar
+  include KeySignatureGrammar
+  include MeasureGrammar
   include PitchWheelGrammar
   include PolyphonicPressureGrammar
   include TempoGrammar
   include TimingGrammar
-  include KeySignatureGrammar
   include VariableGrammar
 
   rule notes
@@ -34,7 +36,7 @@ grammar StrettoGrammar
 
   rule music_element
     harmonic_chord / harmony_with_melody / single_music_element /
-    measure_bar / key_signature / instrument / voice / layer / tempo /
+    measure / key_signature / instrument / voice / layer / tempo /
     pitch_wheel / channel_pressure / polyphonic_pressure / timing /
     controller_change / variable_definition
   end
@@ -198,10 +200,6 @@ grammar StrettoGrammar
 
   rule attack_and_decay
     _attack:([aA] value:variable_or_integer)? _decay:([dD] value:variable_or_integer)? <Stretto::Tokens::AttackDecayToken>
-  end
-
-  rule measure_bar
-    '|' <Stretto::Tokens::MeasureToken>
   end
 
   rule voice

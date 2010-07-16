@@ -8,6 +8,7 @@ require File.dirname(__FILE__) + '/channel_pressure_grammar'
 require File.dirname(__FILE__) + '/controller_change_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
 require File.dirname(__FILE__) + '/key_signature_grammar'
+require File.dirname(__FILE__) + '/layer_change_grammar'
 require File.dirname(__FILE__) + '/measure_grammar'
 require File.dirname(__FILE__) + '/pitch_wheel_grammar'
 require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
@@ -23,6 +24,7 @@ grammar StrettoGrammar
   include ControllerChangeGrammar
   include InstrumentGrammar
   include KeySignatureGrammar
+  include LayerChangeGrammar
   include MeasureGrammar
   include PitchWheelGrammar
   include PolyphonicPressureGrammar
@@ -204,10 +206,6 @@ grammar StrettoGrammar
 
   rule voice
     kind:'V' __value:variable_or_integer <Stretto::Tokens::VoiceChangeToken>
-  end
-
-  rule layer
-    kind:'L' __value:variable_or_integer <Stretto::Tokens::LayerChangeToken>
   end
 
   rule space

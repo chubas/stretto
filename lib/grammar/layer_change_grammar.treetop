@@ -1,0 +1,9 @@
+grammar LayerChangeGrammar
+
+  include ValueGrammar
+
+  rule layer
+    kind:'L' __value:variable_or_integer <Stretto::Tokens::LayerChangeToken>
+  end
+
+end

@@ -41,6 +41,7 @@ module Stretto
         :controller_change    => ControllerChangeGrammarParser,
         :instrument           => InstrumentGrammarParser,
         :key_signature        => KeySignatureGrammarParser,
+        :layer_change         => LayerChangeGrammarParser,
         :measure              => MeasureGrammarParser,
         :pitch_wheel          => PitchWheelGrammarParser,
         :polyphonic_pressure  => PolyphonicPressureGrammarParser,

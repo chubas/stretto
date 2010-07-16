@@ -45,6 +45,7 @@ module Stretto
         :polyphonic_pressure  => PolyphonicPressureGrammarParser,
         :timing               => TimingGrammarParser,
         :tempo                => TempoGrammarParser,
+        :variable             => VariableGrammarParser
       }
       elements.each do |element, klass|
         define_method "parse_#{element}!" do |music_element|

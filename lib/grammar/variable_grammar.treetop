@@ -1,0 +1,10 @@
+grammar VariableGrammar
+
+  include ValueGrammar
+
+  rule variable_definition
+    # It can be set to a integer also, but decimal handles that case
+    '$' __name:variable_name '=' __value:variable_or_decimal <Stretto::Tokens::VariableDefinitionToken>
+  end
+
+end

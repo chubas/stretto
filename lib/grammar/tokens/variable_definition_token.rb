@@ -1,19 +1,20 @@
-require File.join(File.dirname(__FILE__), '../../music_elements/variable_definition')
+require File.join(File.dirname(__FILE__), '../../music_elements/variable')
 
 module Stretto
   module Tokens
 
-    class VariableDefinitionToken < Treetop::Runtime::SyntaxNode
+    class VariableDefinitionToken < HashToken
 
       def to_stretto(pattern = nil)
-        Stretto::MusicElements::Variable.new(
-            text_value,
-            :original_name  => name.text_value,
-            :name           => name.text_value,
-            :original_value => value.text_value,
-            :value          => Stretto::Value.new(value.wrap),
-            :pattern        => pattern
-        )
+        Stretto::MusicElements::Variable.new(self, pattern)
+      end
+
+      def name
+        __name.text_value
+      end
+
+      def value
+        Stretto::Value.new(__value.wrap)
       end
 
     end

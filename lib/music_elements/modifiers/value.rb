@@ -39,11 +39,15 @@ module Stretto
       end
 
       def to_i(pattern)
-        value(pattern).to_i(pattern)
+        variable = self
+        variable = variable.value(pattern).to_i(pattern) until variable.kind_of?(Numeric)
+        variable
       end
 
       def to_f(pattern)
-        value(pattern).to_f(pattern)
+        variable = self
+        variable = variable.value(pattern).to_f(pattern) until variable.kind_of?(Numeric)
+        variable
       end
 
       def value(pattern)

@@ -12,6 +12,7 @@ require File.dirname(__FILE__) + '/pitch_wheel_grammar'
 require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
 require File.dirname(__FILE__) + '/timing_grammar'
+require File.dirname(__FILE__) + '/variable_grammar'
 
 grammar StrettoGrammar
 
@@ -25,6 +26,7 @@ grammar StrettoGrammar
   include TempoGrammar
   include TimingGrammar
   include KeySignatureGrammar
+  include VariableGrammar
 
   rule notes
     space? head:music_element? more_elements:(space music_element)* space? <Stretto::Tokens::PatternToken>
@@ -208,11 +210,6 @@ grammar StrettoGrammar
 
   rule layer
     kind:'L' __value:variable_or_integer <Stretto::Tokens::LayerChangeToken>
-  end
-
-  rule variable_definition
-    # It can be set to a integer also, but decimal handles that case
-    '$' name:variable_name '=' value:variable_or_decimal <Stretto::Tokens::VariableDefinitionToken>
   end
 
   rule space

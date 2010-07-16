@@ -16,7 +16,7 @@ ALL_ELEMENTS = {
   :rest                 => 'Rq',
   :tempo                => 'T[ALLEGRO]',
   :timing               => '@2000',
-  :variable_definiton   => '$MY_VAR=100',
+  :variable             => '$MY_VAR=100',
   :voice_change         => 'V0',
 }
 

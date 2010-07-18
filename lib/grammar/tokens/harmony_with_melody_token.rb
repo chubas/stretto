@@ -37,9 +37,9 @@ module Stretto
         elements.zip(original_strings).map do |element, string|
           if element.kind_of?(Array)
             Stretto::MusicElements::Melody.new(
-                string,
-                :original_elements  => element,
-                :pattern            => pattern
+                { :original_string => string,
+                  :elements        => element },
+                  pattern
             )
           else
             element

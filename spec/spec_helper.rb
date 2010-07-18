@@ -9,7 +9,6 @@ ALL_ELEMENTS = {
   :key_signature        => 'KGmaj',
   :layer_change         => 'L0',
   :measure              => '|',
-  :melody               => 'Ch+Dh_Ew',
   :note                 => 'C5w',
   :pitch_wheel          => '&100',
   :polyphonic_pressure  => '*60,100',

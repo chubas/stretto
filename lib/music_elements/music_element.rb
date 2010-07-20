@@ -13,7 +13,7 @@ module Stretto
       attr_accessor :instrument
 
       def initialize(original_string, options = {})
-        @original_string = original_string
+        @original_string = original_string # TODO: Validates always an original string?
         @pattern = options[:pattern]
       end
 

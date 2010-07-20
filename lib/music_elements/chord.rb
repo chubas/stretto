@@ -43,8 +43,6 @@ module Stretto
 
       DEFAULT_OCTAVE = 3
 
-      attr_reader :notes, :base_note
-      attr_reader :inversions, :pivot_note
       attr_reader :original_named_chord, :named_chord
       attr_reader :key_signature
 
@@ -56,19 +54,48 @@ module Stretto
                                   :original_attack,     :attack,
                                   :original_decay,      :decay
 
-      def initialize(original_string, options = {})
-        super(original_string, options)
-        build_duration_from_token(options[:original_duration_token])
-        @base_note_options = options[:base_note]
-        @original_named_chord = options[:named_chord]
-        @named_chord = @original_named_chord.downcase
-        @original_inversions = options[:original_inversions]
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::Parser.parse_chord!(string_hash_or_token)
+          else string_hash_or_token
+        end
+        super(token[:text_value], :pattern => pattern)
+        build_duration_from_token(token[:duration])
+        @original_base_note   = token[:base_note]
+        @original_named_chord = token[:named_chord]
+        @named_chord          = @original_named_chord.downcase
+        @original_inversions  = token[:inversions]
+        @original_attack      = token[:attack]
+        @original_decay       = token[:decay]
+        @base_note            = base_note
+      end
+
+      def notes
+        unless @notes
+          build_chord_notes(@named_chord)
+          build_inversions
+        end
+        @notes
+      end
+
+      def base_note
+        @base_note || build_base_note(@original_base_note)
       end
 
       # Equality of two chords is given by the equality of all its notes, that is, their pitches.
       # See <tt>Note#==</tt>
       def ==(other)
-        @notes == other.notes
+        notes && notes == other.notes
+      end
+
+      def inversions
+        build_inversions unless @inversions
+        @inversions
+      end
+
+      def pivot_note
+        build_inversions unless @pivot_note
+        @pivot_note
       end
 
       def key_signature=(key_signature)
@@ -76,30 +103,30 @@ module Stretto
         if @base_note
           @base_note.key_signature = key_signature
           build_chord_notes(@named_chord)
-          build_inversions(@original_inversions)
+          build_inversions
         end
         @notes.each{ |note| note.pattern = @pattern }
       end
 
       def substitute_variables!
-        build_base_note(@base_note_options)
         @base_note.pattern = @pattern
         build_chord_notes(@named_chord)
-        build_inversions(@original_inversions)
+        build_inversions
       end
 
       private
 
         def build_base_note(base_note_options)
-          @base_note = Note.new(
-              { :text_value => base_note_options[:original_string],
-              :octave          => base_note_options[:original_octave] || DEFAULT_OCTAVE,
-              :accidental      => base_note_options[:original_accidental],
-              :key             => base_note_options[:original_key],
-              :pitch           => base_note_options[:original_pitch],
-              :duration        => @original_duration_token,
-              :attack          => base_note_options[:original_attack],
-              :decay           => base_note_options[:original_decay] }, @pattern
+          Note.new({
+              :text_value => base_note_options[:text_value],
+              :octave     => base_note_options[:octave] || DEFAULT_OCTAVE,
+              :accidental => base_note_options[:accidental],
+              :key        => base_note_options[:key],
+              :pitch      => base_note_options[:pitch],
+              :attack     => base_note_options[:attack],
+              :decay      => base_note_options[:decay],
+              :duration   => base_note_options[:duration] },
+            @pattern
           )
         end
 
@@ -109,36 +136,36 @@ module Stretto
           @notes = [@base_note] + intervals.map{|interval| @base_note + interval}
         end
 
-        def build_inversions(original_inversions)
-          @original_inversions  = original_inversions
+        def build_inversions
+          # @original_inversions = original_inversions
           if @original_inversions
             @inversions = @original_inversions[:inversions]
             pivot_note  = @original_inversions[:pivot_note]
             if pivot_note
-              @pivot_note = Note.new(
-                  { :text_value => pivot_note.text_value,
-                  :key             => pivot_note.key,
-                  :pitch           => pivot_note.pitch,
-                  :accidental      => pivot_note.accidental,
-                  :octave          => pivot_note.octave || DEFAULT_OCTAVE,
-                  :duration        => @original_duration_token,
-                  :attack          => original_attack,
-                  :decay           => original_decay}, @pattern
-              )
+              @pivot_note = Note.new({
+                  :text_value => pivot_note.text_value,
+                  :key        => pivot_note.key,
+                  :pitch      => pivot_note.pitch,
+                  :accidental => pivot_note.accidental,
+                  :octave     => pivot_note.octave || DEFAULT_OCTAVE,
+                  :duration   => @original_duration_token,
+                  :attack     => @original_attack,
+                  :decay      => @original_decay
+              }, @pattern)
               @pivot_note.pattern = @pattern
             end
           else
             @inversions = 0
           end
-          raise Exceptions::ChordInversionsException.new("Number of inversions (#{@inversions}) is greater than chord size (#{@notes.size})") if @inversions >= @notes.size
+          raise Exceptions::ChordInversionsException.new("Number of inversions (#{@inversions}) is greater than chord size (#{notes.size})") if @inversions >= notes.size
 
-          @notes.each{ |note| note.pattern = @pattern }
+          notes.each{ |note| note.pattern = @pattern }
           if @pivot_note
-            actual_pivot = @notes.index { |note| @pivot_note.pitch == note.pitch }
+            actual_pivot = notes.index { |note| @pivot_note.pitch == note.pitch }
             raise Exceptions::ChordInversionsException.new("Note #{@pivot_note.original_string}(#{@pivot_note.pitch}) does not belong to chord #{@original_string}") unless actual_pivot
-            actual_pivot.times { @notes << @notes.shift + 12 }
+            actual_pivot.times { notes << notes.shift + 12 }
           else
-            @inversions.times  { @notes << @notes.shift + 12 }
+            @inversions.times  { notes << notes.shift + 12 }
           end
         end
 

@@ -38,6 +38,7 @@ module Stretto
 
       elements = {
         :channel_pressure     => ChannelPressureGrammarParser,
+        :chord                => ChordGrammarParser,
         :controller_change    => ControllerChangeGrammarParser,
         :instrument           => InstrumentGrammarParser,
         :key_signature        => KeySignatureGrammarParser,

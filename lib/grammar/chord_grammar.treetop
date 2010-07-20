@@ -1,7 +1,60 @@
 grammar ChordGrammar
 
+  include NoteGrammar
+
+  rule chord
+    __note_string:note_string __named_chord:named_chord __chord_inversions:chord_inversions? __duration:duration? attack_and_decay <Stretto::Tokens::ChordToken>
+  end
+
+  rule named_chord
+    # Make sure they're in reverse order, so 'maj6' is parsed before 'maj', for instance
+    dom "7>5>9" / dom "7>5<9" / dom "7<5>9" / dom "7<5<9" / min maj "7" / maj "7>5" / maj "7<5" /
+    dom "7>5" / dom "7<5" / maj "13" / min "13" / dom "13" / dom "11" / min "11" /
+    [aA] [dD] [dD] "9" / dim "7" /
+    min "9" / maj "9" / dom "9" / min "6" / maj "6" / sus "2" / sus "4" / min "7" / maj "7" /
+    dom "7" / dim / [aA] [uU] [gG] / min / maj
+  end
+
   rule maj
     [mM] [aA] [jJ]
+  end
+
+  rule min
+    [mM] [iI] [nN]
+  end
+
+  rule dom
+    [dD] [oO] [mM]
+  end
+
+  rule sus
+    [sS] [uU] [sS]
+  end
+
+  rule dim
+    [dD] [iI] [mM]
+  end
+
+  rule chord_inversions
+    '^' note_string {
+      def inversions
+        0
+      end
+
+      def pivot_note
+        note_string
+      end
+    }
+    /
+    '^'+ {
+      def inversions
+        text_value.size
+      end
+
+      def pivot_note
+        nil
+      end
+    }
   end
 
 end

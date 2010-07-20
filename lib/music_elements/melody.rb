@@ -33,13 +33,13 @@ module Stretto
                 raise ArgumentError.new("First argument should be either a MusicElement or an array of at least one MusicElement")
               end
               { :elements   => arg,
-                :text_value => arg.map(&:original_string).join('_')
+                :original_string => arg.map(&:original_string).join('_')
               }
             when Hash
               arg
             when MusicElement
               { :elements   => [arg],
-                :text_value => arg.original_string
+                :original_string => arg.original_string
               }
             else raise ArgumentError.new("First argument should be either a MusicElement or an array of MusicElements")
           end

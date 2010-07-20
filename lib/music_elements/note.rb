@@ -48,7 +48,7 @@ module Stretto
           when String then Stretto::Parser.parse_note!(string_hash_or_token)
           else string_hash_or_token
         end
-        super(string_hash_or_token[:text_value], :pattern => pattern)
+        super(token[:text_value], :pattern => pattern)
         @original_key             = token[:key]
         @original_pitch           = token[:pitch]
         @original_accidental      = token[:accidental]
@@ -60,30 +60,31 @@ module Stretto
 
       def +(interval)
         if @original_pitch.has_value?
-          Note.new({:text_value => "#{@original_string}+#{interval}",
-                   :pitch          => @original_pitch + interval,
-                   :duration => @original_duration_token,
-                   :attack         => @original_attack,
-                   :decay          => @original_decay}, @pattern)
+          Note.new({
+            :text_value => "#{@original_string}+#{interval}",
+            :pitch      => @original_pitch + interval,
+            :duration   => @original_duration_token,
+            :attack     => @original_attack,
+            :decay      => @original_decay}, @pattern)
         else
-          new_pitch = calculate_pitch_from_key_octave_and_accidental(@key, @octave, @accidental) + interval + (key_signature_increment || 0)
-          new_pitch_token = Stretto::Value.new(Stretto::Value::NumericValue.new(new_pitch))
-          Note.new({:text_value => "#{@original_string}+#{interval}",
-                   :pitch          => new_pitch_token,
-                   :duration => @original_duration_token,
-                   :attack         => @original_attack,
-                   :decay          => @original_decay}, @pattern)
+          new_pitch_token = Stretto::Value.new(Stretto::Value::NumericValue.new(pitch + interval))
+          Note.new({
+            :text_value => "#{@original_string}+#{interval}",
+            :pitch      => new_pitch_token,
+            :duration   => @original_duration_token,
+            :attack     => @original_attack,
+            :decay      => @original_decay}, @pattern)
         end
       end
 
       # TODO: Revisit the semantics of ==
       def ==(other)
-        other.pitch == @pitch rescue false
+        other.kind_of?(Note) && other.pitch == pitch
       end
 
       # TODO: Revisit the semantics of eql?
       def eql?(other)
-        other.pitch.eql?(@pitch) rescue false
+        other.kind_of?(Note) && other.pitch.eql?(pitch)
       end
 
       def hash

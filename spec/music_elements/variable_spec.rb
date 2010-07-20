@@ -51,6 +51,16 @@ describe Stretto::MusicElements::Variable do
           pattern << tempo
         end.should raise_error(Stretto::Exceptions::VariableNotDefinedException, /SOME_OTHER_VAR/i)
       end
+
+      it "should return correct value when using intermediary (indirect) values" do
+        note = Stretto::MusicElements::Note.new("[FINAL_VAR]")
+        first = Stretto::MusicElements::Variable.new("$FIRST_VAR=80")
+        second = Stretto::MusicElements::Variable.new("$SECOND_VAR=[FIRST_VAR]")
+        final = Stretto::MusicElements::Variable.new("$FINAL_VAR=[SECOND_VAR]")
+        pattern = Stretto::Pattern.new
+        pattern << first << second << final << note
+        note.pitch.should be == 80
+      end
     end
 
   end

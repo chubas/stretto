@@ -33,7 +33,7 @@ describe Stretto::MusicElements::Timing do
         timing = Stretto::MusicElements::Timing.new("@[SOME_VAR]")
         lambda do
           timing.value
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/i)
       end
 
       it "should accept variables when attaching to a pattern" do

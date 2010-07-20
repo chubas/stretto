@@ -29,7 +29,7 @@ describe Stretto::MusicElements::LayerChange do
         layer_change = Stretto::MusicElements::LayerChange.new("L[SOME_VAR]")
         lambda do
           layer_change.index
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/i)
       end
 
       it "should accept variables when attaching to a pattern" do

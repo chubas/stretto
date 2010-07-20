@@ -42,7 +42,7 @@ describe Stretto::MusicElements::Variable do
         variable = Stretto::MusicElements::Variable.new("$MY_VAR=[SOME_OTHER_VAR]")
         lambda do
           variable.to_i
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_OTHER_VAR/i)
 
         pattern = Stretto::Pattern.new("")
         tempo = Stretto::MusicElements::Tempo.new("T[MY_VAR]")

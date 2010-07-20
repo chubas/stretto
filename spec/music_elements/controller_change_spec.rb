@@ -34,10 +34,10 @@ describe Stretto::MusicElements::ControllerChange do
         controller_change = Stretto::MusicElements::ControllerChange.new("X[SOME_VAR]=[OTHER_VAR]")
         lambda do
           controller_change.controller
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/i)
         lambda do
           controller_change.value
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /OTHER_VAR/i)
       end
 
       it "should accept variables when attaching to a pattern" do

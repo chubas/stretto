@@ -32,10 +32,10 @@ describe Stretto::MusicElements::PolyphonicPressure do
       pressure = Stretto::MusicElements::PolyphonicPressure.new("*[SOME_VAR],[OTHER_VAR]")
       lambda do
         pressure.pitch
-      end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/)
+      end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/)
       lambda do
         pressure.value
-      end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/)
+      end.should raise_error(Stretto::Exceptions::VariableContextException, /OTHER_VAR/)
     end
 
     it "should accept variables when attached to a pattern" do

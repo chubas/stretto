@@ -43,7 +43,7 @@ describe Stretto::MusicElements::Note do
       note = Stretto::MusicElements::Note.new("[SOME_VAR]w")
       lambda do
         note.pitch
-      end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/)
+      end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/)
     end
 
     it "should accept variables when attached to a pattern" do

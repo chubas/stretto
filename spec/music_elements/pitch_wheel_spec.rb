@@ -33,7 +33,7 @@ describe Stretto::MusicElements::PitchWheel do
         pitch_wheel = Stretto::MusicElements::PitchWheel.new("&[SOME_VAR]")
         lambda do
           pitch_wheel.value
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/i)
       end
 
       it "should accept variables when attaching to a pattern" do

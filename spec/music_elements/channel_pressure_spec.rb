@@ -33,7 +33,7 @@ describe Stretto::MusicElements::ChannelPressure do
         channel_pressure = Stretto::MusicElements::ChannelPressure.new("+[SOME_VAR]")
         lambda do
           channel_pressure.value
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/i)
       end
 
       it "should accept variables when attaching to a pattern" do

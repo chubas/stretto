@@ -36,7 +36,7 @@ describe Stretto::MusicElements::Tempo do
         tempo = Stretto::MusicElements::Tempo.new("T[SOME_VAR]")
         lambda do
           tempo.bpm
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/i)
       end
 
       it "should accept variables when attaching to a pattern" do

@@ -49,7 +49,7 @@ describe Stretto::MusicElements::Chord do
     it "should not accept undefined variables" do
       chord = Stretto::MusicElements::Chord.new("[SOME_VAR]maj")
       accessors = [lambda{ chord.base_note.pitch}, lambda{ chord.notes}]
-      accessors.each { |proc| proc.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/i) }
+      accessors.each { |proc| proc.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/i) }
     end
 
     it "should accept variables when attached to a pattern" do

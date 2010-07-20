@@ -34,7 +34,7 @@ describe Stretto::MusicElements::Instrument do
         instrument = Stretto::MusicElements::Instrument.new("I[SOME_VAR]")
         lambda do
           instrument.value
-        end.should raise_error(Stretto::Exceptions::VariableContextException, /pattern/)
+        end.should raise_error(Stretto::Exceptions::VariableContextException, /SOME_VAR/)
       end
 
       it "should accept variables when attaching to a pattern" do

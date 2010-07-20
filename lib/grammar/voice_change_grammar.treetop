@@ -1,0 +1,9 @@
+grammar VoiceChangeGrammar
+
+  include ValueGrammar
+
+  rule voice
+    kind:'V' __value:variable_or_integer <Stretto::Tokens::VoiceChangeToken>
+  end
+
+end

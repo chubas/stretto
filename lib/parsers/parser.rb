@@ -50,7 +50,8 @@ module Stretto
         :rest                 => RestGrammarParser,
         :timing               => TimingGrammarParser,
         :tempo                => TempoGrammarParser,
-        :variable             => VariableGrammarParser
+        :variable             => VariableGrammarParser,
+        :voice_change         => VoiceChangeGrammarParser
       }
       elements.each do |element, klass|
         define_method "parse_#{element}!" do |music_element|

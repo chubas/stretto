@@ -17,6 +17,7 @@ require File.dirname(__FILE__) + '/rest_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
 require File.dirname(__FILE__) + '/timing_grammar'
 require File.dirname(__FILE__) + '/variable_grammar'
+require File.dirname(__FILE__) + '/voice_change_grammar'
 
 grammar StrettoGrammar
 
@@ -37,6 +38,7 @@ grammar StrettoGrammar
   include TempoGrammar
   include TimingGrammar
   include VariableGrammar
+  include VoiceChangeGrammar
 
   rule notes
     space? head:music_element? more_elements:(space music_element)* space? <Stretto::Tokens::PatternToken>
@@ -64,10 +66,6 @@ grammar StrettoGrammar
 
   rule single_music_element
     chord / note / rest
-  end
-
-  rule voice
-    kind:'V' __value:variable_or_integer <Stretto::Tokens::VoiceChangeToken>
   end
 
   rule space

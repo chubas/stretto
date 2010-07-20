@@ -9,12 +9,17 @@ module Stretto
 
       attr_reader :index
 
-      def initialize(token, pattern = nil)
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::Parser.parse_voice_change!(string_hash_or_token)
+          else string_hash_or_token
+        end
         super(token[:text_value], :pattern => pattern)
         @original_value = token[:value]
+      end
 
-        # TODO: As voice is inherent to a pattern, raise an error if @pattern is nil
-        self.index = @original_value.to_i(@pattern)
+      def index
+        @index || @original_value.to_i(pattern)
       end
 
       def index=(index)
@@ -22,6 +27,10 @@ module Stretto
           raise Exceptions::ValueOutOfBoundsException.new("Voice value should be in range 0..#{MAX_VOICES}")
         end
         @index = index
+      end
+
+      def substitute_variables!
+        self.index = index
       end
       
     end

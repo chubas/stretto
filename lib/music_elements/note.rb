@@ -59,22 +59,17 @@ module Stretto
       end
 
       def +(interval)
-        if @original_pitch.has_value?
-          Note.new({
-            :text_value => "#{@original_string}+#{interval}",
-            :pitch      => @original_pitch + interval,
-            :duration   => @original_duration_token,
-            :attack     => @original_attack,
-            :decay      => @original_decay}, @pattern)
+        new_pitch = if @original_pitch.has_value?
+          @original_pitch + interval
         else
-          new_pitch_token = Stretto::Value.new(Stretto::Value::NumericValue.new(pitch + interval))
-          Note.new({
-            :text_value => "#{@original_string}+#{interval}",
-            :pitch      => new_pitch_token,
-            :duration   => @original_duration_token,
-            :attack     => @original_attack,
-            :decay      => @original_decay}, @pattern)
+          Stretto::Value.new(Stretto::Value::NumericValue.new(pitch + interval))
         end
+        Note.new({
+          :text_value => "#{@original_string}+#{interval}",
+          :pitch      => new_pitch,
+          :duration   => @original_duration_token,
+          :attack     => @original_attack,
+          :decay      => @original_decay}, @pattern)
       end
 
       # TODO: Revisit the semantics of ==

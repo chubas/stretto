@@ -4,17 +4,18 @@ require File.dirname(__FILE__) + '/value_grammar'
 require File.dirname(__FILE__) + '/duration_grammar'
 require File.dirname(__FILE__) + '/note_grammar'
 require File.dirname(__FILE__) + '/chord_grammar'
+require File.dirname(__FILE__) + '/rest_grammar'
 
 require File.dirname(__FILE__) + '/channel_pressure_grammar'
 require File.dirname(__FILE__) + '/controller_change_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
+require File.dirname(__FILE__) + '/harmony_grammar'
 require File.dirname(__FILE__) + '/harmonic_chord_grammar'
 require File.dirname(__FILE__) + '/key_signature_grammar'
 require File.dirname(__FILE__) + '/layer_change_grammar'
 require File.dirname(__FILE__) + '/measure_grammar'
 require File.dirname(__FILE__) + '/pitch_wheel_grammar'
 require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
-require File.dirname(__FILE__) + '/rest_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
 require File.dirname(__FILE__) + '/timing_grammar'
 require File.dirname(__FILE__) + '/variable_grammar'
@@ -26,17 +27,18 @@ grammar StrettoGrammar
   include DurationGrammar
   include NoteGrammar
   include ChordGrammar
+  include RestGrammar
 
   include ChannelPressureGrammar
   include ControllerChangeGrammar
   include InstrumentGrammar
   include HarmonicChordGrammar
+  include HarmonyGrammar
   include KeySignatureGrammar
   include LayerChangeGrammar
   include MeasureGrammar
   include PitchWheelGrammar
   include PolyphonicPressureGrammar
-  include RestGrammar
   include TempoGrammar
   include TimingGrammar
   include VariableGrammar
@@ -51,14 +53,6 @@ grammar StrettoGrammar
     measure / key_signature / instrument / voice / layer / tempo /
     pitch_wheel / channel_pressure / polyphonic_pressure / timing /
     controller_change / variable_definition
-  end
-  
-  rule harmony_with_melody
-    _first_element:single_music_element _other_elements:(_sep:[+_] _element:single_music_element)+ <Stretto::Tokens::HarmonyWithMelodyToken>
-  end
-
-  rule single_music_element
-    chord / note / rest
   end
 
   rule space

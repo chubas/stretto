@@ -1,0 +1,15 @@
+grammar HarmonyGrammar
+
+  include ChordGrammar
+  include NoteGrammar
+  include RestGrammar
+
+  rule harmony_with_melody
+    _first_element:single_music_element _other_elements:(_sep:[+_] _element:single_music_element)+ <Stretto::Tokens::HarmonyWithMelodyToken>
+  end
+
+  rule single_music_element
+    chord / note / rest
+  end
+
+end

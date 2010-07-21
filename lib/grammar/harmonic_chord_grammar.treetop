@@ -1,0 +1,15 @@
+grammar HarmonicChordGrammar
+
+  include NoteGrammar
+  include ChordGrammar
+
+  rule harmonic_chord
+    # Force it to be greedy by putting a lookahead negative assertion.
+    _first_element:chord_or_note _other_elements:('+' _element:chord_or_note)+ ![+_] <Stretto::Tokens::HarmonicChordToken>
+  end
+
+  rule chord_or_note
+    chord / note
+  end
+
+end

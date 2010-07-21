@@ -40,6 +40,7 @@ module Stretto
         :channel_pressure     => ChannelPressureGrammarParser,
         :chord                => ChordGrammarParser,
         :controller_change    => ControllerChangeGrammarParser,
+        :harmonic_chord       => HarmonicChordGrammarParser,
         :instrument           => InstrumentGrammarParser,
         :key_signature        => KeySignatureGrammarParser,
         :layer_change         => LayerChangeGrammarParser,

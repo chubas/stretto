@@ -43,6 +43,10 @@ module Stretto
         end
       end
 
+      def notes
+        nil
+      end
+
     end
   end
 end

@@ -2,18 +2,15 @@ require File.join(File.dirname(__FILE__), '/../../music_elements/harmonic_chord'
 
 module Stretto
   module Tokens
-    class HarmonicChordToken < Treetop::Runtime::SyntaxNode
+    class HarmonicChordToken < HashToken
 
       def to_stretto(pattern = nil)
-        Stretto::MusicElements::HarmonicChord.new(
-            text_value,
-            :original_base_notes  => base_notes(pattern),
-            :pattern              => pattern
-        )
+        @pattern = pattern
+        Stretto::MusicElements::HarmonicChord.new(self, pattern)
       end
 
-      def base_notes(pattern)
-        [_first_element.to_stretto(pattern)] + _other_elements.elements.map{|element| element._element.to_stretto(pattern)}
+      def notes
+        [_first_element.to_stretto(@pattern)] + _other_elements.elements.map{|element| element._element.to_stretto(@pattern)}
       end
 
     end

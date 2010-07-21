@@ -5,23 +5,24 @@ module Stretto
   module MusicElements
     class HarmonicChord < Chord
 
-      def duration
-        @notes.map(&:duration).max
-      end
-
-      #-
-      # TODO: This should be able to call super()
-      def initialize(original_string, options = {})
-        @original_string = original_string
-        @base_notes      = options[:original_base_notes]
+      def initialize(string_hash_or_token, pattern = nil)
+        token = case string_hash_or_token
+          when String then Stretto::Parser.parse_harmonic_chord!(string_hash_or_token)
+          else string_hash_or_token
+        end
+        super(token, :pattern => pattern)
+        @notes = normalize_notes(@notes)
       end
 
       def elements
         notes
       end
 
+      def duration
+        @notes.map(&:duration).max
+      end
+
       def substitute_variables!
-        @notes           = normalize_notes(@base_notes).uniq
         @duration        = @notes.map(&:duration).max
         @notes.each{ |note| note.pattern = @pattern }
       end
@@ -33,7 +34,7 @@ module Stretto
             when Note   then notes << element
             when Chord  then notes + element.notes
           end
-        end
+        end.uniq
       end
 
     end

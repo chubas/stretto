@@ -8,6 +8,7 @@ require File.dirname(__FILE__) + '/chord_grammar'
 require File.dirname(__FILE__) + '/channel_pressure_grammar'
 require File.dirname(__FILE__) + '/controller_change_grammar'
 require File.dirname(__FILE__) + '/instrument_grammar'
+require File.dirname(__FILE__) + '/harmonic_chord_grammar'
 require File.dirname(__FILE__) + '/key_signature_grammar'
 require File.dirname(__FILE__) + '/layer_change_grammar'
 require File.dirname(__FILE__) + '/measure_grammar'
@@ -29,6 +30,7 @@ grammar StrettoGrammar
   include ChannelPressureGrammar
   include ControllerChangeGrammar
   include InstrumentGrammar
+  include HarmonicChordGrammar
   include KeySignatureGrammar
   include LayerChangeGrammar
   include MeasureGrammar
@@ -53,15 +55,6 @@ grammar StrettoGrammar
   
   rule harmony_with_melody
     _first_element:single_music_element _other_elements:(_sep:[+_] _element:single_music_element)+ <Stretto::Tokens::HarmonyWithMelodyToken>
-  end
-  
-  rule harmonic_chord
-    # Force it to be greedy by putting a lookahead negative assertion.
-    _first_element:chord_or_note _other_elements:('+' _element:chord_or_note)+ ![+_] <Stretto::Tokens::HarmonicChordToken>
-  end
-
-  rule chord_or_note
-    chord / note
   end
 
   rule single_music_element

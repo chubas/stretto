@@ -60,14 +60,16 @@ module Stretto
           else string_hash_or_token
         end
         super(token[:text_value], :pattern => pattern)
-        build_duration_from_token(token[:duration])
-        @original_base_note   = token[:base_note]
-        @original_named_chord = token[:named_chord]
-        @named_chord          = @original_named_chord.downcase
-        @original_inversions  = token[:inversions]
-        @original_attack      = token[:attack]
-        @original_decay       = token[:decay]
-        @base_note            = base_note
+        unless @notes = token[:notes]
+          build_duration_from_token(token[:duration])
+          @original_base_note   = token[:base_note]
+          @original_named_chord = token[:named_chord]
+          @named_chord          = @original_named_chord.downcase
+          @original_inversions  = token[:inversions]
+          @base_note            = base_note
+          @original_attack      = token[:attack]
+          @original_decay       = token[:decay]
+        end
       end
 
       def notes

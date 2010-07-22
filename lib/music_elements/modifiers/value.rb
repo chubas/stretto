@@ -98,14 +98,6 @@ module Stretto
       self.class.new(@value, new_variation)
     end
 
-    def has_value?
-      @value.present?
-    end
-
-    def self.nil_value
-      new(nil)
-    end
-
     def to_s
       output = @value.to_s
       output += "+#{@variation}" if @variation

@@ -11,7 +11,7 @@ module Stretto
       end
 
       def pitch
-        Stretto::Value.nil_value
+        nil
       end
 
       def octave

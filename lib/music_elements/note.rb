@@ -59,7 +59,7 @@ module Stretto
       end
 
       def +(interval)
-        new_pitch = if @original_pitch.has_value?
+        new_pitch = if @original_pitch
           @original_pitch + interval
         else
           Stretto::Value.new(Stretto::Value::NumericValue.new(pitch + interval))
@@ -109,7 +109,7 @@ module Stretto
       end
 
       def original_pitch
-        @original_pitch.to_s if @original_pitch.has_value?
+        @original_pitch.to_s if @original_pitch
       end
 
       # TODO: Raise value if it cannot be calculated beforehand (Original pitch should never be nil)
@@ -137,7 +137,7 @@ module Stretto
       KEYS_FOR_PITCHES = ['C', 'C', 'D', 'D', 'E', 'F', 'F', 'G', 'G', 'A', 'A', 'B']
 
       def build_pitch
-        if @original_pitch.has_value?
+        if @original_pitch
           self.pitch   = @original_pitch.to_i(@pattern)
           @key         = KEYS_FOR_PITCHES[@pitch % 12]
           @octave      = calculate_octave_from_pitch(@pitch)

@@ -8,7 +8,7 @@ grammar NoteGrammar
   end
 
   rule note_string
-    note_key _octave:octave? <Stretto::Tokens::NoteKeyOctaveAndAccidentalToken>
+    note_key _octave:octave? <Stretto::Tokens::NoteKeyAccidentalOctaveToken>
     /
     '[' _pitch:integer_or_variable_name ']' <Stretto::Tokens::NotePitchToken>
   end

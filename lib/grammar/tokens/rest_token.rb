@@ -3,11 +3,15 @@ require File.join(File.dirname(__FILE__), '../../music_elements/rest')
 
 module Stretto
   module Tokens
+
+    # Token from parsing a rest element
+    #
+    # @example "R", "Rq"
     class RestToken < HashToken
 
       include WithDurationToken
 
-      # OPTIMIZE: Validates that duration is always a duration token, wrapping a nil value if needed
+      # @return [MusicElement::Rest] The Rest element constructed
       def to_stretto(pattern = nil)
         Stretto::MusicElements::Rest.new(self, pattern)
       end

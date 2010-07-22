@@ -3,9 +3,16 @@ require File.join(File.dirname(__FILE__), '../../music_elements/melody')
 
 module Stretto
   module Tokens
+
+    # Token result from parsing a harmony
+    #
+    # @example "Cmajh+Dh_+Ew"
     class HarmonyWithMelodyToken < HashToken
 
 
+      # @return [MusicElements::Harmony, MusicElements::Melody] Returns the constructed
+      #   Harmony or Melody object. It is a Harmony when there is more than one element
+      #   (e.g. "A+B_C")
       def to_stretto(pattern = nil)
         @pattern = pattern
         music_elements = harmony_elements(pattern)
@@ -16,12 +23,15 @@ module Stretto
         end
       end
 
+      # @return [Array(MusicElements::MusicElement)] AN array of the music elements that form the harmony
       def music_elements
         @music_elements ||= harmony_elements(@pattern)
       end
 
       private
 
+        # Builds the Melody objects or the single elements that form a harmony 
+        #-
         # TODO: This can be refactored, even return the melodies directly from the token
         def harmony_elements(pattern)
           elements = [_first_element.to_stretto]

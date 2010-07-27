@@ -2,20 +2,34 @@ require File.join(File.dirname(__FILE__), 'music_element')
 
 module Stretto
   module MusicElements
+
+    # A key signature indicates the channel to play in the indicated key or scale.
+    #
+    # This increases or decreases note values for certain notes, according to music theory
+    # (see http://en.wikipedia.org/wiki/Key_signature). The key signature is specified by the
+    # letter +K+, followed by a key (for example +C+, +D#+ or +Eb+) and the scale (+maj+ or
+    # +min+)
+    #
+    # Note that notes and chords specified with a pitch value will not be affected. That is,
+    # given the following pattern "KGmaj F [65]", the first note will raise its pitch to
+    # 66 (due to the sharp accidental in the F notes), while the second note will keep its
+    # given value of 65
     class KeySignature < MusicElement
 
       attr_reader :key, :scale
 
-      def initialize(string_hash_or_token, pattern = nil)
-        token = case string_hash_or_token
-          when String then Stretto::Parser.parse_key_signature!(string_hash_or_token)
-          else string_hash_or_token
+      def initialize(string_or_options, pattern = nil)
+        token = case string_or_options
+          when String then Stretto::Parser.parse_key_signature!(string_or_options)
+          else string_or_options
         end
-        super(token[:text_value], :pattern => pattern)
+        super(token[:text_value], pattern)
         @key = normalize_keysig(token[:key])
         @scale = SCALES[token[:scale].downcase]
       end
 
+      # @return [Number] +1, 0 or -1, if the note key has a flat, none or sharp accidental
+      #   respectively for the given +note_key+
       def modifier_for(note_key)
         MODIFIERS[@scale][@key][note_key]
       end

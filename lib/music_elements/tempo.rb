@@ -3,14 +3,20 @@ require File.join(File.dirname(__FILE__), 'music_element')
 module Stretto
   module MusicElements
 
+    # Tempo represents the bpm of the song.
+    #
+    # It is indicated by a +T+ followed by the value of the tempo.
+    # There are some predefined variables that define the most common tempos
+    # (see {Variables::TEMPO_VARIABLES}), and the default is _allegro_, that is,
+    # a tempo of +T120+ bpm
     class Tempo < MusicElement
 
-      def initialize(string_hash_or_token, pattern = nil)
-        token = case string_hash_or_token
-          when String then Stretto::Parser.parse_tempo!(string_hash_or_token)
-          else string_hash_or_token
+      def initialize(string_or_options, pattern = nil)
+        token = case string_or_options
+          when String then Stretto::Parser.parse_tempo!(string_or_options)
+          else string_or_options
         end
-        super(token[:text_value], :pattern => pattern)
+        super(token[:text_value], pattern)
         @original_value = token[:value]
       end
 

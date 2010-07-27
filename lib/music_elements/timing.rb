@@ -3,28 +3,29 @@ require File.join(File.dirname(__FILE__), 'music_element')
 module Stretto
   module MusicElements
 
+    # Timing information places the elements at the specified position in time,
+    #
+    # This information is mostly used when reading a MIDI file or using it live,
+    # to synchronize with playback. The quantity is expressed in miliseconds.
     class Timing < MusicElement
 
-      def initialize(string_hash_or_token, pattern = nil)
-        token = case string_hash_or_token
-          when String then Stretto::Parser.parse_timing!(string_hash_or_token)
-          else string_hash_or_token
+      def initialize(string_or_options, pattern = nil)
+        token = case string_or_options
+          when String then Stretto::Parser.parse_timing!(string_or_options)
+          else string_or_options
         end
-        super(token[:text_value], :pattern => pattern)
+        super(token[:text_value], pattern)
         @original_value = token[:value]
-      end
-
-      def value=(value)
-        @value = value
       end
 
       def value
         @value || @original_value.to_i(@pattern)
       end
 
-      def substitute_variables!
-        self.value = value
-      end
+      # private
+        def substitute_variables!
+          @value = self.value
+        end
 
     end
 

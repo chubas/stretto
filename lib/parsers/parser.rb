@@ -61,6 +61,18 @@ module Stretto
         end
       end
 
+      def parse_element!(element, klass)
+        send(:"parse_#{elementize(klass)}!", element)
+      end
+
+      def elementize(str)
+        str.to_s.split('::').last.
+          gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+          gsub(/([a-z\d])([A-Z])/,'\1_\2').
+          tr("-", "_").
+          downcase
+      end
+
     end
 
   end

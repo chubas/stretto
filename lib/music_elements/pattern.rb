@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'voice')
 module Stretto
 
   # Pattern is a series of MusicElements, that hold a context (like tied notes or key signature modifications)
-  # Is the equivalent of the JFugue implementation <tt>Pattern</tt>.
+  # Is the equivalent of the JFugue implementation +Pattern+
   #-
   # NOTE: This class behavior is not definite, and may change during the development of Stretto
   # until the first stable version
@@ -57,7 +57,7 @@ module Stretto
         @__instruments[@current_voice.index] = other
       else
         @__instruments[@current_voice.index] ||= MusicElements::Instrument.default_instrument(self)
-        other.instrument = @__instruments[@current_voice.index]
+        other.instrument = @__instruments[@current_voice.index] if other.respond_to?(:instrument=)
       end
 
       super(other)

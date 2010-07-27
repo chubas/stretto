@@ -1,4 +1,6 @@
 module Stretto
+
+  # Module that holds the predefined variables according to JFugue
   module Variables
 
     INSTRUMENT_VARIABLES = {
@@ -330,7 +332,8 @@ module Stretto
       'MONO'                      => 126,
       'POLY_OPERATION'            => 127,
       'POLY'                      => 127,
-      
+
+      #== Combined values ==
       'BANK_SELECT'               => 16383,
       'MOD_WHEEL'                 => 161,
       'BREATH'                    => 290,
@@ -346,11 +349,13 @@ module Stretto
       'NON_REGISTERED'            => 12770,
       'REGISTERED'                => 13208,
 
+      #== Controller values ==
       'ON'                        => 127,
       'OFF'                       => 0,
       'DEFAULT'                   => 64,
     }
 
+    # All predefined variables for stretto
     PREDEFINED_VARIABLES = INSTRUMENT_VARIABLES.
         merge(PERCUSSION_VARIABLES).
         merge(TEMPO_VARIABLES).

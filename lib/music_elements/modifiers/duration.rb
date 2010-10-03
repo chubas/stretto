@@ -1,3 +1,5 @@
+require 'rational'
+
 module Stretto
   module MusicElements
 

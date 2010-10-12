@@ -24,12 +24,11 @@ module Stretto
     # Midiator's play method would almost work, but it uses the same
     # velocity for attack and decay.
     # TODO: drop down to using note_on and note_off
-    # TODO: change attack/decay defaults to 64
     # TODO: channels
     def play
       @stretto.each do |note|
         duration = 60.0 / DEFAULT_BPM * note.duration * DEFAULT_BEAT
-        @midi.play(note.pitch, duration, 0, 64)
+        @midi.play(note.pitch, duration, 0, note.attack)
       end
     end
   end

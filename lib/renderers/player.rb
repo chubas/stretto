@@ -21,14 +21,13 @@ module Stretto
 
     # proof of concept.
     # assumes each object is note object.
-    # Midiator's play method would almost work, but it uses the same
-    # velocity for attack and decay.
-    # TODO: drop down to using note_on and note_off
     # TODO: channels
     def play
       @stretto.each do |note|
         duration = 60.0 / DEFAULT_BPM * note.duration * DEFAULT_BEAT
-        @midi.play(note.pitch, duration, 0, note.attack)
+        @midi.note_on(note.pitch, 0, note.attack)
+        sleep duration
+        @midi.note_off(note.pitch, 0, note.decay)
       end
     end
   end

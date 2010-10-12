@@ -3,8 +3,9 @@ require 'midiator'
 module Stretto
   class Player
 
-    # TODO: construct a Tempo element with default as first Music Element
-    DEFAULT_BPM = 120
+    attr_accessor :stretto
+
+    #TODO: can time signature be set?
     DEFAULT_BEAT = 4 # each beat is a quarter note 
     
     def initialize(music_string, opts = {:driver => :autodetect})
@@ -15,19 +16,35 @@ module Stretto
         # TODO: exceptions for unhandled drivers
         @midi.use opts[:driver]
       end
-      
+
       @stretto = Stretto::Parser.new(music_string).to_stretto
+      set_default_tempo      
     end
 
-    # proof of concept.
-    # assumes each object is note object.
     # TODO: channels
+    # TODO: properly handle duration (ties, etc)
     def play
-      @stretto.each do |note|
-        duration = 60.0 / DEFAULT_BPM * note.duration * DEFAULT_BEAT
-        @midi.note_on(note.pitch, 0, note.attack)
-        sleep duration
-        @midi.note_off(note.pitch, 0, note.decay)
+      @stretto.each do |element|
+        case element
+        when Stretto::MusicElements::Tempo
+          @bpm = element.bpm
+        when Stretto::MusicElements::Note
+          note = element
+          duration = 60.0 / @bpm * note.duration * DEFAULT_BEAT
+          @midi.note_on(note.pitch, 0, note.attack)
+          sleep duration
+          @midi.note_off(note.pitch, 0, note.decay)
+        else
+          raise "element of type #{element.class} not yet handled by player"
+        end
+      end
+    end
+
+    private
+
+    def set_default_tempo
+      unless @stretto.first.is_a?(Stretto::MusicElements::Tempo)
+        @stretto.unshift(Stretto::MusicElements::Tempo.new("T[Allegro]"))
       end
     end
   end

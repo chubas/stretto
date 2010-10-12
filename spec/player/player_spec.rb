@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__), '../spec_helper')
 describe "player" do
 
   context "plays a single note" do
+
     it "with the correct pitch" do
       # TODO: using mac only driver!
       player = Stretto::Player.new("C", :driver => :dls_synth)
@@ -32,6 +33,22 @@ describe "player" do
       midi.should_receive(:note_off).with(anything, anything, 30)
       
       player.play
+    end
+
+    it "with a default tempo of Allegro" do
+      player = Stretto::Player.new("C", :driver => :dls_synth)
+
+      element = player.stretto.first
+      element.should be_a(Stretto::MusicElements::Tempo)
+      element.bpm.should == 120
+    end
+    
+    it "with a specific tempo" do
+      player = Stretto::Player.new("T[Presto] C", :driver => :dls_synth)
+
+      element = player.stretto.first
+      element.should be_a(Stretto::MusicElements::Tempo)
+      element.bpm.should == 180
     end
     
   end

@@ -18,10 +18,10 @@ module Stretto
       end
 
       @stretto = Stretto::Parser.new(music_string).to_stretto
-      set_default_tempo      
+      @channel = 0
+      set_default_tempo
     end
 
-    # TODO: channels
     # TODO: properly handle duration (ties, etc)
     def play
       @stretto.each do |element|
@@ -31,9 +31,11 @@ module Stretto
         when Stretto::MusicElements::Note
           note = element
           duration = 60.0 / @bpm * note.duration * DEFAULT_BEAT
-          @midi.note_on(note.pitch, 0, note.attack)
+          @midi.note_on(note.pitch, @channel, note.attack)
           sleep duration
-          @midi.note_off(note.pitch, 0, note.decay)
+          @midi.note_off(note.pitch, @channel, note.decay)
+        when Stretto::MusicElements::VoiceChange
+          @channel = element.index
         else
           raise "element of type #{element.class} not yet handled by player"
         end

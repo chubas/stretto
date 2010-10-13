@@ -50,6 +50,27 @@ describe "player" do
       element.should be_a(Stretto::MusicElements::Tempo)
       element.bpm.should == 180
     end
+
+    it "with the default channel of 0" do
+      player = Stretto::Player.new("C", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).with(anything, 0, anything)
+      midi.should_receive(:note_off).with(anything, 0, anything)
+      
+      player.play
+    end
+
+    it "with a specific channel (voice)" do
+      player = Stretto::Player.new("V1 C", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).with(anything, 1, anything)
+      midi.should_receive(:note_off).with(anything, 1, anything)
+      
+      player.play
+    end
+    
     
   end
   

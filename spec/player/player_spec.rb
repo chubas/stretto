@@ -71,6 +71,65 @@ describe "player" do
       player.play
     end
     
+  end
+
+  context "plays a chord" do
+
+    it "with the correct pitches" do
+      player = Stretto::Player.new("Cmaj", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).with(36, anything, anything)
+      midi.should_receive(:note_on).with(40, anything, anything)
+      midi.should_receive(:note_on).with(43, anything, anything)
+      midi.should_receive(:note_off).with(36, anything, anything)
+      midi.should_receive(:note_off).with(40, anything, anything)
+      midi.should_receive(:note_off).with(43, anything, anything)
+      
+      player.play
+    end
+
+    it "with default attack and decay" do
+      player = Stretto::Player.new("Cmaj", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).with(anything, anything, 64)
+      midi.should_receive(:note_on).with(anything, anything, 64)
+      midi.should_receive(:note_on).with(anything, anything, 64)
+      midi.should_receive(:note_off).with(anything, anything, 64)
+      midi.should_receive(:note_off).with(anything, anything, 64)
+      midi.should_receive(:note_off).with(anything, anything, 64)
+      
+      player.play
+    end
+
+    it "with a specific attack and decay" do
+      player = Stretto::Player.new("Cmaja50d60", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).with(anything, anything, 50)
+      midi.should_receive(:note_on).with(anything, anything, 50)
+      midi.should_receive(:note_on).with(anything, anything, 50)
+      midi.should_receive(:note_off).with(anything, anything, 60)
+      midi.should_receive(:note_off).with(anything, anything, 60)
+      midi.should_receive(:note_off).with(anything, anything, 60)
+      
+      player.play
+    end
+
+    it "with a specific channel (voice)" do
+      player = Stretto::Player.new("V2 Cmaj", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).with(anything, 2, anything)
+      midi.should_receive(:note_on).with(anything, 2, anything)
+      midi.should_receive(:note_on).with(anything, 2, anything)
+      midi.should_receive(:note_off).with(anything, 2, anything)
+      midi.should_receive(:note_off).with(anything, 2, anything)
+      midi.should_receive(:note_off).with(anything, 2, anything)
+      
+      player.play
+    end
     
   end
   

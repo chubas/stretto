@@ -36,6 +36,15 @@ module Stretto
           @midi.note_off(note.pitch, @channel, note.decay)
         when Stretto::MusicElements::VoiceChange
           @channel = element.index
+        when Stretto::MusicElements::Chord
+          duration = 60.0 / @bpm * element.duration * DEFAULT_BEAT
+          element.notes.each do |note|
+            @midi.note_on(note.pitch, @channel, element.attack)
+          end
+          sleep duration
+          element.notes.each do |note|
+            @midi.note_off(note.pitch, @channel, element.decay)
+          end
         else
           raise "element of type #{element.class} not yet handled by player"
         end

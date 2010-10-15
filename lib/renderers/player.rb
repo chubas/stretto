@@ -45,6 +45,8 @@ module Stretto
           element.notes.each do |note|
             @midi.note_off(note.pitch, @channel, element.decay)
           end
+        when Stretto::MusicElements::Measure
+          # noop
         else
           raise "element of type #{element.class} not yet handled by player"
         end

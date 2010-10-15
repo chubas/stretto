@@ -71,7 +71,7 @@ describe "player" do
       player.play
     end
     
-  end
+   end
 
   context "plays a chord" do
 
@@ -129,6 +129,28 @@ describe "player" do
       midi.should_receive(:note_off).with(anything, 2, anything)
       
       player.play
+    end
+    
+  end
+
+  it "handles measures" do
+    player = Stretto::Player.new("C | D", :driver => :dls_synth)
+
+    lambda { player.play }.should_not raise_error 
+  end
+  
+  context "handles ties" do
+
+    xit "in the same 'measure'" do
+      player = Stretto::Player.new("Ci- C-i", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).once
+
+      player.play
+    end
+
+    xit "across 'measures'" do
     end
     
   end

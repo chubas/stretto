@@ -35,22 +35,28 @@ describe "player" do
       player.play
     end
 
-    it "with a default tempo of Allegro" do
-      player = Stretto::Player.new("C", :driver => :dls_synth)
+    context "with a tempo" do
+      
+      it "that defaults to Allegro" do
+        player = Stretto::Player.new("C", :driver => :dls_synth)
 
-      element = player.stretto.first
-      element.should be_a(Stretto::MusicElements::Tempo)
-      element.bpm.should == 120
+        midi = player.instance_variable_get("@midi")
+        midi.should_receive(:rest).with(0.5)
+        
+        player.play
+      end
+      
+      it "that is explicitly set" do
+        player = Stretto::Player.new("T[Presto] C", :driver => :dls_synth) # 180 bpm
+
+        midi = player.instance_variable_get("@midi")
+        midi.should_receive(:rest).with(Rational(1, 3))
+        
+        player.play
+      end
+
     end
     
-    it "with a specific tempo" do
-      player = Stretto::Player.new("T[Presto] C", :driver => :dls_synth)
-
-      element = player.stretto.first
-      element.should be_a(Stretto::MusicElements::Tempo)
-      element.bpm.should == 180
-    end
-
     it "with the default channel of 0" do
       player = Stretto::Player.new("C", :driver => :dls_synth)
 
@@ -130,7 +136,7 @@ describe "player" do
       
       player.play
     end
-    
+
   end
 
   it "handles measures" do
@@ -141,16 +147,23 @@ describe "player" do
   
   context "handles ties" do
 
-    xit "in the same 'measure'" do
+    it "by playing the tied note once for the correct duration" do
       player = Stretto::Player.new("Ci- C-i", :driver => :dls_synth)
+
+      midi = player.instance_variable_get("@midi")
+      midi.should_receive(:note_on).once
+      midi.should_receive(:rest).with(0.5)
+
+      player.play
+    end
+
+    it "across measures" do
+      player = Stretto::Player.new("Ci- | C-i", :driver => :dls_synth)
 
       midi = player.instance_variable_get("@midi")
       midi.should_receive(:note_on).once
 
       player.play
-    end
-
-    xit "across 'measures'" do
     end
     
   end

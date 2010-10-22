@@ -22,26 +22,28 @@ module Stretto
       set_default_tempo
     end
 
-    # TODO: properly handle duration (ties, etc)
     def play
       @stretto.each do |element|
         case element
         when Stretto::MusicElements::Tempo
           @bpm = element.bpm
         when Stretto::MusicElements::Note
-          note = element
-          duration = 60.0 / @bpm * note.duration * DEFAULT_BEAT
-          @midi.note_on(note.pitch, @channel, note.attack)
-          sleep duration
-          @midi.note_off(note.pitch, @channel, note.decay)
+          if !((element.start_of_tie? && element.end_of_tie?) || element.end_of_tie?)
+            # puts "tied duration: #{element.tied_duration}"
+            duration = 60.0 / @bpm * element.tied_duration * DEFAULT_BEAT
+            @midi.note_on(element.pitch, @channel, element.attack)
+            @midi.rest(duration)
+            @midi.note_off(element.pitch, @channel, element.decay)
+          end
         when Stretto::MusicElements::VoiceChange
           @channel = element.index
+        # TODO: handle ties
         when Stretto::MusicElements::Chord
           duration = 60.0 / @bpm * element.duration * DEFAULT_BEAT
           element.notes.each do |note|
             @midi.note_on(note.pitch, @channel, element.attack)
           end
-          sleep duration
+          @midi.rest(duration)
           element.notes.each do |note|
             @midi.note_off(note.pitch, @channel, element.decay)
           end

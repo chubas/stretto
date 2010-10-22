@@ -1,10 +1,11 @@
 require 'midiator'
 
 module Stretto
+
   class Player
-
-    attr_accessor :stretto
-
+    attr_reader :midi
+    attr_accessor :bpm, :channel
+    
     #TODO: can time signature be set?
     DEFAULT_BEAT = 4 # each beat is a quarter note 
     
@@ -24,37 +25,18 @@ module Stretto
 
     def play
       @stretto.each do |element|
-        case element
-        when Stretto::MusicElements::Tempo
-          @bpm = element.bpm
-        when Stretto::MusicElements::Note
-          if !((element.start_of_tie? && element.end_of_tie?) || element.end_of_tie?)
-            # puts "tied duration: #{element.tied_duration}"
-            duration = 60.0 / @bpm * element.tied_duration * DEFAULT_BEAT
-            @midi.note_on(element.pitch, @channel, element.attack)
-            @midi.rest(duration)
-            @midi.note_off(element.pitch, @channel, element.decay)
-          end
-        when Stretto::MusicElements::VoiceChange
-          @channel = element.index
-        # TODO: handle ties
-        when Stretto::MusicElements::Chord
-          duration = 60.0 / @bpm * element.duration * DEFAULT_BEAT
-          element.notes.each do |note|
-            @midi.note_on(note.pitch, @channel, element.attack)
-          end
-          @midi.rest(duration)
-          element.notes.each do |note|
-            @midi.note_off(note.pitch, @channel, element.decay)
-          end
-        when Stretto::MusicElements::Measure
-          # noop
-        else
+        if !element.respond_to?(:play)
           raise "element of type #{element.class} not yet handled by player"
+        else
+          element.play(self)
         end
       end
     end
 
+    def default_beat
+      DEFAULT_BEAT
+    end
+    
     private
 
     def set_default_tempo
@@ -63,5 +45,6 @@ module Stretto
       end
     end
   end
+  
 end
 

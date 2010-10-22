@@ -13,7 +13,12 @@ module Stretto
     end
 
     def to_stretto(pattern = nil)
-      parsed_string.to_stretto(pattern)
+      result = parsed_string.to_stretto(pattern)
+      result.each_with_index do |e, i|
+        e.next = result[i+1]
+        e.prev = result[i-1] unless i-1 < 0
+      end
+      result
     end
 
     def valid?

@@ -19,3 +19,8 @@ ALL_ELEMENTS = {
   :voice_change         => 'V0',
 }
 
+def test_driver
+  @driver ||= File.open(File.dirname(__FILE__) + '/test_midi_driver').readline.chomp.to_sym
+end
+
+

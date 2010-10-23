@@ -6,7 +6,7 @@ describe "player" do
 
     it "with the correct pitch" do
       # TODO: using mac only driver!
-      player = Stretto::Player.new("C", :driver => :dls_synth)
+      player = Stretto::Player.new("C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(60, anything, anything)
@@ -16,7 +16,7 @@ describe "player" do
     end
 
     it "with the correct default attack and decay" do
-      player = Stretto::Player.new("C", :driver => :dls_synth)
+      player = Stretto::Player.new("C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 64)
@@ -26,7 +26,7 @@ describe "player" do
     end
 
     it "with different attack and decay values" do
-      player = Stretto::Player.new("Ca80d30", :driver => :dls_synth)
+      player = Stretto::Player.new("Ca80d30", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 80)
@@ -38,7 +38,7 @@ describe "player" do
     context "with a tempo" do
       
       it "that defaults to Allegro" do
-        player = Stretto::Player.new("C", :driver => :dls_synth)
+        player = Stretto::Player.new("C", :driver => test_driver)
 
         player.midi.should_receive(:rest).with(0.5)
         
@@ -46,7 +46,7 @@ describe "player" do
       end
       
       it "that is explicitly set" do
-        player = Stretto::Player.new("T[Presto] C", :driver => :dls_synth) # 180 bpm
+        player = Stretto::Player.new("T[Presto] C", :driver => test_driver) # 180 bpm
 
         player.midi.should_receive(:rest).with(Rational(1, 3))
         
@@ -56,7 +56,7 @@ describe "player" do
     end
     
     it "with the default channel of 0" do
-      player = Stretto::Player.new("C", :driver => :dls_synth)
+      player = Stretto::Player.new("C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, 0, anything)
@@ -66,7 +66,7 @@ describe "player" do
     end
 
     it "with a specific channel (voice)" do
-      player = Stretto::Player.new("V1 C", :driver => :dls_synth)
+      player = Stretto::Player.new("V1 C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, 1, anything)
@@ -80,7 +80,7 @@ describe "player" do
   context "plays a chord" do
 
     it "with the correct pitches" do
-      player = Stretto::Player.new("Cmaj", :driver => :dls_synth)
+      player = Stretto::Player.new("Cmaj", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(36, anything, anything)
@@ -94,7 +94,7 @@ describe "player" do
     end
 
     it "with default attack and decay" do
-      player = Stretto::Player.new("Cmaj", :driver => :dls_synth)
+      player = Stretto::Player.new("Cmaj", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 64)
@@ -108,7 +108,7 @@ describe "player" do
     end
 
     it "with a specific attack and decay" do
-      player = Stretto::Player.new("Cmaja50d60", :driver => :dls_synth)
+      player = Stretto::Player.new("Cmaja50d60", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 50)
@@ -122,7 +122,7 @@ describe "player" do
     end
 
     it "with a specific channel (voice)" do
-      player = Stretto::Player.new("V2 Cmaj", :driver => :dls_synth)
+      player = Stretto::Player.new("V2 Cmaj", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, 2, anything)
@@ -138,7 +138,7 @@ describe "player" do
   end
 
   it "handles measures" do
-    player = Stretto::Player.new("C | D", :driver => :dls_synth)
+    player = Stretto::Player.new("C | D", :driver => test_driver)
 
     lambda { player.play }.should_not raise_error 
   end
@@ -146,7 +146,7 @@ describe "player" do
   context "handles ties" do
 
     it "by playing the tied note once for the correct duration" do
-      player = Stretto::Player.new("Ci- C-i", :driver => :dls_synth)
+      player = Stretto::Player.new("Ci- C-i", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).once
@@ -156,7 +156,7 @@ describe "player" do
     end
 
     it "across measures" do
-      player = Stretto::Player.new("Ci- | C-i", :driver => :dls_synth)
+      player = Stretto::Player.new("Ci- | C-i", :driver => test_driver)
 
       player.midi.should_receive(:note_on).once
 
@@ -164,7 +164,7 @@ describe "player" do
     end
 
     it "for chords" do
-      player = Stretto::Player.new("Cmaji- Cmaj-i", :driver => :dls_synth)
+      player = Stretto::Player.new("Cmaji- Cmaj-i", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).exactly(3).times

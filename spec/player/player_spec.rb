@@ -142,6 +142,16 @@ describe "player" do
 
     lambda { player.play }.should_not raise_error 
   end
+
+  it  "handles rests" do
+    player = Stretto::Player.new("R", :driver => test_driver)
+
+    midi = player.midi
+    midi.should_receive(:note_on).never
+    midi.should_receive(:rest).with(0.5)
+    
+    player.play
+  end
   
   context "handles ties" do
 
@@ -171,6 +181,14 @@ describe "player" do
       midi.should_receive(:rest).with(0.5)
 
       player.play
+    end
+
+    it "for rests" do
+      player = Stretto::Player.new("Ri- | R-i", :driver => test_driver)
+
+      player.midi.should_receive(:rest).with(0.5)
+      
+      player.play      
     end
     
   end

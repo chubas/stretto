@@ -4,28 +4,28 @@ describe "attaching accidentals to notes and chords" do
 
   context "when attaching accidentals to notes" do
 
-    it "should diminish by two tones when using bb accidental" do
+    it "diminishes by two tones when using bb accidental" do
       note = Stretto::Pattern.new("Cbb").first
       note.original_accidental.should be == "bb"
       note.accidental.should be == 'bb'
       note.pitch.should be == 58
     end
 
-    it "should diminish by one tone when using b accidental" do
+    it "diminishes by one tone when using b accidental" do
       note = Stretto::Pattern.new("Cb").first
       note.original_accidental.should be == "b"
       note.accidental.should be == 'b'
       note.pitch.should be == 59
     end
 
-    it "should not affect notes when using the natural accidental" do
+    it "does not affect notes when using the natural accidental" do
       note = Stretto::Pattern.new("Cn").first
       note.original_accidental.should be == "n"
       note.accidental.should be == 'n'
       note.pitch.should be == 60
     end
 
-    it "should augment by one tone when using # accidental" do
+    it "augments by one tone when using # accidental" do
       note = Stretto::Pattern.new("C#").first
       note.original_accidental.should be == "#"
       note.accidental.should be == '#'

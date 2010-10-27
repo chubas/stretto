@@ -1,3 +1,4 @@
+require 'yaml'
 require File.join(File.dirname(__FILE__), '../lib/stretto')
 
 ALL_ELEMENTS = {
@@ -19,8 +20,15 @@ ALL_ELEMENTS = {
   :voice_change         => 'V0',
 }
 
+spec_options_path = File.dirname(__FILE__) + '/spec_options.yml'
+begin
+  SPEC_OPTIONS = YAML::load(File.read(spec_options_path))
+rescue
+  raise "You need to place a valid configuration file at 'spec/spec_options.yml'"
+end
+
 def test_driver
-  @driver ||= File.open(File.dirname(__FILE__) + '/test_midi_driver').readline.chomp.to_sym
+  @driver ||= SPEC_OPTIONS['test_midi_driver'].to_sym
 end
 
 

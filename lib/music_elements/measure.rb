@@ -15,6 +15,10 @@ module Stretto
         super(token[:text_value], pattern)
       end
 
+      def play(player)
+        # noop
+      end
+      
       # @private
       # TODO: Make tests for other elements inside ties, move this to MusicElement
       def tied_elements

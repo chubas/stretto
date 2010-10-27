@@ -1,2 +1,3 @@
 .yardoc
 doc/
+spec/spec_options.yml

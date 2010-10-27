@@ -44,16 +44,16 @@ describe "attack and decay velocities" do
     chord.notes.map(&:decay).should  be == [40, 40, 40]
   end
 
-  it "should return the default attack of 0" do
+  it "should return the default attack of 64" do
     note, chord = Stretto::Pattern.new("C Cmaj")
-    note.attack.should == 0
-    chord.attack.should == 0
+    note.attack.should == 64
+    chord.attack.should == 64
   end
 
-  it "should return the default decay of 0" do
+  it "should return the default decay of 64" do
     note, chord = Stretto::Pattern.new("C Cmaj")
-    note.decay.should == 0
-    chord.decay.should == 0
+    note.decay.should == 64
+    chord.decay.should == 64
   end
 
   it "should return attack velocity expressed as variable" do

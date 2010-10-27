@@ -1,17 +1,17 @@
 class Object
-
-  unless defined? blank?
-
-    def blank?
-      respond_to?(:empty?) ? empty? : !self
-    end
-
-    def present?
-      !blank?
-    end
-
+  def blank?
+    respond_to?(:empty?) ? empty? : !self
   end
 
+  def present?
+    !blank?
+  end
+end
+
+class Symbol
+  def to_proc
+    Proc.new { |obj, *args| obj.send(self, *args) }
+  end
 end
 
 class Array

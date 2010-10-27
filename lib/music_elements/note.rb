@@ -181,6 +181,15 @@ module Stretto
         @original_pitch.to_s if @original_pitch
       end
 
+      def play(player)
+        if !((start_of_tie? && end_of_tie?) || end_of_tie?)
+          duration = 60.0 / player.bpm * tied_duration * player.default_beat
+          player.midi.note_on(pitch, player.channel, attack)
+          player.midi.rest(duration)
+          player.midi.note_off(pitch, player.channel, decay)
+        end
+      end
+      
       private
 
         # Builds pitch, and calculates key, octave and accidental with it.

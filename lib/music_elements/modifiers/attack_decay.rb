@@ -8,8 +8,8 @@ module Stretto
     # inverse when going into silence. The default value for both is 0
     module AttackDecay
 
-      DEFAULT_ATTACK = 0
-      DEFAULT_DECAY  = 0
+      DEFAULT_ATTACK = 64
+      DEFAULT_DECAY  = 64
 
       attr_reader :original_attack, :original_decay
 

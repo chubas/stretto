@@ -21,6 +21,13 @@ module Stretto
         build_duration_from_token(token[:duration])
       end
 
+      def play(player)
+        if !((start_of_tie? && end_of_tie?) || end_of_tie?)
+          duration = 60.0 / player.bpm * tied_duration * player.default_beat
+          player.midi.rest(duration)
+        end
+      end
+      
     end
   end
 end

@@ -1,2 +1,3 @@
 .yardoc
 doc/
+spec/test_midi_driver

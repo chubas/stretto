@@ -69,11 +69,11 @@ module Stretto
         unless chord.end_of_tie?
           duration = 60.0 / bpm * chord.tied_duration * DEFAULT_BEAT
           chord.notes.each do |note|
-            @midi.note_on(note.pitch, channel, chord.attack)
+            @midi.note_on(note.pitch, channel, note.attack)
           end
           @midi.rest(duration)
           chord.notes.each do |note|
-            @midi.note_off(note.pitch, channel, chord.decay)
+            @midi.note_off(note.pitch, channel, note.decay)
           end
         end
       end

@@ -123,7 +123,7 @@ module Stretto
 
       private
 
-        # Builds the nase_note according to the parsed token
+        # Builds the base_note according to the parsed token
         def build_base_note(base_note_options)
           Note.new({
               :text_value => base_note_options[:text_value],

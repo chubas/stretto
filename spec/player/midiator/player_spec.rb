@@ -5,7 +5,6 @@ describe "player" do
   context "plays a single note" do
 
     it "with the correct pitch" do
-      # TODO: using mac only driver!
       player = Stretto::MIDIator::Player.new("C", :driver => test_driver)
 
       midi = player.midi
@@ -134,6 +133,20 @@ describe "player" do
 
       player.play
     end
+    
+    it "using harmonic notation" do
+      player = Stretto::MIDIator::Player.new("C5q+E5q+G5q", :driver => test_driver)
+      
+      midi = player.midi
+      midi.should_receive(:note_on).with(60, anything, anything)
+      midi.should_receive(:note_on).with(64, anything, anything)
+      midi.should_receive(:note_on).with(67, anything, anything)
+      midi.should_receive(:note_off).with(60, anything, anything)
+      midi.should_receive(:note_off).with(64, anything, anything)
+      midi.should_receive(:note_off).with(67, anything, anything)
+      
+      player.play
+    end
 
   end
 
@@ -193,4 +206,16 @@ describe "player" do
 
   end
 
+  xit "handles melodies" do
+    # TODO:
+  end
+
+  xit "handles harmonies" do
+    player = Stretto::MIDIator::Player.new("C5h+E5q_G5q", :driver => test_driver)
+
+    # TODO:
+    
+    player.play
+  end
+  
 end

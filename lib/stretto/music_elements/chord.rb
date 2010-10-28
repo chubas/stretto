@@ -121,19 +121,6 @@ module Stretto
         @notes.each{ |note| note.pattern = @pattern }
       end
 
-      def play(player)
-        if !((start_of_tie? && end_of_tie?) || end_of_tie?)          
-          duration = 60.0 / player.bpm * tied_duration * player.default_beat
-          notes.each do |note|
-            player.midi.note_on(note.pitch, player.channel, attack)
-          end
-          player.midi.rest(duration)
-          notes.each do |note|
-            player.midi.note_off(note.pitch, player.channel, decay)
-          end
-        end
-      end
-      
       private
 
         # Builds the nase_note according to the parsed token

@@ -36,10 +36,6 @@ module Stretto
         self.value = value
       end
 
-      def play(player)
-        player.bpm = bpm
-      end
-
     end
 
   end

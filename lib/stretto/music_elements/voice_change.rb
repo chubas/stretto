@@ -33,10 +33,6 @@ module Stretto
         self.index = index
       end
 
-      def play(player)
-        player.channel = index
-      end
-
     end
 
   end

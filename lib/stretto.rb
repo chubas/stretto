@@ -1,12 +1,11 @@
-require 'rubygems'
 require 'treetop'
 require 'polyglot'
-require 'midilib'
+require 'midiator'
 
 $: << File.dirname(__FILE__)
 
-require 'util/utils'
-require 'parsers/parser'
-require 'parsers/exceptions'
-require 'music_elements/pattern'
-require 'renderers/player'
+require 'stretto/util/utils'
+require 'stretto/parsers/parser'
+require 'stretto/parsers/exceptions'
+require 'stretto/music_elements/pattern'
+require 'stretto/renderers/player'

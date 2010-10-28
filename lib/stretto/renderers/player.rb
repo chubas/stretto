@@ -1,5 +1,3 @@
-require 'midiator'
-
 module Stretto
 
   class Player

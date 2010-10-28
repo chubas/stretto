@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'yaml'
 require File.join(File.dirname(__FILE__), '../lib/stretto')
 

@@ -171,7 +171,7 @@ module Stretto
 
           notes.each{ |note| note.pattern = @pattern }
           if @pivot_note
-            actual_pivot = notes.index { |note| @pivot_note.pitch == note.pitch }
+            actual_pivot = notes.index(notes.find { |note| @pivot_note.pitch == note.pitch }) # TODO: Dropped notes.index(&block) for compatibility with <1.8.7
             raise Exceptions::ChordInversionsException.new("Note #{@pivot_note.original_string}(#{@pivot_note.pitch}) does not belong to chord #{@original_string}") unless actual_pivot
             actual_pivot.times { notes << notes.shift + 12 }
           else

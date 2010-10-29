@@ -19,11 +19,11 @@ ALL_ELEMENTS = {
   :timing               => '@2000',
   :variable             => '$MY_VAR=100',
   :voice_change         => 'V0',
-}
+} unless defined?(ALL_ELEMENTS)
 
 spec_options_path = File.dirname(__FILE__) + '/spec_options.yml'
 begin
-  SPEC_OPTIONS = YAML::load(File.read(spec_options_path))
+  SPEC_OPTIONS = YAML::load(File.read(spec_options_path)) unless defined?(SPEC_OPTIONS)
 rescue
   raise "You need to place a valid configuration file at 'spec/spec_options.yml'"
 end

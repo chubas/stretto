@@ -29,11 +29,11 @@ describe "melodies" do
 
     it "should return the correct type of elements" do
       elements = Stretto::Pattern.new("C_Dmaj_R_Emin7_F").first.elements
-      elements[0].should be_an_instance_of Stretto::MusicElements::Note
-      elements[1].should be_an_instance_of Stretto::MusicElements::Chord
-      elements[2].should be_an_instance_of Stretto::MusicElements::Rest
-      elements[3].should be_an_instance_of Stretto::MusicElements::Chord
-      elements[4].should be_an_instance_of Stretto::MusicElements::Note
+      elements[0].should be_an_instance_of(Stretto::MusicElements::Note)
+      elements[1].should be_an_instance_of(Stretto::MusicElements::Chord)
+      elements[2].should be_an_instance_of(Stretto::MusicElements::Rest)
+      elements[3].should be_an_instance_of(Stretto::MusicElements::Chord)
+      elements[4].should be_an_instance_of(Stretto::MusicElements::Note)
     end
   end
 

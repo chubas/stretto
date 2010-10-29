@@ -6,13 +6,13 @@ describe "building notes" do
     it "should return the correct number and kind of notes with one note" do
       notes = Stretto::Pattern.new("C")
       notes.should have(1).note
-      notes[0].should be_an_instance_of Stretto::MusicElements::Note
+      notes[0].should be_an_instance_of(Stretto::MusicElements::Note)
     end
 
     it "should return the correct number and kind of notes with several notes" do
       notes = Stretto::Pattern.new("C D E F")
       notes.should have(4).notes
-      notes.each { |note| note.should be_an_instance_of Stretto::MusicElements::Note }
+      notes.each { |note| note.should be_an_instance_of(Stretto::MusicElements::Note) }
     end
   end
 

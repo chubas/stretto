@@ -6,13 +6,13 @@ describe "building chords" do
     it "should return the correct number and kind of chords with one chord" do
       chords = Stretto::Pattern.new("Cmaj7")
       chords.should have(1).chords
-      chords[0].should be_an_instance_of Stretto::MusicElements::Chord
+      chords[0].should be_an_instance_of(Stretto::MusicElements::Chord)
     end
 
     it "should return the correct number and kind of notes with several chords" do
       chords = Stretto::Pattern.new("Cmaj Dmaj")
       chords.should have(2).chords
-      chords.each { |chord| chord.should be_an_instance_of Stretto::MusicElements::Chord }
+      chords.each { |chord| chord.should be_an_instance_of(Stretto::MusicElements::Chord) }
     end
   end
 
@@ -73,7 +73,7 @@ describe "building chords" do
   end
 
   context "when building chord inversions" do
-    
+
     it "should return the number of invertions" do
       chord = Stretto::Pattern.new("Cmaj").first
       chord.inversions.should be == 0

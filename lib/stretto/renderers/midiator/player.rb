@@ -38,6 +38,8 @@ module Stretto
             play_rest(element)
           when Stretto::MusicElements::Chord
             play_chord(element)
+          when Stretto::MusicElements::Melody
+            play_melody(element)
           when Stretto::MusicElements::Measure
             # noop
           when Stretto::MusicElements::Tempo
@@ -74,6 +76,19 @@ module Stretto
           @midi.rest(duration)
           chord.notes.each do |note|
             @midi.note_off(note.pitch, channel, note.decay)
+          end
+        end
+      end
+
+      def play_melody(melody)
+        melody.elements.each do |element|
+          case element
+          when Stretto::MusicElements::Note
+            play_note(element)
+          when Stretto::MusicElements::Rest
+            play_rest(element)
+          when Stretto::MusicElements::Chord
+            play_chord(element)
           end
         end
       end

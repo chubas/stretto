@@ -44,4 +44,8 @@ describe Stretto::Pattern do
     end
   end
 
+  context "when initializing with an invalid File object" do
+    it "raises an error in the line where it occurred" # Make file parser error-aware?
+  end
+
 end

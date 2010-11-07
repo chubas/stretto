@@ -8,6 +8,12 @@ class Object
   end
 end
 
+class String
+  def blank?
+    self !~ /\S/
+  end
+end
+
 class Symbol
   def to_proc
     Proc.new { |obj, *args| obj.send(self, *args) }

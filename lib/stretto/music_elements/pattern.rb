@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), 'voice')
+require File.join(File.dirname(__FILE__), '../util/jfugue_format_parser')
 
 module Stretto
 
@@ -16,7 +17,11 @@ module Stretto
 
     attr_reader :voices, :variables # TODO: Limit access to variables
 
-    def initialize(music_string = "")
+    # Initializes a pattern
+    # @param music_string_or_file [String, File] Can be the music string directly, or
+    #   a file in jfugue format.
+    def initialize(music_string_or_file = "")
+      music_string = get_music_string_from(music_string_or_file)
       @parser           = Stretto::Parser.new(music_string)
       @voices           = { }
       @variables        = { }
@@ -76,6 +81,16 @@ module Stretto
           (Value.new(Value::NumericValue.new(PREDEFINED_VARIABLES[name.upcase])) if PREDEFINED_VARIABLES[name.upcase]) ||
           raise(Exceptions::VariableNotDefinedException.new("Variable '#{name}' not defined in pattern"))
     end
+
+    private
+      def get_music_string_from(music_string_or_file)
+        case music_string_or_file
+          when String
+            music_string_or_file
+          when File
+            Stretto::JFugueFormatParser.parse(music_string_or_file)
+        end
+      end
 
   end
 end

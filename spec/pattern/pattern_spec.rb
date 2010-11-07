@@ -34,7 +34,14 @@ describe Stretto::Pattern do
       lambda{ Stretto::Pattern.new("C#4C I5") }.should raise_error(/character 3/)
       lambda{ Stretto::Pattern.new("A B I C") }.should raise_error(/character 5/) # After the I, expects a value
     end
+  end
 
+  context "when initializing with a File object" do
+    it "reads the file and parses correctly the pattern" do
+      pattern = Stretto::Pattern.new(File.open(File.dirname(__FILE__) + '/../entertainer.jfugue'))
+      pattern.first.should be_an_instance_of(Stretto::MusicElements::VoiceChange)
+      pattern.last.should be_an_instance_of(Stretto::MusicElements::Rest)
+    end
   end
 
 end

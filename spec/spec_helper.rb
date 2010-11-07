@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'yaml'
+require 'spec'
+
 require File.join(File.dirname(__FILE__), '../lib/stretto')
 
 ALL_ELEMENTS = {

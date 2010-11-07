@@ -27,12 +27,12 @@ describe Stretto::Pattern do
     end
 
     it "raises an error when it is invalid" do
-      lambda{ Stretto::Pattern.new("#C I5") }.should raise_error /invalid/i
+      lambda{ Stretto::Pattern.new("#C I5") }.should raise_error(/invalid/i)
     end
 
     it "indicates the character at where the error is" do
-      lambda{ Stretto::Pattern.new("C#4C I5") }.should raise_error /character 3/
-      lambda{ Stretto::Pattern.new("A B I C") }.should raise_error /character 5/ # After the I, expects a value
+      lambda{ Stretto::Pattern.new("C#4C I5") }.should raise_error(/character 3/)
+      lambda{ Stretto::Pattern.new("A B I C") }.should raise_error(/character 5/) # After the I, expects a value
     end
 
   end

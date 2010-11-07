@@ -25,10 +25,20 @@ module Stretto
       not parsed_string.nil?
     end
 
+    def error_on
+      @last_error_on
+    end
+
     private
 
       def parsed_string
-        @parser.parse(@music_string)
+        parsed_string = @parser.parse(@music_string)
+        if parsed_string
+          @last_error_on = nil
+        else
+          @last_error_on = @parser.max_terminal_failure_index
+        end
+        parsed_string
       end
 
     class << self

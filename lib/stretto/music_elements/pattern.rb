@@ -22,7 +22,11 @@ module Stretto
       @variables        = { }
       @__key_signature  = { }
       @__instruments    = { }
-      @parser.to_stretto(self).each { |music_element| self << music_element }
+      if @parser.valid?
+        @parser.to_stretto(self).each { |music_element| self << music_element }
+      else
+        raise "Invalid music string \"#{music_string}\" at character #{@parser.error_on}"
+      end
     end
 
     def elements

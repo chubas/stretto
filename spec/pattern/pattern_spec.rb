@@ -1,10 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "music pattern" do
+describe Stretto::Pattern do
 
   context "when acting like a linked list of music elements" do
-
-    it "should allow transversal of music elements as a linked list" do
+    it "allows transversal of music elements as a linked list" do
       note = Stretto::Pattern.new("C R Cmaj").first
       note.prev.should be_nil
       note.should be_instance_of(Stretto::MusicElements::Note)
@@ -19,6 +18,21 @@ describe "music pattern" do
       chord.should be_instance_of(Stretto::MusicElements::Chord)
       chord.prev.should == rest
       chord.next.should be_nil
+    end
+  end
+
+  context "when initializing with a music string" do
+    it "builds a new Pattern when it is valid" do
+      lambda{ Stretto::Pattern.new("C7 Rq") }.should_not raise_error
+    end
+
+    it "raises an error when it is invalid" do
+      lambda{ Stretto::Pattern.new("#C I5") }.should raise_error /invalid/i
+    end
+
+    it "indicates the character at where the error is" do
+      lambda{ Stretto::Pattern.new("C#4C I5") }.should raise_error /character 3/
+      lambda{ Stretto::Pattern.new("A B I C") }.should raise_error /character 5/ # After the I, expects a value
     end
 
   end

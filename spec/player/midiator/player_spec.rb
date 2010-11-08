@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '../../spec_helper')
 
-describe "player" do
+describe Stretto::MIDIator::Player do
 
   context "plays a single note" do
 
@@ -133,10 +133,10 @@ describe "player" do
 
       player.play
     end
-    
+
     it "using harmonic notation" do
       player = Stretto::MIDIator::Player.new("C5q+E5q+G5q", :driver => test_driver)
-      
+
       midi = player.midi
       midi.should_receive(:note_on).with(60, anything, anything)
       midi.should_receive(:note_on).with(64, anything, anything)
@@ -144,7 +144,7 @@ describe "player" do
       midi.should_receive(:note_off).with(60, anything, anything)
       midi.should_receive(:note_off).with(64, anything, anything)
       midi.should_receive(:note_off).with(67, anything, anything)
-      
+
       player.play
     end
 
@@ -207,7 +207,7 @@ describe "player" do
   end
 
   context "plays a melody" do
-    
+
     it "with notes only" do
       player = Stretto::MIDIator::Player.new("C_D", :driver => test_driver)
 
@@ -215,7 +215,7 @@ describe "player" do
       midi.should_receive(:note_on).with(60, anything, anything)
       midi.should_receive(:note_on).with(62, anything, anything)
       midi.should_receive(:rest).exactly(2).times.with(0.5)
-      
+
       player.play
     end
 
@@ -225,7 +225,7 @@ describe "player" do
       midi = player.midi
       midi.should_receive(:note_on).once
       midi.should_receive(:rest).exactly(2).times.with(0.5)
-      
+
       player.play
     end
 
@@ -238,12 +238,12 @@ describe "player" do
       midi.should_receive(:note_on).with(42, anything, anything)
       midi.should_receive(:note_on).with(45, anything, anything)
       midi.should_receive(:rest).exactly(2).times.with(0.5)
-      
+
       player.play
     end
-    
+
     context "with harmonies" do
-      
+
       xit "of a note and a melody" do
         player = Stretto::MIDIator::Player.new("C5h+E5q_G5q", :driver => test_driver)
 
@@ -256,12 +256,12 @@ describe "player" do
         midi.should_receive(:rest).with(0.5).ordered
         midi.should_receive(:note_off).with(60, anything, anything).ordered # C
         midi.should_receive(:note_off).with(67, anything, anything).ordered # G
-        
+
         player.play
       end
-      
+
     end
-    
+
   end
-  
+
 end

@@ -48,4 +48,11 @@ describe Stretto::Pattern do
     it "raises an error in the line where it occurred" # Make file parser error-aware?
   end
 
+  describe 'to_s' do
+    it "returns the original music string" do
+      pattern = Stretto::Pattern.new("A B C R A+B+C")
+      pattern.to_s.should be == "A B C R A+B+C"
+    end
+  end
+
 end

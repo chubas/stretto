@@ -21,8 +21,8 @@ module Stretto
     # @param music_string_or_file [String, File] Can be the music string directly, or
     #   a file in jfugue format.
     def initialize(music_string_or_file = "")
-      music_string = get_music_string_from(music_string_or_file)
-      @parser           = Stretto::Parser.new(music_string)
+      @music_string = get_music_string_from(music_string_or_file)
+      @parser           = Stretto::Parser.new(@music_string)
       @voices           = { }
       @variables        = { }
       @__key_signature  = { }
@@ -30,12 +30,16 @@ module Stretto
       if @parser.valid?
         @parser.to_stretto(self).each { |music_element| self << music_element }
       else
-        raise "Invalid music string \"#{music_string}\" at character #{@parser.error_on}"
+        raise "Invalid music string \"#{@music_string}\" at character #{@parser.error_on}"
       end
     end
 
     def elements
       to_a
+    end
+
+    def to_s
+      @music_string
     end
 
     def <<(other)

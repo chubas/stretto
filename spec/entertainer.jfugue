@@ -1,0 +1,41 @@
+#
+# "The Entertainer" by Scott Joplin
+# Available by public domain
+# Arranged by Gilbert DeBenedetti
+# For sheet music, see http://www.pitt.edu/~deben/3Enterta.pdf
+#
+
+V0 T50
+V1 T50
+
+V0 D7q E7q C7q A6q- | A6-q B6q G6q Rq | D6q E6q C6q A5q- | A5-q B5q G5q Rq
+V1 Rw               | Rw              | Rw               | Rw
+
+V0 D5q E5q C5q A4q- | A4-q B4q A4q Ab4q | G4q Rq Rh | B5q+F6q+G6q Rq D5q D#5q
+V1 Rw               | Rw                | Rw        | B3q         Rq Rh
+
+V0 E5q C6h E5q        | C6h E5q C6q-       | C6-w              | Rq          C6q D6q D#6q
+V1 C4q Rq  E4q+G4q Rq | C4q Rq E4q+Bb4q Rq | C4q Rq F4q+A4q Rq | C4q+E4q+G4q Rq  Rh
+
+V0 E6q C6q D6q E6q-  | E6-q B5q D6h | C6w           | Rh D5q D#5q | E5q C6h E5q
+V1 C4q Rq E4q+G4q Rq | G3w          | C4q Rq G3q Rq | C4q Rq Rh   | C4q Rq E4q+G4q Rq
+
+#
+# Page 2
+#
+
+V0 C6h E5q C6q-       | C6-w               | Rh A5q G5q        | F#5q A5q C6q E6q-
+V1 C4q Rq E4q+Bb4q Rq | C4q Rq F4q+A4q Rq  | C4q+E4q+G4q Rq Rh | D4q Rq F#4q+A4q Rq
+
+V0 E6-q D6q C6q A5q   | D6w           | Rh D5q D#5q   | E5q C6h E5q       | C6h E5q C6q-
+V1 D4q Rq F#4q+A4q Rq | G4q Rq G3q Rq | A3q Rq B3q Rq | C4q Rq E4q+G4q Rq | C4q Rq E4q+Bb4q Rq
+
+V0 C6-w              | Rq C6q D6q D#6q   | E6q C6q D6q E6q-  | E6-q B5q D6h
+V1 C4q Rq F4q+A4q Rq | C4q+E4q+G4q Rq Rh | C4q Rq E4q+G4q Rq | G3w
+
+V0 C6w           | Rh C6q D6q | E6q C6q D6q E6q- | E6-q C6q D6q C6q | E6q C6q D6q E6q-
+V1 C4q Rq G3q Rq | C4q Rq Rh  | C4w+E4w+G4w      | C4w+Bb4w         | C4w+A4w
+
+V0 E6-q C6q D6q C6q | E6q C6q D6q E6q- | E6-q B5q D6h | C6q Rq Rh     | Rw
+V1 C4w+Ab4w         | C4h+G4h Rh       | G3w          | C4q Rq G3q Rq | C3q Rq Rh
+

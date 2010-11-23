@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'bundler/setup'
+
 require 'treetop'
 require 'polyglot'
 require 'midiator'

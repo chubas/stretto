@@ -1,3 +1,6 @@
 .yardoc
 doc/
 spec/spec_options.yml
+spec/player/midiator/*.mid
+Gemfile.lock
+*.swp

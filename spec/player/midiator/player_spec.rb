@@ -244,16 +244,14 @@ describe Stretto::MIDIator::Player do
 
     context "with harmonies" do
 
-      xit "of a note and a melody" do
+      it "of a note and a melody" do
         player = Stretto::MIDIator::Player.new("C5h+E5q_G5q", :driver => test_driver)
 
         midi = player.midi
         midi.should_receive(:note_on).with(60, anything, anything).ordered # C
         midi.should_receive(:note_on).with(64, anything, anything).ordered # E
-        midi.should_receive(:rest).with(0.5).ordered
         midi.should_receive(:note_off).with(64, anything, anything).ordered # E
         midi.should_receive(:note_on).with(67, anything, anything).ordered # G
-        midi.should_receive(:rest).with(0.5).ordered
         midi.should_receive(:note_off).with(60, anything, anything).ordered # C
         midi.should_receive(:note_off).with(67, anything, anything).ordered # G
 

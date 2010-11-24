@@ -46,6 +46,8 @@ module Stretto
             play_tempo(element)
           when Stretto::MusicElements::VoiceChange
             play_voice_change(element)
+          when Stretto::MusicElements::Harmony
+            play_harmony(element)
           else
             raise "element of class #{element.class} not yet handled by player"
         end
@@ -91,6 +93,14 @@ module Stretto
             play_chord(element)
           end
         end
+      end
+
+      def play_harmony(harmony)
+        harmony_threads = []
+        harmony.elements.each do |element|
+          harmony_threads << Thread.new(element) { |e| play_element(e) }
+        end
+        harmony_threads.each { |t| t.join }
       end
 
       def play_tempo(tempo)

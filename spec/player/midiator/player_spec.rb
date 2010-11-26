@@ -74,7 +74,7 @@ describe Stretto::MIDIator::Player do
       player.play
     end
 
-   end
+  end
 
   context "plays a chord" do
 
@@ -259,7 +259,16 @@ describe Stretto::MIDIator::Player do
       end
 
     end
-
+    
   end
 
+  it  "handles channel pressure" do
+    player = Stretto::MIDIator::Player.new("+60", :driver => test_driver)
+
+    midi = player.midi
+    midi.should_receive(:channel_aftertouch).with(0, 60)
+
+    player.play
+  end
+  
 end

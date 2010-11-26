@@ -48,6 +48,8 @@ module Stretto
             play_voice_change(element)
           when Stretto::MusicElements::Harmony
             play_harmony(element)
+          when Stretto::MusicElements::ChannelPressure
+            play_channel_pressure(element)
           else
             raise "element of class #{element.class} not yet handled by player"
         end
@@ -109,6 +111,10 @@ module Stretto
 
       def play_voice_change(voice_change)
         @channel = voice_change.index
+      end
+
+      def play_channel_pressure(channel_pressure)
+        @midi.channel_aftertouch(@channel, channel_pressure.value)
       end
 
       def set_default_tempo

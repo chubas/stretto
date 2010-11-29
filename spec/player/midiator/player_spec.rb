@@ -270,5 +270,14 @@ describe Stretto::MIDIator::Player do
 
     player.play
   end
-  
+
+  it "handles multiple voices simultaneously" do
+    player = Stretto::MIDIator::Player.new("V0 C5 V1 E5", :driver => test_driver)
+
+    midi = player.midi
+    midi.should_receive(:note_on).twice.ordered
+    midi.should_receive(:note_off).twice.ordered
+
+    player.play
+  end
 end

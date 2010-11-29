@@ -8,7 +8,7 @@ module Stretto
       #TODO: can time signature be set?
       DEFAULT_BEAT = 4 # each beat is a quarter note
 
-      def initialize(music_string, opts = {:driver => :autodetect})
+      def initialize(music_string_or_file, opts = {:driver => :autodetect})
         @midi = ::MIDIator::Interface.new
         if opts[:driver] == :autodetect
           @midi.autodetect_driver
@@ -17,13 +17,13 @@ module Stretto
           @midi.use opts[:driver]
         end
 
-        @stretto = Stretto::Parser.new(music_string).to_stretto
+        @pattern = Stretto::Pattern.new(music_string_or_file)
         @channel = 0
         set_default_tempo
       end
 
       def play
-        @stretto.each do |element|
+        @pattern.each do |element|
           play_element(element)
         end
       end
@@ -118,8 +118,8 @@ module Stretto
       end
 
       def set_default_tempo
-        unless @stretto.first.is_a?(Stretto::MusicElements::Tempo)
-          @stretto.unshift(Stretto::MusicElements::Tempo.new("T[Allegro]"))
+        unless @pattern.first.is_a?(Stretto::MusicElements::Tempo)
+          @pattern.unshift(Stretto::MusicElements::Tempo.new("T[Allegro]"))
         end
       end
 

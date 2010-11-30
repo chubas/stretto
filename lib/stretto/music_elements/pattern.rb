@@ -44,10 +44,6 @@ module Stretto
 
     def <<(other)
       other.pattern = self
-      if last
-        last.next   = other
-        other.prev  = last
-      end
 
       if other.kind_of?(MusicElements::Variable)
         @variables[other.name.upcase] = other.value
@@ -58,6 +54,10 @@ module Stretto
       else
         @voices[DEFAULT_VOICE_INDEX] = @current_voice = Voice.new(DEFAULT_VOICE_INDEX) unless @current_voice
         @current_voice << other
+        if @current_voice.size > 1
+          @current_voice[-2].next = @current_voice[-1]
+          @current_voice[-1].prev = @current_voice[-2]
+        end
       end
 
       if other.kind_of?(MusicElements::KeySignature)

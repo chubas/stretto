@@ -83,10 +83,6 @@ describe "voice objects" do
       end
   end
 
-  # TODO: Not sure about this. What is better approach?
-  it "should tie correctly notes separated by a voice"
-  it "should adjust correctly the next and prev elements of voice elements"
-
   # PENDING: Does pattern return duration at all?
   it "should return correctly a per-voice duration"
 end

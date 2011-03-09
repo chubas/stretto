@@ -42,7 +42,7 @@ module Stretto
           play_chord(element, channel)
         when Stretto::MusicElements::Melody
           play_melody(element, channel)
-        when Stretto::MusicElements::Measure
+        when Stretto::MusicElements::Measure, Stretto::MusicElements::Variable
           # noop
         when Stretto::MusicElements::Tempo
           play_tempo(element)
@@ -50,6 +50,8 @@ module Stretto
           play_harmony(element, channel)
         when Stretto::MusicElements::ChannelPressure
           play_channel_pressure(element, channel)
+        when Stretto::MusicElements::Instrument
+          play_instrument(element, channel)
         else
           raise "element of class #{element.class} not yet handled by player"
       end
@@ -121,6 +123,10 @@ module Stretto
 
     def set_tempo
       play_element(@pattern.first)
+    end
+
+    def play_instrument(instrument, channel)
+      @midi.program_change(channel, instrument.value)
     end
 
   end

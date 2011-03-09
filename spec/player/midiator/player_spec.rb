@@ -271,6 +271,15 @@ describe Stretto::Player do
     player.play
   end
 
+  it "handles instrument" do
+    player = Stretto::Player.new("V0 I[GUITAR] Cmaj", :driver => test_driver)
+
+    midi = player.midi
+    midi.should_receive(:program_change).with(0, 24)
+
+    player.play
+  end
+
   it "handles multiple voices simultaneously" do
     player = Stretto::Player.new("V0 C5 V1 E5", :driver => test_driver)
 
@@ -280,4 +289,5 @@ describe Stretto::Player do
 
     player.play
   end
+
 end

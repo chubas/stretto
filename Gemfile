@@ -1,7 +1,7 @@
 source 'http://gemcutter.org'
 
-gem 'treetop'
-gem 'midiator', '0.3.3', :git => "git://github.com/chubas/midiator.git"
-gem 'midilib'
+gem 'treetop',  '1.4.9'
+gem 'midiator', '0.5.1'
+gem 'midilib',  '2.0.0'
 
-gem 'rspec', '1.3.0'
+gem 'rspec',    '1.3.0'

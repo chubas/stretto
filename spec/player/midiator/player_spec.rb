@@ -1,11 +1,11 @@
 require File.join(File.dirname(__FILE__), '../../spec_helper')
 
-describe Stretto::MIDIator::Player do
+describe Stretto::Player do
 
   context "plays a single note" do
 
     it "with the correct pitch" do
-      player = Stretto::MIDIator::Player.new("C", :driver => test_driver)
+      player = Stretto::Player.new("C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(60, anything, anything)
@@ -15,7 +15,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with the correct default attack and decay" do
-      player = Stretto::MIDIator::Player.new("C", :driver => test_driver)
+      player = Stretto::Player.new("C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 64)
@@ -25,7 +25,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with different attack and decay values" do
-      player = Stretto::MIDIator::Player.new("Ca80d30", :driver => test_driver)
+      player = Stretto::Player.new("Ca80d30", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 80)
@@ -37,7 +37,7 @@ describe Stretto::MIDIator::Player do
     context "with a tempo" do
 
       it "that defaults to Allegro" do
-        player = Stretto::MIDIator::Player.new("C", :driver => test_driver)
+        player = Stretto::Player.new("C", :driver => test_driver)
 
         player.midi.should_receive(:rest).with(0.5)
 
@@ -45,7 +45,7 @@ describe Stretto::MIDIator::Player do
       end
 
       it "that is explicitly set" do
-        player = Stretto::MIDIator::Player.new("T[Presto] C", :driver => test_driver) # 180 bpm
+        player = Stretto::Player.new("T[Presto] C", :driver => test_driver) # 180 bpm
 
         player.midi.should_receive(:rest).with(Rational(1, 3))
 
@@ -55,7 +55,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with the default channel of 0" do
-      player = Stretto::MIDIator::Player.new("C", :driver => test_driver)
+      player = Stretto::Player.new("C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, 0, anything)
@@ -65,7 +65,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with a specific channel (voice)" do
-      player = Stretto::MIDIator::Player.new("V1 C", :driver => test_driver)
+      player = Stretto::Player.new("V1 C", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, 1, anything)
@@ -79,7 +79,7 @@ describe Stretto::MIDIator::Player do
   context "plays a chord" do
 
     it "with the correct pitches" do
-      player = Stretto::MIDIator::Player.new("Cmaj", :driver => test_driver)
+      player = Stretto::Player.new("Cmaj", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(36, anything, anything)
@@ -93,7 +93,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with default attack and decay" do
-      player = Stretto::MIDIator::Player.new("Cmaj", :driver => test_driver)
+      player = Stretto::Player.new("Cmaj", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 64)
@@ -107,7 +107,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with a specific attack and decay" do
-      player = Stretto::MIDIator::Player.new("Cmaja50d60", :driver => test_driver)
+      player = Stretto::Player.new("Cmaja50d60", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, anything, 50)
@@ -121,7 +121,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with a specific channel (voice)" do
-      player = Stretto::MIDIator::Player.new("V2 Cmaj", :driver => test_driver)
+      player = Stretto::Player.new("V2 Cmaj", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(anything, 2, anything)
@@ -135,7 +135,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "using harmonic notation" do
-      player = Stretto::MIDIator::Player.new("C5q+E5q+G5q", :driver => test_driver)
+      player = Stretto::Player.new("C5q+E5q+G5q", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(60, anything, anything)
@@ -151,13 +151,13 @@ describe Stretto::MIDIator::Player do
   end
 
   it "handles measures" do
-    player = Stretto::MIDIator::Player.new("C | D", :driver => test_driver)
+    player = Stretto::Player.new("C | D", :driver => test_driver)
 
     lambda { player.play }.should_not raise_error
   end
 
   it  "handles rests" do
-    player = Stretto::MIDIator::Player.new("R", :driver => test_driver)
+    player = Stretto::Player.new("R", :driver => test_driver)
 
     midi = player.midi
     midi.should_receive(:note_on).never
@@ -169,7 +169,7 @@ describe Stretto::MIDIator::Player do
   context "handles ties" do
 
     it "by playing the tied note once for the correct duration" do
-      player = Stretto::MIDIator::Player.new("Ci- C-i", :driver => test_driver)
+      player = Stretto::Player.new("Ci- C-i", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).once
@@ -179,7 +179,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "across measures" do
-      player = Stretto::MIDIator::Player.new("Ci- | C-i", :driver => test_driver)
+      player = Stretto::Player.new("Ci- | C-i", :driver => test_driver)
 
       player.midi.should_receive(:note_on).once
 
@@ -187,7 +187,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "for chords" do
-      player = Stretto::MIDIator::Player.new("Cmaji- Cmaj-i", :driver => test_driver)
+      player = Stretto::Player.new("Cmaji- Cmaj-i", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).exactly(3).times
@@ -197,7 +197,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "for rests" do
-      player = Stretto::MIDIator::Player.new("Ri- | R-i", :driver => test_driver)
+      player = Stretto::Player.new("Ri- | R-i", :driver => test_driver)
 
       player.midi.should_receive(:rest).with(0.5)
 
@@ -209,7 +209,7 @@ describe Stretto::MIDIator::Player do
   context "plays a melody" do
 
     it "with notes only" do
-      player = Stretto::MIDIator::Player.new("C_D", :driver => test_driver)
+      player = Stretto::Player.new("C_D", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(60, anything, anything)
@@ -220,7 +220,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with a note and a rest" do
-      player = Stretto::MIDIator::Player.new("C_R", :driver => test_driver)
+      player = Stretto::Player.new("C_R", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).once
@@ -230,7 +230,7 @@ describe Stretto::MIDIator::Player do
     end
 
     it "with a note and a chord" do
-      player = Stretto::MIDIator::Player.new("C_Dmaj", :driver => test_driver)
+      player = Stretto::Player.new("C_Dmaj", :driver => test_driver)
 
       midi = player.midi
       midi.should_receive(:note_on).with(60, anything, anything)
@@ -245,7 +245,7 @@ describe Stretto::MIDIator::Player do
     context "with harmonies" do
 
       it "of a note and a melody" do
-        player = Stretto::MIDIator::Player.new("C5h+E5q_G5q", :driver => test_driver)
+        player = Stretto::Player.new("C5h+E5q_G5q", :driver => test_driver)
 
         midi = player.midi
         midi.should_receive(:note_on).with(60, anything, anything).ordered # C
@@ -263,7 +263,7 @@ describe Stretto::MIDIator::Player do
   end
 
   it  "handles channel pressure" do
-    player = Stretto::MIDIator::Player.new("+60", :driver => test_driver)
+    player = Stretto::Player.new("+60", :driver => test_driver)
 
     midi = player.midi
     midi.should_receive(:channel_aftertouch).with(0, 60)
@@ -272,7 +272,7 @@ describe Stretto::MIDIator::Player do
   end
 
   it "handles multiple voices simultaneously" do
-    player = Stretto::MIDIator::Player.new("V0 C5 V1 E5", :driver => test_driver)
+    player = Stretto::Player.new("V0 C5 V1 E5", :driver => test_driver)
 
     midi = player.midi
     midi.should_receive(:note_on).twice.ordered

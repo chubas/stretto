@@ -1,0 +1,174 @@
+body {
+    background-color: #DED4B9;
+    font-family: Helvetica, Arial, sans-serif;
+}
+#container {
+    margin: 0 auto;
+    width: 960px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    #main {
+        margin-top: 40px;
+        font-size: 16px;
+        line-height: 23px;
+
+    }
+
+    #header {
+        margin-top: 40px;
+        border-bottom: 3px double #CFC6AC;
+        padding-bottom: 20px;
+    }
+
+    #header h1 {
+        text-indent: -100em;
+        overflow: hidden;
+        background: url('../images/logo.png') no-repeat center center;
+        height: 175px;
+    }
+
+    #header .slogan {
+        text-align: center;
+        font-size: 3em;
+        padding-top: 3px;
+        color: #CE534D;
+        box-shadow: 4px 4px 4px #000000;
+        text-shadow: 1px 1px 3px #B09B81;
+        font-family: 'Yanone Kaffeesatz', Helvetica, Arial, sans-serif;
+
+    }
+
+    #main #navigation {
+        float: left;
+        position: absolute;
+        left: 0;
+        top: 70px;
+
+    }
+
+        #main #navigation .menu {
+            list-style-type: disc;
+            margin: 0;
+            padding: 20px 20px 20px 26px;
+            -moz-border-radius: 0 15px 15px 0;
+            border-radius: 0 15px 15px 0;
+            -webkit-border-radius: 0 15px 15px 0;
+            background-color: rgba(47, 41, 35, 0.25);
+
+        }
+
+        #main #navigation .menu .item {
+            padding-bottom: 7px;
+        }
+
+        #main #navigation .a {
+            
+        }
+
+    #main #overview {
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+
+        #main #overview .name {
+            color: #31716E;
+        }
+
+        #main #overview strong {
+            color: #CE534D;
+        }
+
+    #main .section {
+        /*border: 2px solid #CE534D;*/
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        padding: 5px 1px 1px 1px;
+        -moz-box-shadow: 3px 3px 1px 1px #BEB499;
+        -webkit-box-shadow: 3px 3px 1px 1px #BEB499;
+        box-shadow: 3px 3px 1px 1px #BEB499;
+        margin-bottom: 20px;
+        background-color: #E1D9C4;
+    }
+
+        #main .section h2 {
+            font-size: 2em;
+            color: #64B6B1;
+            background-color: #46433A;
+            -moz-border-radius: 5px 5px 0 0;
+            -webkit-border-radius: 5px 1px 16px 15px;
+            border-radius: 5px 5px 0 0;
+            padding: 10px 10px 5px 15px;
+            border-bottom: 5px solid #64B6B1;
+            margin-bottom: 10px;
+            font-family: 'Yanone Kaffeesatz', Helvetica, Arial, sans-serif;
+        }
+
+        #main .section .content {
+            padding: 15px 15px 25px 20px;
+
+        }
+
+        #main ul.features {
+            list-style-type: none;
+            margin: 0;
+
+        }
+
+            #main ul.features li {
+                margin-left: 10px;
+
+            }
+
+            #main ul.features li h3 {
+                margin-top: 10px;
+                padding-bottom: 5px;
+                margin-left: -10px;
+                color: #CE534D;
+
+            }
+
+    #footer {
+        padding-bottom: 10px;
+        padding-top: 20px;
+        border-top: 3px double #CFC6AC;
+        text-align: center;
+
+    }
+
+a { color: #31716E; }
+a:hover { color: #64B6B1; }
+
+
+ul.menu a {color: #fff !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+pre, .section .gist .gist-file .gist-data pre {
+  font-family: Consolas, Inconsolata, Monaco, monospace !important;
+  letter-spacing: -1px !important;
+  color: #eee !important;
+  background-color: #121212 !important;
+    padding: 14px;
+}
+div.gist-file, .gist-syntax, .gist-data{
+  line-height: 1.5 !important;
+  font-family: 'Consolas',sans-serif !important;
+  letter-spacing: -1px !important;
+  background-color: #46433A !important;
+  color: #ddd!important;
+}
+.gist-meta { background-color: #BEb499 !important }
+.gist-syntax .nx { color: #FFF !important; }
+.gist-syntax .p { color: #DDD !important; }
+.gist-syntax .nt { color: #7777F7 !important; } /* Name.Tag */
+.gist-syntax .nc { color: #AABBEE !important; font-weight: bold } /* Name.Class */
+.gist-syntax .c { color: #00EA3A !important; font-style: italic } /* Comment */
+.gist-syntax .kc { color: #9560CA !important; font-weight: bold } /* Keyword.Constant */
+.gist-syntax .kd { color: #9560CA !important; font-weight: bold } /* Keyword.Declaration */
+.gist-syntax .kp { color: #9560CA !important; font-weight: bold } /* Keyword.Pseudo */
+.gist-syntax .kr { color: #9560CA !important; font-weight: bold } /* Keyword.Reserved */
+.gist-syntax .o { color: #9560CA !important; font-weight: bold } /* Operator */
+.gist-syntax .k { color: #9560CA !important; font-weight: bold } /* Keyword */
+.gist-syntax .ow { color: #9560CA !important; !important; font-weight: bold } /* Operator.Word */

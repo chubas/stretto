@@ -1,0 +1,148 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>Stretto - Ruby musical notation toolkit</title>
+        <meta name="description" content="Stretto: musical notation toolkit. Ruby implementation of JFugue">
+        <meta name="author" content="Rubén Medellín, JFugue by David Koelle">
+
+
+        <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+        <link rel="shortcut icon" href="/favicon.ico">
+        <link rel="stylesheet" href="gh-pages/css/reset.css">
+        <link rel="stylesheet" href="gh-pages/css/style.css">
+        <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+
+    </head>
+
+    <body>
+
+        <div id="container">
+            <div id="header">
+                <h1>Stretto</h1>
+                <div class="slogan">Ruby musical notation toolkit</div>
+            </div>
+            <div id="contribute">
+                <a href="http://github.com/chubas/stretto">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;"
+                         src="https://assets1.github.com/img/30f550e0d38ceb6ef5b81500c64d970b7fb0f028?repo=&url=http%3A%2F%2Fs3.amazonaws.com%2Fgithub%2Fribbons%2Fforkme_right_orange_ff7600.png&path="
+                         alt="Fork me on GitHub">
+                </a>
+            </div>
+            <div id="main">
+                <div id="navigation">
+                    <ul class="menu">
+                        <li class="item"><a href="#getting-started">Getting started</a></li>
+                        <li class="item"><a href="#features">Features</a></li>
+                        <li class="item"><a href="#documentation">Documentation</a></li>
+                        <li class="item"><a href="#contributing">Contributing</a></li>
+                        <li class="item"><a href="#support">Bugs & Support</a></li>
+                    </ul>
+                </div>
+                <div id="overview" class="description">
+                    <span class="name"><a href="http://github.com/chubas/stretto">Stretto</a></span>
+                    is a Ruby API for programming music. Based on
+                    <span class="name"><a href="http://jfugue.org">JFugue</a></span>,
+                    it makes programming music not only <strong>easy</strong> but
+                    <strong>fun!</strong>
+                </div>
+                <div id="getting-started" class="section">
+                    <h2>Getting started</h2>
+                    <div class="content">
+                        <script src="https://gist.github.com/860523.js?file=stretto-example.rb"></script>
+                        <p>
+                            Stretto is a Ruby native implementation over the JFugue syntax. It also uses native libraries
+                            to handle the MIDI input and output.
+                        </p>
+                    </div>
+                </div>
+                <div id="features" class="section">
+                    <h2>Features</h2>
+                    <div class="content">
+                        <ul class="features">
+                            <li>
+                                <h3>Write all kind of music elements</h3>
+                                Using JFugue language notation, Stretto allows you to write music notes, chords,
+                                instruments, voices and tracks, tempo variations, keys, and other elements.
+                            </li>
+                            <li>
+                                <h3>Extensible MIDI interface</h3>
+                                Stretto has a neat separation between the musical notation and the
+                                MIDI I/O. This allows to extend or write your own interfaces for input and output. It
+                                comes bundled with the <a href="https://github.com/bleything/midiator">Midiator</a>
+                                interface, that allows to use external MIDI devices out of the box.
+                            </li>
+                            <li>
+                                <h3>JFugue notation syntax</h3>
+                                By using a standarized <a href="#">JFugue syntax</a>, you can use your musical compositions
+                                in cross-language projects with any of the Java family languages.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="documentation" class="section">
+                    <h2>Documentation</h2>
+                    <div class="content">
+                        <p>
+                            To learn more from Stretto classes and the supported JFugue classes, you can check the
+                            <a href="http://rdoc.info/github/chubas/stretto/master/frames">RDoc documentation</a>.
+                            Stretto itself is an adaptation from the JFugue project,
+                            you can check the full manual <a href="http://www.jfugue.org/book.html">here</a>.
+                            This contains more information about the
+                            language syntax, and should give you a good approximation to using Stretto classes -
+                            they are in fact almost equivalent to their Java counterparts.
+                        </p>
+                        <p>
+                            You can also browse the source code <a href="http://github.com/chubas/stretto">directly from
+                            Github</a>, or download the project and run the <a href="#">included examples</a>.
+                        </p>
+                    </div>
+                </div>
+                <div id="contributing" class="section">
+                    <h2>Contributing</h2>
+                    <div class="content">
+                        <p>
+                            You can contribute by <a href="https://github.com/chubas/stretto">forking the project</a>
+                            and making a pull request.
+                            <!-- Not yet -->
+                            <!--
+                            If you *really* like Stretto you can consider donating a little to help me but some more coffee
+                            in exchanges for some night programming.
+                            -->
+                        </p>
+                    </div>
+                </div>
+                <div id="support" class="section">
+                    <h2>Bugs & Support</h2>
+                    <div class="content">
+                        <p>
+                            Report bugs at the <a href="https://github.com/chubas/stretto/issues">issues section</a>
+                            of the Github project, or you can ask me directly to
+                            <a href="http://twitter.com/chubas">my Twitter account</a>, or
+                            <a href="mailto:ruben.medellin.c@gmail.com">email me</a>. You may also find support at the
+                            <a href="http://groups.google.com/group/jfugue-dev">JFugue developers group</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="footer">
+                Stretto &copy; 2009 - 20011 Rub&eacute;n Medell&iacute;n and contributors.
+                Released under <a href="#">MIT License</a>
+            </div>
+        </div>
+
+        <script>
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-21898805-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+
+    </body>
+</html>

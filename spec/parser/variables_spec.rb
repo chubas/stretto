@@ -36,7 +36,7 @@ describe "parsing variables" do
         Stretto::Parser.new("T[MY_VAR]").should be_valid
       end
   
-      it "should allow variables in pitch wheel and pressure controls" do
+      it "should allow variables in pitch bend and pressure controls" do
         Stretto::Parser.new("&[MY_VAR]").should be_valid
         Stretto::Parser.new("+[MY_VAR]").should be_valid
         Stretto::Parser.new("*[MY_VAR],[ANOTHER_VAR]").should be_valid

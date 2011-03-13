@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '../../music_elements/instrument')
 require File.join(File.dirname(__FILE__), '../../music_elements/voice_change')
 require File.join(File.dirname(__FILE__), '../../music_elements/layer_change')
 require File.join(File.dirname(__FILE__), '../../music_elements/tempo')
-require File.join(File.dirname(__FILE__), '../../music_elements/pitch_wheel')
+require File.join(File.dirname(__FILE__), '../../music_elements/pitch_bend')
 require File.join(File.dirname(__FILE__), '../../music_elements/channel_pressure')
 require File.join(File.dirname(__FILE__), '../../music_elements/timing')
 
@@ -32,7 +32,7 @@ module Stretto
       
     end
 
-    # Token result from parsing a duration
+    # Token result from parsing an instrument
     #
     # @example "I[FLUTE]"
     class InstrumentToken < ModifierToken
@@ -68,13 +68,13 @@ module Stretto
       KLASS = Stretto::MusicElements::Tempo
     end
 
-    # Token result from parsing a pitch wheel
+    # Token result from parsing a pitch bend
     #
-    # @example "wh", "q*3:4", "/2.5"
-    class PitchWheelToken < ModifierToken
+    # @example "&9001"
+    class PitchBendToken < ModifierToken
 
       # @private
-      KLASS = Stretto::MusicElements::PitchWheel
+      KLASS = Stretto::MusicElements::PitchBend
     end
 
     # Token result from parsing a channel pressure

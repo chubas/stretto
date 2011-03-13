@@ -1,0 +1,7 @@
+grammar PitchBendGrammar
+  include ValueGrammar
+
+  rule pitch_bend
+    kind:'&' __value:variable_or_integer <Stretto::Tokens::PitchBendToken>
+  end
+end

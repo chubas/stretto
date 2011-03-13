@@ -57,7 +57,7 @@ module Stretto
         :layer_change         => LayerChangeGrammarParser,
         :measure              => MeasureGrammarParser,
         :note                 => NoteGrammarParser,
-        :pitch_wheel          => PitchWheelGrammarParser,
+        :pitch_bend           => PitchBendGrammarParser,
         :polyphonic_pressure  => PolyphonicPressureGrammarParser,
         :rest                 => RestGrammarParser,
         :timing               => TimingGrammarParser,

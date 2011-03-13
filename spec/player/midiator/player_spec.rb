@@ -280,14 +280,33 @@ describe Stretto::Player do
     player.play
   end
 
-  it "handles multiple voices simultaneously" do
-    player = Stretto::Player.new("V0 C5 V1 E5", :driver => test_driver)
+  context "handles voices and layers" do
 
-    midi = player.midi
-    midi.should_receive(:note_on).twice.ordered
-    midi.should_receive(:note_off).twice.ordered
+    it "handles multiple voices simultaneously" do
+      player = Stretto::Player.new("V0 C5 V1 E5", :driver => test_driver)
 
-    player.play
+      midi = player.midi
+      midi.should_receive(:note_on).twice.ordered
+      midi.should_receive(:note_off).twice.ordered
+
+      player.play
+    end
+
+    it "plays layers in the correct order and the same voice" do
+      player = Stretto::Player.new(<<-LAYERS)
+        V0 L0 Ch
+           L1 Rq    Cq
+        V1 L0 Ri Ei
+           L1 Rq.      Ei
+      LAYERS
+      midi = player.midi
+      midi.should_receive(:note_on).with(60, 0, anything).ordered
+      midi.should_receive(:note_on).with(64, 1, anything).ordered
+      midi.should_receive(:note_on).with(60, 0, anything).ordered
+      midi.should_receive(:note_on).with(64, 1, anything).ordered
+
+      player.play
+    end
   end
 
 end

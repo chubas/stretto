@@ -23,11 +23,16 @@ module Stretto
     def play
       set_tempo
 
-      voice_threads = []
-      @pattern.voices.each_pair do |voice, elements|
-        voice_threads << Thread.new(voice, elements) { |v, els| els.each { |e| play_element(e, v) } }
+      layer_threads = []
+      @pattern.voices.each_value do |voice|
+        voice.layers.each_value do |layer|
+          layer_threads << Thread.new(layer) do |l|
+            l.each { |e| play_element(e, voice.index) }
+          end
+
+        end
       end
-      voice_threads.each { |t| t.join}
+      layer_threads.each { |t| t.join}
     end
 
     private
@@ -42,7 +47,10 @@ module Stretto
           play_chord(element, channel)
         when Stretto::MusicElements::Melody
           play_melody(element, channel)
-        when Stretto::MusicElements::Measure, Stretto::MusicElements::Variable
+        when Stretto::MusicElements::Measure,
+              Stretto::MusicElements::Variable,
+              Stretto::MusicElements::VoiceChange,
+              Stretto::MusicElements::LayerChange
           # noop
         when Stretto::MusicElements::Tempo
           play_tempo(element)

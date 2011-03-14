@@ -50,6 +50,8 @@ module Stretto
               Stretto::MusicElements::VoiceChange,
               Stretto::MusicElements::LayerChange
           # noop
+        when Stretto::MusicElements::KeySignature
+          play_key_signature(element)
         when Stretto::MusicElements::Tempo
           play_tempo(element)
         when Stretto::MusicElements::Harmony
@@ -142,6 +144,15 @@ module Stretto
     def play_pitch_bend(pitch_bend, channel)
       @midi.pitch_bend(channel, pitch_bend.value)
     end
+
+    def play_key_signature(key_signature)
+      # noop
+      # TODO, NOTE:
+      #   MIDI specification allows for a meta message key-signature event.
+      #   While this is useful for some tools, it does not affect the playback.
+      # TODO: Add meta-event key signature
+    end
+
   end
 end
 

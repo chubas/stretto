@@ -298,6 +298,8 @@ describe Stretto::Player do
     player.play("V0 I[GUITAR] Cmaj")
   end
 
+  it "handles key signatures"
+
   context "handles voices and layers" do
 
     it "handles multiple voices simultaneously" do

@@ -7,10 +7,10 @@ require File.join(File.dirname(__FILE__), '../lib/stretto')
 ALL_ELEMENTS = {
   :channel_pressure     => '+100',            #
   :chord                => 'Cmaj3h',          #
-  :controller_change    => 'X[VOLUME]=[OFF]',
+  :controller_change    => 'X[VOLUME]=[OFF]', #
   :harmonic_chord       => 'C+D+E',           #
   :instrument           => 'I[PIANO]',        #
-  :key_signature        => 'KGmaj',
+  :key_signature        => 'KGmaj',           #
   :layer_change         => 'L0',              #
   :measure              => '|',               #
   :note                 => 'C5w',             #
@@ -18,7 +18,7 @@ ALL_ELEMENTS = {
   :polyphonic_pressure  => '*60,100',         #
   :rest                 => 'Rq',              #
   :tempo                => 'T[ALLEGRO]',      #
-  :timing               => '@2000',
+  :timing               => '@2000',           #
   :variable             => '$MY_VAR=100',     #
   :voice_change         => 'V0',              #
 } unless defined?(ALL_ELEMENTS)

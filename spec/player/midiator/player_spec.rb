@@ -300,6 +300,17 @@ describe Stretto::Player do
 
   it "handles key signatures"
 
+  it "handles timing elements"
+
+  it "handles controller changes" do
+    player = Stretto::Player.new(:driver => test_driver)
+
+    midi = player.midi
+    midi.should_receive(:control_change).with(0, 935, 127)
+
+    player.play("X[VOLUME]=[ON]")
+  end
+
   context "handles voices and layers" do
 
     it "handles multiple voices simultaneously" do

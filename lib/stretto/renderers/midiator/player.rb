@@ -78,6 +78,10 @@ module Stretto
           play_instrument(element, channel)
         when Stretto::MusicElements::PitchBend
           play_pitch_bend(element, channel)
+        when Stretto::MusicElements::ControllerChange
+          play_controller_change(element, channel)
+        when Stretto::MusicElements::Timing
+          play_timing(element, channel)
         else
           raise "element of class #{element.class} not yet handled by player"
       end
@@ -181,6 +185,14 @@ module Stretto
 
     def play_layer_change(layer_change)
       # noop
+    end
+
+    def play_controller_change(controller_change, channel)
+      @midi.control_change(channel, controller_change.controller, controller_change.value)
+    end
+
+    def play_timing(timing, channel)
+      # TODO: Implement
     end
 
   end

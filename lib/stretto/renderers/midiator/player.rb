@@ -1,5 +1,6 @@
 module Stretto
 
+  # Stretto default Player uses MIDIator for MIDI output.
   class Player
     attr_reader :midi
     attr_accessor :bpm
@@ -7,6 +8,10 @@ module Stretto
     #TODO: can time signature be set?
     DEFAULT_BEAT = 4 # each beat is a quarter note
 
+    # @param options [Hash] An array of options to initialize the MIDI driver
+    #   Pass `:driver => :autodetect` to let MIDIator select the most appropiate driver based on the OS
+    # @example
+    #   Stretto::Player.new(:driver => :dls_synth)
     def initialize(options = {:driver => :autodetect})
       @midi = ::MIDIator::Interface.new
       if options[:driver] == :autodetect
@@ -17,6 +22,12 @@ module Stretto
       end
     end
 
+    # Plays the passed music string (or a File object containing a music string)
+    #
+    # @param music_string_or_file [String, File] The stretto music string
+    # @example
+    #   Stretto::Player.new.play("C D E F G A B C6")
+    #
     def play(music_string_or_file)
       @pattern = Stretto::Pattern.new(music_string_or_file)
 
@@ -33,7 +44,7 @@ module Stretto
       layer_threads.each { |t| t.join}
     end
 
-    private
+   private
 
     def play_element(element, channel = 0)
       case element
@@ -45,11 +56,14 @@ module Stretto
           play_chord(element, channel)
         when Stretto::MusicElements::Melody
           play_melody(element, channel)
-        when Stretto::MusicElements::Measure,
-              Stretto::MusicElements::Variable,
-              Stretto::MusicElements::VoiceChange,
-              Stretto::MusicElements::LayerChange
-          # noop
+        when Stretto::MusicElements::Measure
+          play_measure(element)
+        when Stretto::MusicElements::Variable
+          play_variable(element)
+        when Stretto::MusicElements::VoiceChange
+          play_voice_change(element)
+        when Stretto::MusicElements::LayerChange
+          play_layer_change(element)
         when Stretto::MusicElements::KeySignature
           play_key_signature(element)
         when Stretto::MusicElements::Tempo
@@ -151,6 +165,22 @@ module Stretto
       #   MIDI specification allows for a meta message key-signature event.
       #   While this is useful for some tools, it does not affect the playback.
       # TODO: Add meta-event key signature
+    end
+
+    def play_measure(measure)
+      # noop
+    end
+
+    def play_variable(variable)
+      # noop
+    end
+
+    def play_voice_change(voice_change)
+      # noop
+    end
+
+    def play_layer_change(layer_change)
+      # noop
     end
 
   end

@@ -280,6 +280,15 @@ describe Stretto::Player do
     player.play("*60,100")
   end
 
+  it "handles pitch bend" do
+    player = Stretto::Player.new(:driver => test_driver)
+
+    midi = player.midi
+    midi.should_receive(:pitch_bend).with(0, 100)
+
+    player.play("&100")
+  end
+
   it "handles instrument" do
     player = Stretto::Player.new(:driver => test_driver)
 

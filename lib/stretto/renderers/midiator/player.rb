@@ -60,6 +60,8 @@ module Stretto
           play_polyphonic_pressure(element, channel)
         when Stretto::MusicElements::Instrument
           play_instrument(element, channel)
+        when Stretto::MusicElements::PitchBend
+          play_pitch_bend(element, channel)
         else
           raise "element of class #{element.class} not yet handled by player"
       end
@@ -137,6 +139,9 @@ module Stretto
       @midi.program_change(channel, instrument.value)
     end
 
+    def play_pitch_bend(pitch_bend, channel)
+      @midi.pitch_bend(channel, pitch_bend.value)
+    end
   end
 end
 

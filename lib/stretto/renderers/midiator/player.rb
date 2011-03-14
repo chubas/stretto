@@ -56,6 +56,8 @@ module Stretto
           play_harmony(element, channel)
         when Stretto::MusicElements::ChannelPressure
           play_channel_pressure(element, channel)
+        when Stretto::MusicElements::PolyphonicPressure
+          play_polyphonic_pressure(element, channel)
         when Stretto::MusicElements::Instrument
           play_instrument(element, channel)
         else
@@ -121,13 +123,14 @@ module Stretto
       @midi.channel_aftertouch(channel, channel_pressure.value)
     end
 
+    def play_polyphonic_pressure(polyphonic_pressure, channel)
+      @midi.aftertouch(polyphonic_pressure.pitch, channel, polyphonic_pressure.value)
+    end
+
     def set_default_tempo
       unless @pattern.first.is_a?(Stretto::MusicElements::Tempo)
         play_element(Stretto::MusicElements::Tempo.new("T[Allegro]"))
       end
-    end
-
-    def set_tempo
     end
 
     def play_instrument(instrument, channel)

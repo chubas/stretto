@@ -262,13 +262,22 @@ describe Stretto::Player do
     
   end
 
-  it  "handles channel pressure" do
+  it "handles channel pressure" do
     player = Stretto::Player.new(:driver => test_driver)
 
     midi = player.midi
     midi.should_receive(:channel_aftertouch).with(0, 60)
 
     player.play("+60")
+  end
+
+  it "handles polyphonic pressure" do
+    player = Stretto::Player.new(:driver => test_driver)
+
+    midi = player.midi
+    midi.should_receive(:aftertouch).with(60, 0, 100)
+
+    player.play("*60,100")
   end
 
   it "handles instrument" do

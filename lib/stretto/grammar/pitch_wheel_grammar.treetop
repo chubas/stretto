@@ -1,7 +1,0 @@
-grammar PitchWheelGrammar
-  include ValueGrammar
-
-  rule pitch_wheel
-    kind:'&' __value:variable_or_integer <Stretto::Tokens::PitchWheelToken>
-  end
-end

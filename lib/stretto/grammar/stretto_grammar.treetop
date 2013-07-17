@@ -14,7 +14,7 @@ require File.dirname(__FILE__) + '/harmonic_chord_grammar'
 require File.dirname(__FILE__) + '/key_signature_grammar'
 require File.dirname(__FILE__) + '/layer_change_grammar'
 require File.dirname(__FILE__) + '/measure_grammar'
-require File.dirname(__FILE__) + '/pitch_wheel_grammar'
+require File.dirname(__FILE__) + '/pitch_bend_grammar'
 require File.dirname(__FILE__) + '/polyphonic_pressure_grammar'
 require File.dirname(__FILE__) + '/tempo_grammar'
 require File.dirname(__FILE__) + '/timing_grammar'
@@ -37,7 +37,7 @@ grammar StrettoGrammar
   include KeySignatureGrammar
   include LayerChangeGrammar
   include MeasureGrammar
-  include PitchWheelGrammar
+  include PitchBendGrammar
   include PolyphonicPressureGrammar
   include TempoGrammar
   include TimingGrammar
@@ -51,7 +51,7 @@ grammar StrettoGrammar
   rule music_element
     harmonic_chord / harmony_with_melody / single_music_element /
     measure / key_signature / instrument / voice / layer / tempo /
-    pitch_wheel / channel_pressure / polyphonic_pressure / timing /
+    pitch_bend / channel_pressure / polyphonic_pressure / timing /
     controller_change / variable_definition
   end
 

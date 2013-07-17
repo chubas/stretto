@@ -1,4 +1,4 @@
-source 'http://gemcutter.org'
+source 'http://rubygems.org'
 
 gem 'treetop',  '1.4.9'
 gem 'midiator', '0.5.1'
